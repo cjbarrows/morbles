@@ -2,6 +2,18 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
 
+## ToDo
+
+[ ] draw circles using divs
+[ ] add bumpers
+     [ ]and draw them
+[ ] add buttons to drop balls in each chute
+[ ] collision detection with bumpers
+
+## Notes
+
+[ ] had to restart `ng serve` after adding ng-bootstrap
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
