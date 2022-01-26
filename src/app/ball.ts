@@ -3,4 +3,5 @@ export default class Ball {
   y: number = 0;
   velX: number = 0;
   velY: number = 0;
+  physicsObject: any;
 }

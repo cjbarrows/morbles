@@ -2,17 +2,29 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
 
-## ToDo
+## Todo
 
-[ ] draw circles using divs
+[ ] change start/stop to bootstrap .custom-switch
+[ ] draw chutes
 [ ] add bumpers
-     [ ]and draw them
-[ ] add buttons to drop balls in each chute
-[ ] collision detection with bumpers
+     [x] and draw them
+     [ ] make them clickable/reversible
+[ ] add Angular UI controls/interactions (for learning)
+[ ] add catch-and-flippers
+[ ] add target chute(s)
+[ ] line up launch buttons with gameboard chutes
+
+## Done
+
+[x] add buttons to drop balls in each chute
+[x] draw circles using divs
+[x] have start/stop buttons to continuously run the physics
+    [x] the app component should control the physics engine timer, etc.
+[x] collision detection with bumpers
 
 ## Notes
 
-[ ] had to restart `ng serve` after adding ng-bootstrap
+- had to restart `ng serve` after adding ng-bootstrap
 
 ## Development server
 

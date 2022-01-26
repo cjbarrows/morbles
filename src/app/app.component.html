@@ -1,4 +1,4 @@
-<span>{{ title }} app is running!</span>
+<p>{{ title }} app is running!</p>
 
-<app-controls (notify)="onNotify()"></app-controls>
+<app-controls (notifyTimer)="onNotifyTimer($event)" (notifyLoad)="onNotifyLoad()"></app-controls>
 <app-game-board [gameBoard]="getRenderer().getGameBoard()"></app-game-board>

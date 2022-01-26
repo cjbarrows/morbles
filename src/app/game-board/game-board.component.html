@@ -1,25 +1,19 @@
-<Button (click)="examine()">Examine</Button>
 <div class="container">
   <div class="row">
-    <div class="col">
-      1 of 2
-    </div>
-    <div class="col">
-      2 of 2
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      1 of 3
-    </div>
-    <div class="col">
-      2 of 3
-    </div>
-    <div class="col">
-      3 of 3
-    </div>
+    <div class="col"><Button (click)="launch(1)">Chute 1</Button></div>
+    <div class="col"><Button (click)="launch(2)">Chute 2</Button></div>
+    <div class="col"><Button (click)="launch(3)">Chute 3</Button></div>
+    <div class="col"><Button (click)="launch(4)">Chute 4</Button></div>
+    <div class="col"><Button (click)="launch(5)">Chute 5</Button></div>
+    <div class="col"><Button (click)="launch(6)">Chute 6</Button></div>
+    <div class="col"><Button (click)="launch(7)">Chute 7</Button></div>
+    <div class="col"><Button (click)="launch(8)">Chute 8</Button></div>
   </div>
 </div>
-<div class="game-board" *ngFor="let row of this.gameBoard.rows">
-  <span *ngFor="let col of row">{{col}}</span>
+<div class="game-board">
+  <div
+    [class]="drawObject.className"
+    [style]="drawObject.styleObject"
+    *ngFor="let drawObject of this.gameBoard.getDrawlist()"
+  ></div>
 </div>

@@ -1,3 +1,4 @@
-const gravity: number = 0.098;
+const gravity: number = 0.25;
+const drag: number = 0.95;
 
-export { gravity };
+export { drag, gravity };

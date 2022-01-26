@@ -1,21 +1,21 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-
-import { PhysicsService } from '../physics.service';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-controls',
   templateUrl: './controls.component.html',
   styleUrls: ['./controls.component.css'],
 })
-export class ControlsComponent implements OnInit {
-  @Output() notify = new EventEmitter();
+export class ControlsComponent {
+  @Input() buttonState = true;
 
-  constructor(private physics: PhysicsService) {}
+  @Output() notifyTimer = new EventEmitter<boolean>();
+  @Output() notifyLoad = new EventEmitter();
 
-  ngOnInit(): void {}
+  setTimerState(timerState: boolean) {
+    this.notifyTimer.emit(timerState);
+  }
 
-  doTick() {
-    this.physics.tick();
-    this.notify.emit();
+  onLoadLevel() {
+    this.notifyLoad.emit();
   }
 }

@@ -1,79 +1,39 @@
 import { Injectable } from '@angular/core';
-import { GameBoard } from './gameboard';
 
+import { GameBoard } from './gameboard';
+import { DrawObject } from './drawobject';
 import { PhysicsService } from './physics.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RendererService {
-  private rows: Array<Array<string>> = [];
+  private drawlist: Array<DrawObject> = [];
 
   constructor() {}
 
-  clearRows() {
-    this.rows = new Array<number>(this.numRows).fill(0).map((_) => {
-      const cols = new Array<number>(this.numCols).fill(0);
-      return cols.map((_) => {
-        return '.';
-      });
-    });
+  clearDrawlist() {
+    this.drawlist = [];
   }
 
-  drawFromPhysics(physics: PhysicsService) {
-    this.clearRows();
+  createDrawlistFromPhysics(physics: PhysicsService) {
+    this.clearDrawlist();
 
-    const ballPosition = physics.getBallPosition();
-
-    this.setCell(ballPosition.y, ballPosition.x, 'O');
+    this.drawlist = [
+      ...physics.getBumpers().map((bumper) => {
+        return new DrawObject({ type: 'bumper', x: bumper.x, y: bumper.y });
+      }),
+      ...physics.getBalls().map((ball) => {
+        return new DrawObject({ type: 'ball', x: ball.x, y: ball.y });
+      }),
+    ];
   }
 
-  setCell(row: number, col: number, value: string) {
-    const rowInt = Math.round(row),
-      colInt = Math.round(col);
-
-    if (
-      rowInt >= 0 &&
-      rowInt < this.rows.length &&
-      colInt >= 0 &&
-      colInt < this.rows[rowInt].length
-    ) {
-      this.rows[rowInt][colInt] = value;
-    }
-  }
-
-  getCell(row: number, col: number): string {
-    if (
-      row >= 0 &&
-      row < this.rows.length &&
-      col >= 0 &&
-      col < this.rows[row].length
-    ) {
-      return this.rows[row][col];
-    }
-    return '.';
-  }
-
-  getRows() {
-    const rows = new Array<number>(this.numRows).fill(0);
-
-    return rows.map((_, rowIndex: number) => {
-      const cols = new Array<number>(this.numCols).fill(0);
-      return cols.map((_, colIndex: number) => {
-        return this.getCell(rowIndex, colIndex);
-      });
-    });
+  getDrawlist(): Array<DrawObject> {
+    return this.drawlist;
   }
 
   getGameBoard(): GameBoard {
-    return new GameBoard(this.getRows());
-  }
-
-  get numRows(): number {
-    return 20;
-  }
-
-  get numCols(): number {
-    return 10;
+    return new GameBoard(this.drawlist);
   }
 }

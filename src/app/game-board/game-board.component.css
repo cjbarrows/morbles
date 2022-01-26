@@ -1,3 +1,27 @@
 .game-board{
-  font-family:monospace;
+  position: relative;
+  background-color: gray;
+  margin: 20px 20px;
+  border: 2px solid black;
+  border-radius: 15px;
+  height: 500px;
+  overflow: hidden;
+}
+
+.ball {
+  position: absolute;
+  background-image: url('/assets/ball.png');
+  background-size: cover;
+  transform: translate(-10px, -10px);
+  width: 20px;
+  height: 20px;
+}
+
+.bumper {
+  position: absolute;
+  background-image: url('/assets/bumper-right.png');
+  background-size: cover;
+  transform: translate(-20px, -15px);
+  width: 30px;
+  height: 30px;
 }

@@ -1,7 +1,12 @@
+import { DrawObject } from './drawobject';
 export class GameBoard {
-  rows: Array<Array<string>>;
+  drawlist: Array<DrawObject>;
 
-  constructor(newRows: Array<Array<string>>) {
-    this.rows = Array.from(newRows);
+  constructor(newDrawlist: Array<DrawObject>) {
+    this.drawlist = Array.from(newDrawlist);
+  }
+
+  getDrawlist() {
+    return this.drawlist;
   }
 }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
 import { GameBoard } from '../gameboard';
+import { PhysicsService } from '../physics.service';
 
 @Component({
   selector: 'app-game-board',
@@ -10,7 +11,7 @@ import { GameBoard } from '../gameboard';
 export class GameBoardComponent implements OnInit {
   @Input() gameBoard: GameBoard = new GameBoard([]);
 
-  constructor() {}
+  constructor(private physicsService: PhysicsService) {}
 
   ngOnInit(): void {
     console.log('OnInit');
@@ -29,5 +30,9 @@ export class GameBoardComponent implements OnInit {
 
   examine() {
     console.log(this.gameBoard);
+  }
+
+  launch(chuteNumber: number) {
+    this.physicsService.launchBall(chuteNumber * 100);
   }
 }
