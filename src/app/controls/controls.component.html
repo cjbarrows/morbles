@@ -2,18 +2,17 @@
   <button type="button" class="btn btn-secondary" (click)="onLoadLevel()">
     Load
   </button>
+  <button type="button" class="btn btn-info" (click)="onExamine()">
+    Examine
+  </button>
 </div>
-<div
-  class="btn-group btn-group-toggle"
-  ngbRadioGroup
-  name="radioBasic"
-  [(ngModel)]="buttonState"
-  (ngModelChange)="setTimerState($event)"
->
-  <label ngbButtonLabel class="btn-primary">
-    <input ngbButton type="radio" [value]="true" /> Start
-  </label>
-  <label ngbButtonLabel class="btn-primary">
-    <input ngbButton type="radio" [value]="false" /> Stop
-  </label>
+<div class="custom-control custom-switch">
+  <input
+    type="checkbox"
+    class="custom-control-input"
+    id="runningSwitch"
+    [(ngModel)]="buttonState"
+    (ngModelChange)="setTimerState($event)"
+  />
+  <label class="custom-control-label" for="runningSwitch">Running</label>
 </div>

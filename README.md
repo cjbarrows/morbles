@@ -4,11 +4,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] change start/stop to bootstrap .custom-switch
+[ ] load from ASCII map
+[ ] make things clickable even while sim is running (related to re-render, below)
+[ ] only re-render if something has changed (Angular?)
 [ ] draw chutes
-[ ] add bumpers
-     [x] and draw them
-     [ ] make them clickable/reversible
 [ ] add Angular UI controls/interactions (for learning)
 [ ] add catch-and-flippers
 [ ] add target chute(s)
@@ -21,6 +20,16 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] have start/stop buttons to continuously run the physics
     [x] the app component should control the physics engine timer, etc.
 [x] collision detection with bumpers
+[x] redoing with more "deterministic" physics
+    [x] bumpers
+    [x] draw cell boundaries
+[x] change start/stop to bootstrap .custom-switch
+[x] add bumpers
+    [x] and draw them
+    [x] make them clickable/reversible
+[x] make cells handle balls coming in from different sides
+    - "physicsMapping" class
+[-] make bumpers pass-through for "unused" side
 
 ## Notes
 

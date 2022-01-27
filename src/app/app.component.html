@@ -1,4 +1,9 @@
 <p>{{ title }} app is running!</p>
 
-<app-controls (notifyTimer)="onNotifyTimer($event)" (notifyLoad)="onNotifyLoad()"></app-controls>
-<app-game-board [gameBoard]="getRenderer().getGameBoard()"></app-game-board>
+<app-controls
+  (notifyTimer)="onNotifyTimer($event)"
+  (notifyLoad)="onNotifyLoad()"
+  (notifyExamine)="onNotifyExamine()"
+  [buttonState]="true"
+></app-controls>
+<app-game-board [drawList]="getRenderer().getDrawlist()"></app-game-board>

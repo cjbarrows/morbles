@@ -6,10 +6,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./controls.component.css'],
 })
 export class ControlsComponent {
-  @Input() buttonState = true;
+  @Input() buttonState = false;
 
   @Output() notifyTimer = new EventEmitter<boolean>();
   @Output() notifyLoad = new EventEmitter();
+  @Output() notifyExamine = new EventEmitter();
 
   setTimerState(timerState: boolean) {
     this.notifyTimer.emit(timerState);
@@ -17,5 +18,9 @@ export class ControlsComponent {
 
   onLoadLevel() {
     this.notifyLoad.emit();
+  }
+
+  onExamine() {
+    this.notifyExamine.emit();
   }
 }

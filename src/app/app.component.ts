@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { RendererService } from './renderer.service';
 import { PhysicsService } from './physics.service';
+import { Air } from './air';
+import { Bumper } from './bumper';
 
 @Component({
   selector: 'app-root',
@@ -57,10 +59,33 @@ export class AppComponent {
     }
   }
 
+  onNotifyExamine() {
+    console.log(this.renderer.getDrawlist());
+  }
+
   onNotifyLoad() {
     this.physics.clearAll();
 
-    this.physics.addBumper(400, 100);
+    this.physics.addCell(3, 1, new Air());
+    this.physics.addCell(4, 1, new Air());
+    this.physics.addCell(5, 1, new Air());
+
+    this.physics.addCell(3, 2, new Bumper());
+    this.physics.addCell(4, 2, new Bumper());
+    this.physics.addCell(5, 2, new Air());
+    // this.physics.addCell(5, 2, new Bumper());
+
+    this.physics.addCell(2, 3, new Air());
+    this.physics.addCell(3, 3, new Air());
+    this.physics.addCell(4, 3, new Air());
+    this.physics.addCell(5, 3, new Air());
+    this.physics.addCell(6, 3, new Air());
+
+    this.physics.addCell(2, 4, new Air());
+    this.physics.addCell(3, 4, new Air());
+    this.physics.addCell(4, 4, new Air());
+    this.physics.addCell(5, 4, new Air());
+    this.physics.addCell(6, 4, new Air());
   }
 
   getRenderer(): RendererService {

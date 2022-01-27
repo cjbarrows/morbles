@@ -1,114 +1,145 @@
 import { Injectable } from '@angular/core';
-import { System } from 'detect-collisions';
-import { Response } from 'sat';
 
-import { drag, gravity } from './constants';
 import Ball from './ball';
-import Bumper from './bumper';
+import { GameCell } from './gamecell';
+import { Bumper } from './bumper';
+import Point from './point';
+import { mapCells } from './physicsMapping';
+
+interface GameCellEntry {
+  id: number;
+  x: number;
+  y: number;
+  cell: GameCell;
+}
+
+interface CellInfo extends Point {
+  id: number;
+  onClickHandler?: Function;
+  flipped?: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class PhysicsService {
-  private balls: Array<Ball> = [];
-  private bumpers: Array<Bumper> = [];
-
-  private system: System;
-
-  constructor() {
-    this.system = new System();
-  }
+  private index = 0;
+  private cells: Array<GameCellEntry> = [];
 
   clearAll() {
-    this.balls = [];
+    this.cells = [];
   }
 
-  addBumper(x: number, y: number) {
-    const bumper = new Bumper(x, y);
-    this.bumpers.push(bumper);
-
-    const lineSegment = this.system.createPolygon({ x, y }, [
-      { x: -10, y: -10 },
-      { x: 10, y: 10 },
-    ]);
-
-    bumper.physicsObject = lineSegment;
+  addCell(x: number, y: number, cell: GameCell) {
+    cell.id = this.index;
+    this.index += 1;
+    this.cells.push({ x, y, cell, id: cell.id });
   }
 
-  launchBall(xPosition: number) {
+  getGameCell(x: number, y: number): GameCellEntry | undefined {
+    return this.cells.find((cell) => cell.x === x && cell.y === y);
+  }
+
+  findNextCell(cell: GameCell, offset: Point): GameCellEntry | undefined {
+    const entry = this.cells.find((aCell) => aCell.cell === cell);
+    if (entry) {
+      const nextCell = this.getGameCell(entry.x + offset.x, entry.y + offset.y);
+      return nextCell;
+    }
+    return undefined;
+  }
+
+  launchBall(xCell: number) {
     const ball = new Ball();
-    ball.x = xPosition;
-    this.balls.push(ball);
+    ball.id = this.index;
+    this.index += 1;
 
-    const circle = this.system.createCircle({ x: ball.x, y: ball.y }, 10);
-
-    ball.physicsObject = circle;
+    const entry = this.getGameCell(xCell, 1);
+    if (entry && entry.cell) {
+      entry.cell.addBall(ball);
+    }
   }
 
   tick() {
     this.advancePhysics();
     this.cullPhysics();
-    this.collisionDetectionAndResponse();
   }
 
   advancePhysics() {
-    if (this.balls.length === 0) {
-      return;
-    }
-
-    let ball: Ball;
-
-    for (ball of this.balls) {
-      ball.x += ball.velX;
-      ball.y += ball.velY;
-
-      ball.velY += gravity;
-
-      ball.velX *= drag;
-
-      if (ball.physicsObject) {
-        ball.physicsObject.setPosition(ball.x, ball.y);
-      }
-    }
+    this.cells.forEach((entry) => {
+      entry.cell.tick(this);
+    });
   }
 
-  cullPhysics() {
-    const toRemove = this.balls.filter((ball) => ball.y >= 500);
+  cullPhysics() {}
 
-    toRemove.forEach((ball) => {
-      if (ball.physicsObject) {
-        this.system.remove(ball.physicsObject);
-      }
+  getBoundaries() {
+    return this.cells.map((entry) => {
+      return {
+        id: entry.id,
+        type: 'boundary',
+        x: entry.x * 100,
+        y: entry.y * 100,
+        width: entry.cell.getWidth(),
+        height: entry.cell.getHeight(),
+      };
     });
-
-    this.balls = this.balls.filter((ball) => !toRemove.includes(ball));
   }
 
   getBalls(): Array<Ball> {
-    return this.balls;
+    const arrayOfBalls = this.cells.map(({ x, y, cell }) => {
+      const cellBalls = cell.getBalls();
+      return cellBalls.map((ball) => {
+        return new Ball(x * 100 + ball.x, y * 100 + ball.y, ball.id);
+      });
+    });
+
+    return arrayOfBalls.flat();
   }
 
-  getBumpers(): Array<Bumper> {
-    return this.bumpers;
-  }
-
-  collisionDetectionAndResponse() {
-    this.system.update();
-
-    this.system.checkAll((response) => this.handleCollisions(response));
-  }
-
-  handleCollisions(response: Response) {
-    const ball = this.balls.find((ball) => ball.physicsObject === response.a);
-    if (ball) {
-      const bumper = this.bumpers.find(
-        (bumper) => bumper.physicsObject === response.b
-      );
-      if (bumper) {
-        console.log('bump');
-        ball.velX = ball.velY * 0.4;
-        ball.velY = -ball.velY * 0.6;
+  // TODO: rework this into something more TypeScript-y
+  getBumpers(): Array<CellInfo> {
+    let bumpers = [];
+    for (let entry of this.cells) {
+      const bumper: Bumper = <Bumper>entry.cell;
+      const pos = entry.cell.getBumperPosition();
+      if (pos) {
+        bumpers.push({
+          id: entry.id,
+          x: entry.x * 100 + pos.x,
+          y: entry.y * 100 + pos.y,
+          flipped: bumper.flipped,
+          onClickHandler: () => bumper.onClick(),
+        });
       }
     }
+
+    return bumpers;
+  }
+
+  onBallExit(cell: GameCell, ball: Ball, exitPoint: Point) {
+    cell.removeBall(ball);
+
+    const nextCell: GameCellEntry | undefined = this.findNextCell(
+      cell,
+      exitPoint
+    );
+    if (nextCell) {
+      nextCell.cell.addBall(ball);
+    }
+  }
+
+  conditionalBallExit(cell: GameCell, ball: Ball, exitPoint: Point) {
+    const nextCell: GameCellEntry | undefined = this.findNextCell(
+      cell,
+      exitPoint
+    );
+    if (nextCell) {
+      const adjustment = mapCells(cell, nextCell.cell);
+      cell.removeBall(ball);
+      nextCell.cell.addBall(ball, adjustment);
+      return true;
+    }
+    return false;
   }
 }
