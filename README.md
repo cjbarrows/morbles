@@ -5,13 +5,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Todo
 
 [ ] load from ASCII map
-[ ] make things clickable even while sim is running (related to re-render, below)
-[ ] only re-render if something has changed (Angular?)
-[ ] draw chutes
 [ ] add Angular UI controls/interactions (for learning)
 [ ] add catch-and-flippers
 [ ] add target chute(s)
-[ ] line up launch buttons with gameboard chutes
 
 ## Done
 
@@ -30,6 +26,15 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] make cells handle balls coming in from different sides
     - "physicsMapping" class
 [-] make bumpers pass-through for "unused" side
+[x] make things clickable even while sim is running (related to re-render, below)
+[x] only re-render if something has changed (Angular?)
+[-] get ngOnChanges working again
+    - I think it fires whenever the reference changes; so no big deal that it's not firing now
+    - I'm a little unclear on why/how the DOM is being refreshed
+    - but it seems to work nicely so I'll ignore that for now
+      - I think the trackBy is helping a lot
+[x] draw chutes
+[x] line up launch buttons with gameboard chutes
 
 ## Notes
 

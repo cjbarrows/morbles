@@ -11,8 +11,12 @@ import { DrawObject } from '../drawobject';
 })
 export class GameBoardComponent implements OnInit {
   @Input() drawList: Array<DrawObject> = [];
+  launchButtons: Array<string> = [];
+  currentStyle = { left: '300px' };
 
-  constructor(private physicsService: PhysicsService) {}
+  constructor(private physicsService: PhysicsService) {
+    this.launchButtons = new Array<string>(8);
+  }
 
   ngOnInit(): void {
     console.log('OnInit');
@@ -29,17 +33,19 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  launch(chuteNumber: number) {
+  launch = (chuteNumber: number) => {
     this.physicsService.launchBall(chuteNumber);
-  }
+  };
 
   onClick(drawObject: DrawObject) {
+    console.log(this.physicsService);
+
     if (drawObject.onClickHandler) {
       drawObject.onClickHandler();
     }
   }
 
-  getDrawObjectIndex(index: number, drawObject: DrawObject): number {
+  getDrawObjectId(index: number, drawObject: DrawObject): number {
     return drawObject.id;
   }
 }

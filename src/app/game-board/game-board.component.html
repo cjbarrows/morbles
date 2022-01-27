@@ -1,20 +1,13 @@
-<div class="container">
-  <div class="row">
-    <div class="col"><Button (click)="launch(1)">Chute 1</Button></div>
-    <div class="col"><Button (click)="launch(2)">Chute 2</Button></div>
-    <div class="col"><Button (click)="launch(3)">Chute 3</Button></div>
-    <div class="col"><Button (click)="launch(4)">Chute 4</Button></div>
-    <div class="col"><Button (click)="launch(5)">Chute 5</Button></div>
-    <div class="col"><Button (click)="launch(6)">Chute 6</Button></div>
-    <div class="col"><Button (click)="launch(7)">Chute 7</Button></div>
-    <div class="col"><Button (click)="launch(8)">Chute 8</Button></div>
-  </div>
-</div>
 <div class="game-board">
+  <app-launch-button
+    *ngFor="let button of this.launchButtons; let i = index"
+    [index]="i"
+    [launchFunction]="this.launch"
+  ></app-launch-button>
   <div
     [class]="drawObject.className"
     [style]="drawObject.styleObject"
     (click)="onClick(drawObject)"
-    *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectIndex"
+    *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
   ></div>
 </div>

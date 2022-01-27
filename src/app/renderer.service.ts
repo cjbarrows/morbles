@@ -18,7 +18,7 @@ export class RendererService {
   createDrawlistFromPhysics(physics: PhysicsService) {
     this.clearDrawlist();
 
-    const newDrawList = [
+    const newDrawlist = [
       ...physics.getBoundaries().map((boundary) => {
         return new DrawObject({
           id: boundary.id,
@@ -53,7 +53,7 @@ export class RendererService {
       }),
     ];
 
-    this.drawlist.push(...newDrawList);
+    this.drawlist.push(...newDrawlist);
   }
 
   getDrawlist(): Array<DrawObject> {

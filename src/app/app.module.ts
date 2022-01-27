@@ -6,9 +6,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { GameBoardComponent } from './game-board/game-board.component';
 import { ControlsComponent } from './controls/controls.component';
+import { LaunchButtonsComponent } from './launch-button/launch-button.component';
 
 @NgModule({
-  declarations: [AppComponent, GameBoardComponent, ControlsComponent],
+  declarations: [
+    AppComponent,
+    GameBoardComponent,
+    ControlsComponent,
+    LaunchButtonsComponent,
+  ],
   imports: [BrowserModule, NgbModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
