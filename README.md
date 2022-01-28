@@ -4,7 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] load from ASCII map
+[ ] UI controls to set width/height/spacing
+[ ] ngModel for game settings?
+[ ] load from ASCII map in UI
 [ ] add Angular UI controls/interactions (for learning)
 [ ] add catch-and-flippers
 [ ] add target chute(s)
