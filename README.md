@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Todo
 
 [ ] UI controls to set width/height/spacing
-[ ] ngModel for game settings?
+    [ ] try out synchronous form validation
 [ ] load from ASCII map in UI
 [ ] add Angular UI controls/interactions (for learning)
 [ ] add catch-and-flippers
@@ -37,6 +37,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
       - I think the trackBy is helping a lot
 [x] draw chutes
 [x] line up launch buttons with gameboard chutes
+[-] ngModel for game settings?
+    - ngModel is cool but sounds like the Form method is preferred
 
 ## Notes
 

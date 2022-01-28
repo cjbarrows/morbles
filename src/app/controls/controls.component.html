@@ -1,16 +1,20 @@
-<form (ngSubmit)="onSubmit()" #gameSettingsForm="ngForm">
-  <label for="typeahead-basic">Rows:</label>
-  <input
-    id="typeahead-basic"
-    type="text"
-    class="form-control"
-    [(ngModel)]="gameSettings.rows"
-    name="rows"
-    required
-  />
-  <pre>{{gameSettings | json}}</pre>
-  <button type="submit" class="btn btn-success" [disabled]="!gameSettingsForm.form.valid">Submit</button>
+<form [formGroup]="gameSettings" (ngSubmit)="onSubmit()">
+  <label for="rows">Rows: </label>
+  <input id="rows" type="number" formControlName="rows" />
+  <label for="columns">Columns: </label>
+  <input id="columns" type="number" formControlName="columns" />
+  <div>
+    <button
+      class="btn btn-primary"
+      type="submit"
+      [disabled]="!gameSettings.valid"
+    >
+      Submit
+    </button>
+  </div>
 </form>
+{{ gameSettings.value | json }}
+<button (click)="updateRows()">Update Rows</button>
 <div>
   <button type="button" class="btn btn-secondary" (click)="onLoadLevel()">
     Load
