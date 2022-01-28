@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-// import { FormBuilder } from '@angular/forms';
+// import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 interface GameSettings {
   rows: number;
@@ -18,16 +18,16 @@ export class ControlsComponent {
   @Output() notifyLoad = new EventEmitter();
   @Output() notifyExamine = new EventEmitter();
 
-  // constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {}
 
-  gameSettings = new FormGroup({
-    rows: new FormControl(7),
-    columns: new FormControl(8),
-  });
-  // gameSettings = this.fb.group({
-  //   rows: 7,
-  //   columns: 8,
+  // gameSettings = new FormGroup({
+  //   rows: new FormControl(7),
+  //   columns: new FormControl(8),
   // });
+  gameSettings = this.fb.group({
+    rows: 7,
+    columns: 8,
+  });
 
   setTimerState(timerState: boolean) {
     this.notifyTimer.emit(timerState);
