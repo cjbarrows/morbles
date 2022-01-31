@@ -13,6 +13,7 @@
     </button>
   </div>
 </form>
+<p>Form Status: {{ gameSettings.status }}</p>
 {{ gameSettings.value | json }}
 <button (click)="updateRows()">Update Rows</button>
 <div>

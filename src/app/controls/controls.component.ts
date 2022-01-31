@@ -1,6 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-// import { FormControl, FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
+import {
+  Validators,
+  ValidatorFn,
+  ValidationErrors,
+  AbstractControl,
+} from '@angular/forms';
 
 interface GameSettings {
   rows: number;
@@ -20,14 +25,28 @@ export class ControlsComponent {
 
   constructor(private fb: FormBuilder) {}
 
-  // gameSettings = new FormGroup({
-  //   rows: new FormControl(7),
-  //   columns: new FormControl(8),
-  // });
-  gameSettings = this.fb.group({
-    rows: 7,
-    columns: 8,
-  });
+  gameSettings = this.fb.group(
+    {
+      rows: 7,
+      columns: [8, Validators.required],
+    }
+    // { updateOn: 'change' }
+  );
+
+  ngOnInit() {
+    const form = this.gameSettings;
+    if (form) {
+      form.controls['columns'].valueChanges.subscribe((x: any) => {
+        console.log('control value changed');
+        console.log('change');
+        console.log(x);
+        console.log('current');
+        console.log((this.gameSettings.get('columns') || {}).value);
+        console.log('or');
+        console.log(this.gameSettings.value);
+      });
+    }
+  }
 
   setTimerState(timerState: boolean) {
     this.notifyTimer.emit(timerState);
