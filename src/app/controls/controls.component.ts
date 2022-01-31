@@ -11,6 +11,17 @@ interface GameSettings {
   rows: number;
 }
 
+const valueInRange = (value: number) => {
+  return value >= 3 && value <= 10;
+};
+
+export function minMaxSizeValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    return !valueInRange(control.value)
+      ? { tooBigOrTooSmall: { value: control.value } }
+      : null;
+  };
+}
 @Component({
   selector: 'app-controls',
   templateUrl: './controls.component.html',
@@ -25,13 +36,10 @@ export class ControlsComponent {
 
   constructor(private fb: FormBuilder) {}
 
-  gameSettings = this.fb.group(
-    {
-      rows: 7,
-      columns: [8, Validators.required],
-    }
-    // { updateOn: 'change' }
-  );
+  gameSettings = this.fb.group({
+    rows: 7,
+    columns: [8, [Validators.required, minMaxSizeValidator()]],
+  });
 
   ngOnInit() {
     const form = this.gameSettings;
@@ -44,6 +52,14 @@ export class ControlsComponent {
         console.log((this.gameSettings.get('columns') || {}).value);
         console.log('or');
         console.log(this.gameSettings.value);
+        if (!valueInRange(x)) {
+          this.gameSettings.patchValue(
+            {
+              columns: this.gameSettings.value.columns,
+            },
+            { emitEvent: false }
+          );
+        }
       });
     }
   }
