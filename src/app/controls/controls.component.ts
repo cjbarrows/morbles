@@ -5,10 +5,14 @@ import {
   ValidatorFn,
   ValidationErrors,
   AbstractControl,
+  ReactiveFormsModule,
 } from '@angular/forms';
+
+import { PhysicsService } from '../physics.service';
 
 interface GameSettings {
   rows: number;
+  columns: number;
 }
 
 const valueInRange = (value: number) => {
@@ -33,17 +37,41 @@ export class ControlsComponent {
   @Output() notifyTimer = new EventEmitter<boolean>();
   @Output() notifyLoad = new EventEmitter();
   @Output() notifyExamine = new EventEmitter();
+  @Output() notifyColumns = new EventEmitter();
 
-  constructor(private fb: FormBuilder) {}
+  physics: PhysicsService;
+
+  columns: Array<number> = [];
+
+  constructor(private fb: FormBuilder, private physicsService: PhysicsService) {
+    this.physics = physicsService;
+    this.columns = Array<number>(physicsService.getNumColumns());
+  }
 
   gameSettings = this.fb.group({
     rows: 7,
-    columns: [8, [Validators.required, minMaxSizeValidator()]],
+    columns: [3, [Validators.required, minMaxSizeValidator()]],
   });
 
   ngOnInit() {
     const form = this.gameSettings;
     if (form) {
+      // set initial value
+      this.gameSettings.patchValue(
+        {
+          columns: this.physicsService.getNumColumns(),
+        },
+        { emitEvent: false }
+      );
+
+      form.valueChanges.subscribe((x: any) => {
+        console.log('form change');
+        console.log(x);
+        // this.physics.setNumColumns(x.columns);
+
+        this.notifyColumns.emit(x.columns);
+      });
+
       form.controls['columns'].valueChanges.subscribe((x: any) => {
         console.log('control value changed');
         console.log('change');

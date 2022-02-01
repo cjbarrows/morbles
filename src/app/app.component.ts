@@ -19,7 +19,7 @@ export class AppComponent {
   TIME_PER_FRAME = 33;
 
   constructor(
-    private physics: PhysicsService,
+    public physics: PhysicsService,
     private renderer: RendererService
   ) {
     this.renderer.createDrawlistFromPhysics(this.physics);
@@ -86,6 +86,12 @@ export class AppComponent {
     this.physics.addCell(4, 4, new Air());
     this.physics.addCell(5, 4, new Air());
     this.physics.addCell(6, 4, new Air());
+
+    this.physics.addCell(9, 1, new Air());
+  }
+
+  onNotifyColumns(numColumns: number) {
+    this.physics.setNumColumns(numColumns);
   }
 
   getRenderer(): RendererService {

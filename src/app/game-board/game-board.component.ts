@@ -11,11 +11,13 @@ import { DrawObject } from '../drawobject';
 })
 export class GameBoardComponent implements OnInit {
   @Input() drawList: Array<DrawObject> = [];
+  @Input() numColumns: number = 3;
+
   launchButtons: Array<string> = [];
   currentStyle = { left: '300px' };
 
   constructor(private physicsService: PhysicsService) {
-    this.launchButtons = new Array<string>(8);
+    this.launchButtons = new Array<string>(this.numColumns);
   }
 
   ngOnInit(): void {
@@ -23,6 +25,10 @@ export class GameBoardComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if ('numColumns' in changes) {
+      console.log('changing columns');
+      this.launchButtons = new Array<string>(this.numColumns);
+    }
     for (const propName in changes) {
       const chng = changes[propName];
       const cur = JSON.stringify(chng.currentValue);

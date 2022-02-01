@@ -1,0 +1,15 @@
+<form [formGroup]="mapForm">
+  <label for="mapName">Map Name: </label>
+  <input id="mapName" type="text" formControlName="mapName" />
+  <div formArrayName="aliases">
+    <h2>Aliases</h2>
+    <button (click)="addAlias()" type="button">+ Add another alias</button>
+
+    <div *ngFor="let alias of aliases.controls; let i = index">
+      <!-- The repeated alias template -->
+      <label for="alias-{{ i }}">Alias:</label>
+      <input id="alias-{{ i }}" type="text" [formControlName]="i" />
+    </div>
+  </div>
+</form>
+{{ mapForm.value | json }}

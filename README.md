@@ -4,10 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] UI controls to set width/height/spacing
-    [x] try out synchronous form validation
-    [ ] add Observable operators to intercept changes to a form control
-[ ] load from ASCII map in UI
+[ ] load from ASCII map in UI, into dynamic cell controls
 [ ] add Angular UI controls/interactions (for learning)
 [ ] add catch-and-flippers
 [ ] add target chute(s)
@@ -40,6 +37,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] line up launch buttons with gameboard chutes
 [-] ngModel for game settings?
     - ngModel is cool but sounds like the Form method is preferred
+[x] UI controls to set width/height/spacing
+    [x] try out synchronous form validation
+    [x] add Observable operators to intercept changes to a form control
 
 ## Notes
 

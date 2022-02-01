@@ -26,6 +26,17 @@ export class PhysicsService {
   private index = 0;
   private cells: Array<GameCellEntry> = [];
 
+  numColumns: number = 8;
+
+  getNumColumns() {
+    return this.numColumns;
+  }
+
+  setNumColumns(columns: number) {
+    this.numColumns = columns;
+    console.log(`physics now has ${this.numColumns} columns`);
+  }
+
   clearAll() {
     this.cells = [];
   }
