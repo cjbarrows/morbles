@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   Validators,
   ValidatorFn,
@@ -9,11 +9,6 @@ import {
 } from '@angular/forms';
 
 import { PhysicsService } from '../physics.service';
-
-interface GameSettings {
-  rows: number;
-  columns: number;
-}
 
 const valueInRange = (value: number) => {
   return value >= 3 && value <= 10;
@@ -37,53 +32,60 @@ export class ControlsComponent {
   @Output() notifyTimer = new EventEmitter<boolean>();
   @Output() notifyLoad = new EventEmitter();
   @Output() notifyExamine = new EventEmitter();
-  @Output() notifyColumns = new EventEmitter();
+  @Output() notifySize = new EventEmitter();
 
-  physics: PhysicsService;
-
-  columns: Array<number> = [];
+  gameSettings: FormGroup;
 
   constructor(private fb: FormBuilder, private physicsService: PhysicsService) {
-    this.physics = physicsService;
-    this.columns = Array<number>(physicsService.getNumColumns());
+    this.gameSettings = this.fb.group({
+      rows: [
+        this.physicsService.rows,
+        [Validators.required, minMaxSizeValidator()],
+      ],
+      columns: [
+        this.physicsService.getNumColumns(),
+        [Validators.required, minMaxSizeValidator()],
+      ],
+    });
   }
-
-  gameSettings = this.fb.group({
-    rows: 7,
-    columns: [3, [Validators.required, minMaxSizeValidator()]],
-  });
 
   ngOnInit() {
     const form = this.gameSettings;
     if (form) {
+      /*
       // set initial value
       this.gameSettings.patchValue(
         {
           columns: this.physicsService.getNumColumns(),
+          rows: this.physicsService.rows,
         },
         { emitEvent: false }
       );
+      */
 
       form.valueChanges.subscribe((x: any) => {
         console.log('form change');
         console.log(x);
         // this.physics.setNumColumns(x.columns);
 
-        this.notifyColumns.emit(x.columns);
+        this.notifySize.emit({ columns: x.columns, rows: x.rows });
       });
 
       form.controls['columns'].valueChanges.subscribe((x: any) => {
-        console.log('control value changed');
-        console.log('change');
-        console.log(x);
-        console.log('current');
-        console.log((this.gameSettings.get('columns') || {}).value);
-        console.log('or');
-        console.log(this.gameSettings.value);
         if (!valueInRange(x)) {
           this.gameSettings.patchValue(
             {
               columns: this.gameSettings.value.columns,
+            },
+            { emitEvent: false }
+          );
+        }
+      });
+      form.controls['rows'].valueChanges.subscribe((x: any) => {
+        if (!valueInRange(x)) {
+          this.gameSettings.patchValue(
+            {
+              rows: this.gameSettings.value.rows,
             },
             { emitEvent: false }
           );

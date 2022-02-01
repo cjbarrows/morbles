@@ -4,8 +4,8 @@
   (notifyTimer)="onNotifyTimer($event)"
   (notifyLoad)="onNotifyLoad()"
   (notifyExamine)="onNotifyExamine()"
-  (notifyColumns)="onNotifyColumns($event)"
+  (notifySize)="onNotifySize($event)"
   [buttonState]="true"
 ></app-controls>
-<app-map-editor></app-map-editor>
+<app-map-editor [numColumns]=physics.getNumColumns() [numRows]=physics.rows></app-map-editor>
 <app-game-board [drawList]="getRenderer().getDrawlist()" [numColumns]=physics.getNumColumns()></app-game-board>

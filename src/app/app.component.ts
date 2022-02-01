@@ -4,6 +4,7 @@ import { RendererService } from './renderer.service';
 import { PhysicsService } from './physics.service';
 import { Air } from './air';
 import { Bumper } from './bumper';
+import { Size } from './size';
 
 @Component({
   selector: 'app-root',
@@ -90,8 +91,9 @@ export class AppComponent {
     this.physics.addCell(9, 1, new Air());
   }
 
-  onNotifyColumns(numColumns: number) {
-    this.physics.setNumColumns(numColumns);
+  onNotifySize(size: Size) {
+    this.physics.setNumColumns(size.columns);
+    this.physics.rows = size.rows;
   }
 
   getRenderer(): RendererService {

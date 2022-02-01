@@ -27,6 +27,7 @@ export class PhysicsService {
   private cells: Array<GameCellEntry> = [];
 
   numColumns: number = 8;
+  numRows: number = 3;
 
   getNumColumns() {
     return this.numColumns;
@@ -35,6 +36,14 @@ export class PhysicsService {
   setNumColumns(columns: number) {
     this.numColumns = columns;
     console.log(`physics now has ${this.numColumns} columns`);
+  }
+
+  get rows(): number {
+    return this.numRows;
+  }
+
+  set rows(count: number) {
+    this.numRows = count;
   }
 
   clearAll() {

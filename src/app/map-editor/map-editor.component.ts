@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
+import { PhysicsService } from '../physics.service';
 
 @Component({
   selector: 'app-map-editor',
@@ -7,20 +8,52 @@ import { FormArray, FormBuilder } from '@angular/forms';
   styleUrls: ['./map-editor.component.css'],
 })
 export class MapEditorComponent implements OnInit {
-  mapForm = this.fb.group({
-    mapName: [''],
-    aliases: this.fb.array([this.fb.control('')]),
-  });
+  @Input() numColumns: number;
+  @Input() numRows: number;
 
-  constructor(private fb: FormBuilder) {}
+  public mapForm: any;
+
+  makeColumns = (): FormArray => {
+    return this.fb.array(
+      new Array<string>(this.numColumns).fill('').map(() => {
+        return this.fb.control('air');
+      })
+    );
+  };
+
+  makeRows = (): FormArray => {
+    return this.fb.array(
+      new Array<string>(this.numRows).fill('').map(() => {
+        return this.makeColumns();
+      })
+    );
+  };
+
+  constructor(private fb: FormBuilder, private physics: PhysicsService) {
+    this.numColumns = this.physics.getNumColumns();
+    this.numRows = this.physics.rows;
+
+    this.mapForm = this.fb.group({
+      mapName: [''],
+      rows: this.makeRows(),
+    });
+  }
 
   ngOnInit(): void {}
 
-  get aliases() {
-    return this.mapForm.get('aliases') as FormArray;
+  ngOnChanges() {
+    this.rows = this.makeRows();
   }
 
-  addAlias() {
-    this.aliases.push(this.fb.control(''));
+  get rows(): FormArray {
+    return this.mapForm.get('rows') as FormArray;
+  }
+
+  set rows(f: FormArray) {
+    this.mapForm.setControl('rows', this.makeRows());
+  }
+
+  getRow(n: number) {
+    return this.rows.at(n) as FormArray;
   }
 }
