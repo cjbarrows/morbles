@@ -7,9 +7,9 @@
     <div *ngFor="let row of rows.controls; let i = index">
       <div
         class="map-column-selects"
-        *ngFor="let col of getRow(i).controls; let j = index; let c = count"
+        *ngFor="let col of getRow(i).controls; let j = index"
       >
-        <select [formControlName]="i * c + j">
+        <select>
           <option value="air">Air</option>
           <option value="bumper-left">Bumper Left</option>
           <option value="bumper-right">Bumper Right</option>
