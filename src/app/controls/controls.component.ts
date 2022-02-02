@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 
 import { PhysicsService } from '../physics.service';
+import { Size } from '../size';
 
 const valueInRange = (value: number) => {
   return value >= 3 && value <= 10;
@@ -63,12 +64,8 @@ export class ControlsComponent {
       );
       */
 
-      form.valueChanges.subscribe((x: any) => {
-        console.log('form change');
-        console.log(x);
-        // this.physics.setNumColumns(x.columns);
-
-        this.notifySize.emit({ columns: x.columns, rows: x.rows });
+      form.valueChanges.subscribe((newSize: Size) => {
+        this.notifySize.emit({ columns: newSize.columns, rows: newSize.rows });
       });
 
       form.controls['columns'].valueChanges.subscribe((x: any) => {

@@ -1,6 +1,7 @@
 import Ball from './ball';
 import { BallTracker, GameCell } from './gamecell';
 import { PhysicsService } from './physics.service';
+import { BALL_SPEED } from './constants';
 
 export class Air extends GameCell {
   override addBall(ball: Ball, entryParams?: any) {
@@ -11,7 +12,7 @@ export class Air extends GameCell {
 
   override tick(physics: PhysicsService) {
     this.balls.forEach(({ ball, ticks }: BallTracker) => {
-      ball.y += 6;
+      ball.y += BALL_SPEED;
       ticks += 1;
 
       if (ball.y > 100) {

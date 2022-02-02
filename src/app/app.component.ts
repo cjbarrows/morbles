@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 import { RendererService } from './renderer.service';
 import { PhysicsService } from './physics.service';
-import { Air } from './air';
-import { Bumper } from './bumper';
+import { getCellFromName } from './cellFactory';
 import { Size } from './size';
+import { convertShorthandMap } from './utilities/convertShorthand';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +18,8 @@ export class AppComponent {
   running = false;
 
   TIME_PER_FRAME = 33;
+
+  startMap: Array<string> = [];
 
   constructor(
     public physics: PhysicsService,
@@ -65,7 +67,15 @@ export class AppComponent {
   }
 
   onNotifyLoad() {
+    const shorthandMap = 'AAAAAAAA' + 'AAARRAAA' + 'AARAALAA' + 'AAAAAAAA';
+    this.startMap = convertShorthandMap(shorthandMap);
+
+    /*
     this.physics.clearAll();
+
+    this.physics.addCell(3, 0, new Air());
+    this.physics.addCell(4, 0, new Air());
+    this.physics.addCell(5, 0, new Air());
 
     this.physics.addCell(3, 1, new Air());
     this.physics.addCell(4, 1, new Air());
@@ -88,12 +98,35 @@ export class AppComponent {
     this.physics.addCell(5, 4, new Air());
     this.physics.addCell(6, 4, new Air());
 
+    this.physics.addCell(9, 0, new Air());
     this.physics.addCell(9, 1, new Air());
+    */
   }
 
   onNotifySize(size: Size) {
     this.physics.setNumColumns(size.columns);
     this.physics.rows = size.rows;
+  }
+
+  onNotifyLoadMap(mapCells: Array<string>) {
+    this.physics.clearAll();
+
+    mapCells.forEach((name, index) => {
+      const cell = getCellFromName(name);
+
+      const x = index % this.physics.getNumColumns();
+      const y = (index - x) / this.physics.getNumColumns();
+      this.physics.addCell(x, y, cell);
+    });
+  }
+
+  onNotifyCellChange(cellChange: any) {
+    const x: number = cellChange.cellIndex % this.physics.getNumColumns();
+    const y: number = (cellChange.cellIndex - x) / this.physics.getNumColumns();
+
+    const cell = getCellFromName(cellChange.value);
+
+    this.physics.setCell(x, y, cell);
   }
 
   getRenderer(): RendererService {

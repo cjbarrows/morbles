@@ -44,8 +44,6 @@ export class GameBoardComponent implements OnInit {
   };
 
   onClick(drawObject: DrawObject) {
-    console.log(this.physicsService);
-
     if (drawObject.onClickHandler) {
       drawObject.onClickHandler();
     }

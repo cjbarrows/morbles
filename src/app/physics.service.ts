@@ -56,6 +56,12 @@ export class PhysicsService {
     this.cells.push({ x, y, cell, id: cell.id });
   }
 
+  setCell(x: number, y: number, cell: GameCell) {
+    const index = y * this.numColumns + x;
+    const oldId = this.cells[index].id;
+    this.cells[index] = { x, y, cell, id: oldId };
+  }
+
   getGameCell(x: number, y: number): GameCellEntry | undefined {
     return this.cells.find((cell) => cell.x === x && cell.y === y);
   }
@@ -74,7 +80,7 @@ export class PhysicsService {
     ball.id = this.index;
     this.index += 1;
 
-    const entry = this.getGameCell(xCell, 1);
+    const entry = this.getGameCell(xCell, 0);
     if (entry && entry.cell) {
       entry.cell.addBall(ball);
     }

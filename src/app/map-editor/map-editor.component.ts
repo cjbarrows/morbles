@@ -1,5 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
+import {
+  Component,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
+import { map, merge } from 'rxjs';
+
 import { PhysicsService } from '../physics.service';
 
 @Component({
@@ -10,21 +20,30 @@ import { PhysicsService } from '../physics.service';
 export class MapEditorComponent implements OnInit {
   @Input() numColumns: number;
   @Input() numRows: number;
+  @Input() startingMap: Array<string> = [];
+
+  @Output() notifyCellChange = new EventEmitter();
+  @Output() notifyLoadMap = new EventEmitter();
 
   public mapForm: any;
 
-  makeColumns = (): FormArray => {
+  makeColumns = (rowIndex: number): FormArray => {
     return this.fb.array(
-      new Array<string>(this.numColumns).fill('').map(() => {
-        return this.fb.control('air');
+      new Array<string>(this.numColumns).fill('').map((_, colIndex) => {
+        const index = rowIndex * this.numColumns + colIndex;
+        const cellType =
+          this.startingMap.length > index
+            ? this.startingMap[rowIndex * this.numColumns + colIndex]
+            : 'air';
+        return this.fb.control(cellType);
       })
     );
   };
 
   makeRows = (): FormArray => {
     return this.fb.array(
-      new Array<string>(this.numRows).fill('').map(() => {
-        return this.makeColumns();
+      new Array<string>(this.numRows).fill('').map((_, rowIndex) => {
+        return this.makeColumns(rowIndex);
       })
     );
   };
@@ -32,17 +51,51 @@ export class MapEditorComponent implements OnInit {
   constructor(private fb: FormBuilder, private physics: PhysicsService) {
     this.numColumns = this.physics.getNumColumns();
     this.numRows = this.physics.rows;
+  }
 
+  ngOnInit(): void {
     this.mapForm = this.fb.group({
       mapName: [''],
       rows: this.makeRows(),
     });
+
+    this.subscribeToCellChanges();
+
+    this.doNotifyLoadMap();
   }
 
-  ngOnInit(): void {}
+  getAllCells() {
+    return this.mapForm.controls['rows'].controls
+      .map((row: FormArray) => row.controls.map((cell) => cell))
+      .flat();
+  }
 
-  ngOnChanges() {
+  subscribeToCellChanges() {
+    if (this.mapForm) {
+      merge(
+        ...this.getAllCells().map((control: AbstractControl, index: number) =>
+          control.valueChanges.pipe(
+            map((value: any) => ({ cellIndex: index, value }))
+          )
+        )
+      ).subscribe((change: any) => {
+        this.notifyCellChange.emit(change);
+      });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if ('startingMap' in changes) {
+      const change: SimpleChange = changes['startingMap'];
+      const map: Array<string> = change.currentValue;
+      this.notifyLoadMap.emit(map);
+    }
+
+    // TODO: not sure if we need/are able to unsubscribe,
+    //  especially since we aren't getting a "subscription" back
+    //  for each control -- just one for all of them
     this.rows = this.makeRows();
+    this.subscribeToCellChanges();
   }
 
   get rows(): FormArray {
@@ -50,10 +103,16 @@ export class MapEditorComponent implements OnInit {
   }
 
   set rows(f: FormArray) {
-    this.mapForm.setControl('rows', this.makeRows());
+    if (this.mapForm) {
+      this.mapForm.setControl('rows', this.makeRows() || f);
+    }
   }
 
   getRow(n: number) {
     return this.rows.at(n) as FormArray;
+  }
+
+  doNotifyLoadMap() {
+    this.notifyLoadMap.emit(this.mapForm.value.rows.flat());
   }
 }

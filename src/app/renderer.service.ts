@@ -24,9 +24,9 @@ export class RendererService {
           id: boundary.id,
           type: 'boundary',
           x: boundary.x,
-          y: boundary.y,
+          y: boundary.y + 30,
           width: boundary.width,
-          height: boundary.height,
+          height: boundary.height * 0.8,
         });
       }),
       ...physics.getBumpers().map((bumper) => {

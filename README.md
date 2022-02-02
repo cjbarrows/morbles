@@ -4,9 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] load from ASCII map in UI, into dynamic cell controls
+[ ] easy adjustment of graphics scaling?
 [ ] add Angular UI controls/interactions (for learning)
-[ ] add catch-and-flippers
+[ ] add catch-and-flippers (ie, "gates")
 [ ] add target chute(s)
 
 ## Done
@@ -40,6 +40,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] UI controls to set width/height/spacing
     [x] try out synchronous form validation
     [x] add Observable operators to intercept changes to a form control
+[x] bumper left/right from UI
+[x] make sure launch buttons are not in the way of the "game"
+    - launch balls from -1?
+[x] load from ASCII map in UI, into dynamic cell controls
+[x] map should clear (or be truncated?) with dimension re-size
+[x] constant for ball speed
 
 ## Notes
 

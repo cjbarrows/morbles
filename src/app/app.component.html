@@ -7,5 +7,14 @@
   (notifySize)="onNotifySize($event)"
   [buttonState]="true"
 ></app-controls>
-<app-map-editor [numColumns]=physics.getNumColumns() [numRows]=physics.rows></app-map-editor>
-<app-game-board [drawList]="getRenderer().getDrawlist()" [numColumns]=physics.getNumColumns()></app-game-board>
+<app-map-editor
+  (notifyCellChange)="onNotifyCellChange($event)"
+  (notifyLoadMap)="onNotifyLoadMap($event)"
+  [numColumns]="physics.getNumColumns()"
+  [numRows]="physics.rows"
+  [startingMap]="startMap"
+></app-map-editor>
+<app-game-board
+  [drawList]="getRenderer().getDrawlist()"
+  [numColumns]="physics.getNumColumns()"
+></app-game-board>

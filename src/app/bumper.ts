@@ -2,6 +2,7 @@ import { BallTracker } from './gamecell';
 import { Air } from './air';
 import { PhysicsService } from './physics.service';
 import Point from './point';
+import { BALL_SPEED } from './constants';
 
 const curvePoints = [
   [0, 45],
@@ -25,6 +26,11 @@ const curvePoints = [
 export class Bumper extends Air {
   flipped: boolean = false;
 
+  constructor({ flipped }: { flipped?: boolean } = {}) {
+    super();
+    this.flipped = flipped ? true : false;
+  }
+
   override tick(physics: PhysicsService) {
     this.balls.forEach((entry: BallTracker) => {
       entry.ticks += 1;
@@ -36,7 +42,7 @@ export class Bumper extends Air {
         ball.x = curvePoints[ticks - 7][0] * (this.flipped ? -1 : 1);
         ball.y = curvePoints[ticks - 7][1];
       } else if (ticks < 7) {
-        ball.y += 6;
+        ball.y += BALL_SPEED;
       } else if (ticks === 23) {
         if (
           !physics.conditionalBallExit(this, ball, {
@@ -44,10 +50,10 @@ export class Bumper extends Air {
             y: 0,
           })
         ) {
-          ball.y += 6;
+          ball.y += BALL_SPEED;
         }
       } else {
-        ball.y += 6;
+        ball.y += BALL_SPEED;
       }
 
       if (ball.y > 100) {
