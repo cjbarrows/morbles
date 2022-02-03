@@ -52,6 +52,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] map should clear (or be truncated?) with dimension re-size
 [x] constant for ball speed
 [x] add catch-and-flippers (ie, "gates")
+[x] oops, the ball is supposed to go straight down off the gate
+    - and a second ball flips the gate back
 
 ## Notes
 

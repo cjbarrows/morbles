@@ -14,20 +14,14 @@ const catchAnim = [
   [27, 30],
 ];
 
-const switchAnim = [
+const bumpAnim = [
   [27, 30],
-  [35, 27],
-  [40, 25],
-  [46, 25],
-  [53, 25],
-  [59, 25],
-  [65, 27],
-  [72, 30],
-  [80, 26],
-  [86, 24],
-  [94, 25],
-  [100, 32],
+  [21, 27],
+  [16, 25],
+  [10, 25],
+  [5, 25],
 ];
+
 export class Gate extends Air {
   flipped: boolean = false;
   previousFlipped: boolean = false;
@@ -78,19 +72,22 @@ export class Gate extends Air {
             ball.y = catchAnim[ticks - 4][1];
           } else if (ticks === 11) {
             entry.atrest = true;
-          } else if (ticks > 11 && ticks < 22) {
+          } else if (ticks > 11 && ticks < 16) {
             ball.x = proxy
-              ? 100 - switchAnim[ticks - 11][0]
-              : switchAnim[ticks - 11][0];
-            ball.y = switchAnim[ticks - 11][1];
-          } else if (ticks >= 22) {
+              ? 100 - bumpAnim[ticks - 11][0]
+              : bumpAnim[ticks - 11][0];
+            ball.y = bumpAnim[ticks - 11][1];
+          } else if (ticks >= 16) {
             ball.y += BALL_SPEED;
+            if (ticks === 22) {
+              newFlip = !this.flipped;
+            }
           }
         }
 
         if (ball.y > 100) {
           physics.onBallExit(this, ball, {
-            x: ball.x < 100 && this.flipped ? 0 : 1,
+            x: ball.x >= 100 || proxy ? 1 : 0,
             y: 1,
           });
         }
