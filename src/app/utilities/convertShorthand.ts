@@ -7,6 +7,10 @@ export const convertShorthandMap = (shorthand: string): string[] => {
         return 'bumper-left';
       case 'R':
         return 'bumper-right';
+      case 'G':
+        return 'gate-left';
+      case 'H':
+        return 'gate-right';
       default:
         return 'air';
     }

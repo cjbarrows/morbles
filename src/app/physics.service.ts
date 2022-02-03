@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import Ball from './ball';
 import { GameCell } from './gamecell';
 import { Bumper } from './bumper';
+import { Gate } from './gate';
 import Point from './point';
 import { mapCells } from './physicsMapping';
 
@@ -127,20 +128,44 @@ export class PhysicsService {
   getBumpers(): Array<CellInfo> {
     let bumpers = [];
     for (let entry of this.cells) {
-      const bumper: Bumper = <Bumper>entry.cell;
-      const pos = entry.cell.getBumperPosition();
-      if (pos) {
-        bumpers.push({
-          id: entry.id,
-          x: entry.x * 100 + pos.x,
-          y: entry.y * 100 + pos.y,
-          flipped: bumper.flipped,
-          onClickHandler: () => bumper.onClick(),
-        });
+      if (entry.cell instanceof Bumper) {
+        const bumper: Bumper = <Bumper>entry.cell;
+        const pos = bumper.getBumperPosition();
+        if (pos) {
+          bumpers.push({
+            id: entry.id,
+            x: entry.x * 100 + pos.x,
+            y: entry.y * 100 + pos.y,
+            flipped: bumper.flipped,
+            onClickHandler: () => bumper.onClick(),
+          });
+        }
       }
     }
 
     return bumpers;
+  }
+
+  // TODO: rework this into something more TypeScript-y
+  getGates(): Array<CellInfo> {
+    let gates = [];
+    for (let entry of this.cells) {
+      if (entry.cell instanceof Gate) {
+        const gate: Gate = <Gate>entry.cell;
+        const pos = gate.getGatePosition();
+        if (pos) {
+          gates.push({
+            id: entry.id,
+            x: entry.x * 100 + pos.x,
+            y: entry.y * 100 + pos.y,
+            flipped: gate.flipped,
+            onClickHandler: () => gate.onClick(),
+          });
+        }
+      }
+    }
+
+    return gates;
   }
 
   onBallExit(cell: GameCell, ball: Ball, exitPoint: Point) {

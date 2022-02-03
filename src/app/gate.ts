@@ -23,7 +23,7 @@ const curvePoints = [
   [100, 45],
 ];
 
-export class Bumper extends Air {
+export class Gate extends Air {
   flipped: boolean = false;
 
   constructor({ flipped }: { flipped?: boolean } = {}) {
@@ -62,7 +62,7 @@ export class Bumper extends Air {
     });
   }
 
-  getBumperPosition(): Point | null {
+  getGatePosition(): Point | null {
     return { x: 50, y: 50 };
   }
 

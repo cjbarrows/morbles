@@ -43,6 +43,20 @@ export class RendererService {
           },
         });
       }),
+      ...physics.getGates().map((gate) => {
+        return new DrawObject({
+          id: gate.id,
+          type: 'gate',
+          x: gate.x,
+          y: gate.y,
+          flipped: gate.flipped,
+          onClickHandler: () => {
+            if (gate.onClickHandler) {
+              gate.onClickHandler();
+            }
+          },
+        });
+      }),
       ...physics.getBalls().map((ball) => {
         return new DrawObject({
           id: ball && ball.id ? ball.id : 0,

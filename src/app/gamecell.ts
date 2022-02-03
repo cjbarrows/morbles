@@ -27,10 +27,6 @@ export class GameCell {
     return this.balls.map(({ ball }) => ball);
   }
 
-  getBumperPosition(): Point | null {
-    return null;
-  }
-
   tick(physics: PhysicsService) {}
 
   getWidth() {

@@ -38,3 +38,19 @@
 .bumper.flipped {
   transform: scaleX(-1) translate(50px, 0px);
 }
+
+.gate {
+  position: absolute;
+  background-image: url("/assets/gate.png");
+  transform: translate(0px, -15px) rotate(25deg);
+  transform-origin: 48px 40px;
+  transition: transform .5s;
+  background-size: 100px 80px;
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+}
+
+.gate.flipped {
+  transform: translate(0px, -15px) rotate(-25deg);
+}
