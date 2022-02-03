@@ -67,7 +67,7 @@ export class AppComponent {
   }
 
   onNotifyLoad() {
-    const shorthandMap = 'AAAAAAAA' + 'AAARRAAA' + 'AARAALAA' + 'AAAAAAAA';
+    const shorthandMap = '        ' + '   RR   ' + '  R  L  ' + '        ';
     this.startMap = convertShorthandMap(shorthandMap);
 
     /*

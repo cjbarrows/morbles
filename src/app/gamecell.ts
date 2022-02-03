@@ -1,10 +1,12 @@
 import Ball from './ball';
 import { PhysicsService } from './physics.service';
-import Point from './point';
 
 export interface BallTracker {
   ball: Ball;
   ticks: number;
+  atrest?: boolean;
+  proxy?: boolean;
+  toCatcher?: boolean;
 }
 
 export class GameCell {
@@ -12,11 +14,15 @@ export class GameCell {
 
   balls: Array<BallTracker> = [];
 
-  addBall(ball: Ball, entryParams?: any) {
-    this.balls.push({
+  addBall(physics: PhysicsService, ball: Ball, entryParams?: any): BallTracker {
+    const ballTracker: BallTracker = {
       ball,
       ticks: entryParams && entryParams.ticks ? entryParams.ticks : 0,
-    });
+      atrest: false,
+      proxy: false,
+    };
+    this.balls.push(ballTracker);
+    return ballTracker;
   }
 
   removeBall(ball: Ball) {

@@ -4,10 +4,15 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] what to do about a ball already in a catcher with another ball on the way?
+[ ] BUG: expanding the # of rows did not add to the physics cells
+[ ] BUG: check proxy above-and-to-the-right of gate
+[ ] codify entryParams
 [ ] easy adjustment of graphics scaling?
 [ ] add Angular UI controls/interactions (for learning)
-[ ] add catch-and-flippers (ie, "gates")
 [ ] add target chute(s)
+[ ] add ball colors
+[ ] add target ball order
 
 ## Done
 
@@ -46,6 +51,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] load from ASCII map in UI, into dynamic cell controls
 [x] map should clear (or be truncated?) with dimension re-size
 [x] constant for ball speed
+[x] add catch-and-flippers (ie, "gates")
 
 ## Notes
 

@@ -1,7 +1,7 @@
 export const convertShorthandMap = (shorthand: string): string[] => {
   return shorthand.split('').map((letter) => {
     switch (letter) {
-      case 'A':
+      case ' ':
         return 'air';
       case 'L':
         return 'bumper-left';
@@ -11,6 +11,8 @@ export const convertShorthandMap = (shorthand: string): string[] => {
         return 'gate-left';
       case 'H':
         return 'gate-right';
+      case 'P':
+        return 'gate-proxy';
       default:
         return 'air';
     }

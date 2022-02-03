@@ -4,10 +4,15 @@ import { PhysicsService } from './physics.service';
 import { BALL_SPEED } from './constants';
 
 export class Air extends GameCell {
-  override addBall(ball: Ball, entryParams?: any) {
-    super.addBall(ball, entryParams);
+  override addBall(
+    physics: PhysicsService,
+    ball: Ball,
+    entryParams?: any
+  ): BallTracker {
+    const ballTracker = super.addBall(physics, ball, entryParams);
     ball.x = 0;
     ball.y = entryParams && entryParams.y ? entryParams.y : 0;
+    return ballTracker;
   }
 
   override tick(physics: PhysicsService) {

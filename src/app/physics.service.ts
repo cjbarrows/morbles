@@ -83,7 +83,7 @@ export class PhysicsService {
 
     const entry = this.getGameCell(xCell, 0);
     if (entry && entry.cell) {
-      entry.cell.addBall(ball);
+      entry.cell.addBall(this, ball);
     }
   }
 
@@ -176,7 +176,7 @@ export class PhysicsService {
       exitPoint
     );
     if (nextCell) {
-      nextCell.cell.addBall(ball);
+      nextCell.cell.addBall(this, ball);
     }
   }
 
@@ -188,7 +188,7 @@ export class PhysicsService {
     if (nextCell) {
       const adjustment = mapCells(cell, nextCell.cell);
       cell.removeBall(ball);
-      nextCell.cell.addBall(ball, adjustment);
+      nextCell.cell.addBall(this, ball, adjustment);
       return true;
     }
     return false;
