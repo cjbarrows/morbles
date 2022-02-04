@@ -31,7 +31,9 @@ export class PhysicsService {
   numColumns: number = 8;
   numRows: number = 3;
 
-  ballExitObservable: Subject<ColorName> = new Subject<ColorName>();
+  ballExitObservable: Subject<[ColorName, boolean]> = new Subject<
+    [ColorName, boolean]
+  >();
 
   getNumColumns() {
     return this.numColumns;
@@ -187,7 +189,10 @@ export class PhysicsService {
     if (nextCell) {
       nextCell.cell.addBall(this, ball);
     } else {
-      this.ballExitObservable.next(ball.color || 'blue');
+      this.ballExitObservable.next([
+        ball.color || 'blue',
+        exitPoint.x >= 0 && exitPoint.x < this.numColumns,
+      ]);
     }
   }
 

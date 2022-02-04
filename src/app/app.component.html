@@ -2,20 +2,24 @@
 
 <app-controls
   (notifyTimer)="onNotifyTimer($event)"
-  (notifyLoad)="onNotifyLoad()"
+  (notifyLoad)="onNotifyLoad($event)"
   (notifyExamine)="onNotifyExamine()"
   (notifySize)="onNotifySize($event)"
   [buttonState]="true"
+  [levels]="levels"
 ></app-controls>
 <app-map-editor
   (notifyCellChange)="onNotifyCellChange($event)"
   (notifyLoadMap)="onNotifyLoadMap($event)"
   (notifyBallOrderChange)="onNotifyBallOrderChange($event)"
+  [mapName]="mapName"
   [numColumns]="physics.getNumColumns()"
   [numRows]="physics.rows"
   [startingMap]="startMap"
+  [startingBalls]="startingBalls"
+  [endingBalls]="endingBalls"
 ></app-map-editor>
-<app-game-board
+<app-game-board #gameBoard
   [drawList]="getRenderer().getDrawlist()"
   [numColumns]="physics.getNumColumns()"
   [startingBalls]="startingBalls"

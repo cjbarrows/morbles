@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
+import { GameBoardComponent } from './game-board/game-board.component';
 import { RendererService } from './renderer.service';
 import { PhysicsService } from './physics.service';
 import { getCellFromName } from './cellFactory';
 import { Size } from './size';
 import { convertShorthandMap } from './utilities/convertShorthand';
 import { BallOrder } from './ballOrder';
+import { GameLevel } from './gameLevel';
+import { level1, level2, level3, level4 } from './levels';
 
 @Component({
   selector: 'app-root',
@@ -20,9 +23,15 @@ export class AppComponent {
 
   TIME_PER_FRAME = 33;
 
+  mapName: string = '';
   startMap: Array<string> = [];
   startingBalls: string = '';
   endingBalls: string = '';
+
+  levels: Array<GameLevel> = [level1, level2, level3, level4];
+
+  @ViewChild(GameBoardComponent)
+  private gameBoardComponent!: GameBoardComponent;
 
   constructor(
     public physics: PhysicsService,
@@ -69,41 +78,23 @@ export class AppComponent {
     console.log(this.renderer.getDrawlist());
   }
 
-  onNotifyLoad() {
-    const shorthandMap = '        ' + '   RR   ' + '  R  L  ' + '        ';
-    this.startMap = convertShorthandMap(shorthandMap);
+  onNotifyLoad(levelIndex: number) {
+    const { name, columns, rows, map, startingBalls, endingBalls } =
+      this.levels[levelIndex];
 
-    /*
+    this.gameBoardComponent.doResetLevel();
+
     this.physics.clearAll();
 
-    this.physics.addCell(3, 0, new Air());
-    this.physics.addCell(4, 0, new Air());
-    this.physics.addCell(5, 0, new Air());
+    this.mapName = name;
 
-    this.physics.addCell(3, 1, new Air());
-    this.physics.addCell(4, 1, new Air());
-    this.physics.addCell(5, 1, new Air());
+    this.physics.setNumColumns(columns);
+    this.physics.rows = rows;
 
-    this.physics.addCell(3, 2, new Bumper());
-    this.physics.addCell(4, 2, new Bumper());
-    this.physics.addCell(5, 2, new Air());
-    // this.physics.addCell(5, 2, new Bumper());
+    this.startMap = convertShorthandMap(map);
 
-    this.physics.addCell(2, 3, new Air());
-    this.physics.addCell(3, 3, new Air());
-    this.physics.addCell(4, 3, new Air());
-    this.physics.addCell(5, 3, new Air());
-    this.physics.addCell(6, 3, new Air());
-
-    this.physics.addCell(2, 4, new Air());
-    this.physics.addCell(3, 4, new Air());
-    this.physics.addCell(4, 4, new Air());
-    this.physics.addCell(5, 4, new Air());
-    this.physics.addCell(6, 4, new Air());
-
-    this.physics.addCell(9, 0, new Air());
-    this.physics.addCell(9, 1, new Air());
-    */
+    this.startingBalls = startingBalls;
+    this.endingBalls = endingBalls;
   }
 
   onNotifySize(size: Size) {

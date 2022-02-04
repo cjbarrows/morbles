@@ -4,13 +4,19 @@
   <label for="columns">Columns: </label>
   <input id="columns" type="number" formControlName="columns" />
 </form>
-<div>
-  <button type="button" class="btn btn-secondary" (click)="onLoadLevel()">
-    Load
-  </button>
-  <button type="button" class="btn btn-info" (click)="onExamine()">
-    Examine
-  </button>
+<label for="levels">Levels: </label>
+<div id="levels" class="btn-toolbar" role="toolbar">
+  <div class="btn-group" role="group">
+    <button
+      *ngFor="let level of this.levels; let i = index"
+      button
+      type="button"
+      class="btn btn-secondary"
+      (click)="onLoadLevel(i)"
+    >
+      {{ i + 1 }}
+    </button>
+  </div>
 </div>
 <div class="custom-control custom-switch">
   <input

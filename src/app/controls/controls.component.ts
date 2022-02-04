@@ -10,6 +10,7 @@ import {
 
 import { PhysicsService } from '../physics.service';
 import { Size } from '../size';
+import { GameLevel } from '../gameLevel';
 
 const valueInRange = (value: number) => {
   return value >= 3 && value <= 10;
@@ -30,9 +31,10 @@ export function minMaxSizeValidator(): ValidatorFn {
 })
 export class ControlsComponent {
   @Input() buttonState = false;
+  @Input() levels: Array<GameLevel> = [];
 
   @Output() notifyTimer = new EventEmitter<boolean>();
-  @Output() notifyLoad = new EventEmitter();
+  @Output() notifyLoad: EventEmitter<number> = new EventEmitter<number>();
   @Output() notifyExamine = new EventEmitter();
   @Output() notifySize = new EventEmitter();
 
@@ -96,8 +98,8 @@ export class ControlsComponent {
     this.notifyTimer.emit(timerState);
   }
 
-  onLoadLevel() {
-    this.notifyLoad.emit();
+  onLoadLevel(index: number) {
+    this.notifyLoad.emit(index);
   }
 
   onExamine() {

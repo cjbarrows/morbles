@@ -23,7 +23,7 @@ export class GameBoardComponent implements OnInit {
 
   ballNumber: number = 0;
 
-  gameState: GAME_STATE = 'unstarted';
+  private _gameState: GAME_STATE = 'unstarted';
 
   ballsAtFinish: string = '';
 
@@ -31,6 +31,22 @@ export class GameBoardComponent implements OnInit {
     this.launchButtons = new Array<string>(this.numColumns);
 
     this.physicsService.ballExitObservable.subscribe(this.onBallExit);
+  }
+
+  doResetLevel() {
+    console.log('resetting level');
+
+    this.ballNumber = 0;
+    this.gameState = 'unstarted';
+    this.ballsAtFinish = '';
+  }
+
+  public set gameState(newGameState: GAME_STATE) {
+    this._gameState = newGameState;
+  }
+
+  public get gameState(): GAME_STATE {
+    return this._gameState;
   }
 
   ngOnInit(): void {
@@ -42,6 +58,8 @@ export class GameBoardComponent implements OnInit {
       console.log('changing columns');
       this.launchButtons = new Array<string>(this.numColumns);
     }
+
+    /*
     for (const propName in changes) {
       const chng = changes[propName];
       const cur = JSON.stringify(chng.currentValue);
@@ -50,14 +68,20 @@ export class GameBoardComponent implements OnInit {
         `${propName}: currentValue = ${cur}, previousValue = ${prev}`
       );
     }
+    */
   }
 
   launch = (chuteNumber: number) => {
-    if (this.ballNumber < this.startingBalls.length) {
+    if (
+      !((this.gameState as string) in ['failed', 'success']) &&
+      this.ballNumber < this.startingBalls.length
+    ) {
       const colorCode = this.startingBalls[this.ballNumber];
       this.physicsService.launchBall(chuteNumber, getColorName(colorCode));
 
       this.ballNumber += 1;
+
+      this.gameState = 'in progress';
     }
   };
 
@@ -71,27 +95,28 @@ export class GameBoardComponent implements OnInit {
     return drawObject.id;
   }
 
-  onBallExit = (colorName: ColorName) => {
-    console.log(`ball exiting: ${colorName}`);
-
+  onBallExit = ([colorName, inBounds]: [ColorName, boolean]) => {
     const colorCode = getColorCode(colorName);
-    this.ballsAtFinish = this.ballsAtFinish.concat(colorCode);
 
-    if (this.ballsAtFinish === this.endingBalls) {
-      console.log('you win!');
-    } else if (
-      this.ballsAtFinish.length === this.endingBalls.length &&
-      this.ballsAtFinish !== this.endingBalls
-    ) {
-      console.log('you lose!');
-    } else {
-      const anyOutOfOrder = this.ballsAtFinish
-        .split('')
-        .some((colorCode: string, index) => {
-          return colorCode !== this.endingBalls[index];
-        });
-      if (anyOutOfOrder) {
-        console.log('you lose!');
+    if (inBounds) {
+      this.ballsAtFinish = this.ballsAtFinish.concat(colorCode);
+
+      if (this.ballsAtFinish === this.endingBalls) {
+        this.gameState = 'success';
+      } else if (
+        this.ballsAtFinish.length === this.endingBalls.length &&
+        this.ballsAtFinish !== this.endingBalls
+      ) {
+        this.gameState = 'failed';
+      } else {
+        const anyOutOfOrder = this.ballsAtFinish
+          .split('')
+          .some((colorCode: string, index) => {
+            return colorCode !== this.endingBalls[index];
+          });
+        if (anyOutOfOrder) {
+          this.gameState = 'failed';
+        }
       }
     }
   };

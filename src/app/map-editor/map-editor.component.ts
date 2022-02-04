@@ -11,7 +11,6 @@ import {
   AbstractControl,
   FormArray,
   FormBuilder,
-  Validators,
   ValidatorFn,
   ValidationErrors,
 } from '@angular/forms';
@@ -36,9 +35,12 @@ function colorCodeValidator(): ValidatorFn {
   styleUrls: ['./map-editor.component.css'],
 })
 export class MapEditorComponent implements OnInit {
+  @Input() mapName: String = '';
   @Input() numColumns: number;
   @Input() numRows: number;
   @Input() startingMap: Array<string> = [];
+  @Input() startingBalls: string = '';
+  @Input() endingBalls: string = '';
 
   @Output() notifyCellChange = new EventEmitter();
   @Output() notifyLoadMap = new EventEmitter();
@@ -74,7 +76,7 @@ export class MapEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.mapForm = this.fb.group({
-      mapName: [''],
+      mapName: '',
       startingBalls: ['', [colorCodeValidator()]],
       endingBalls: ['', [colorCodeValidator()]],
       rows: this.makeRows(),
@@ -140,6 +142,23 @@ export class MapEditorComponent implements OnInit {
       const change: SimpleChange = changes['startingMap'];
       const map: Array<string> = change.currentValue;
       this.notifyLoadMap.emit(map);
+    }
+
+    if (this.mapForm) {
+      if ('mapName' in changes) {
+        const change: SimpleChange = changes['mapName'];
+        this.mapForm.patchValue({ mapName: change.currentValue });
+      }
+
+      if ('startingBalls' in changes) {
+        const change: SimpleChange = changes['startingBalls'];
+        this.mapForm.patchValue({ startingBalls: change.currentValue });
+      }
+
+      if ('endingBalls' in changes) {
+        const change: SimpleChange = changes['endingBalls'];
+        this.mapForm.patchValue({ endingBalls: change.currentValue });
+      }
     }
 
     // TODO: not sure if we need/are able to unsubscribe,

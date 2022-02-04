@@ -4,15 +4,17 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
+[ ] auto-load levels from /index
+[ ] auto-load levels from db
+[ ] refactor map-editor.component.ts ngOnChanges
 [ ] also add 'gate handoff' when 'gate' is added to map
-[ ] retry button
 [ ] animation for ball drop
 [ ] animation for ball exit
 [ ] move colorName to constants
 [ ] reconcile app / gameboard responsibility (start/stop, time, ball order, etc)
-[ ] get game states working
 [ ] put # rows/cols on mapeditor?
-    - or move controls component to mapeditor?
+    - or move controls component to map editor?
 [ ] refactor gate "curves" into keyframe animations
 [ ] BUG: expanding the # of rows did not add to the physics cells
 [ ] BUG: check proxy above-and-to-the-right of gate
@@ -68,6 +70,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] add target ball order from text field
 [-] add ramp so one ball off the gate can "pass" another
     - the gate seems to work for this
+[x] buttons to load levels
+[-] retry button
+    - just re-click level-loading button
+[x] make any ball that goes out-of-bounds *not* count
+    - doesn't fail the level instantly in case we *want* some balls to go out of bounds
+[x] get game states working
 
 ## Notes
 
