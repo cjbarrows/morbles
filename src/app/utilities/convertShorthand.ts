@@ -11,8 +11,8 @@ export const convertShorthandMap = (shorthand: string): string[] => {
         return 'gate-left';
       case 'H':
         return 'gate-right';
-      case 'P':
-        return 'gate-proxy';
+      case 'F':
+        return 'gate-handoff';
       default:
         return 'air';
     }

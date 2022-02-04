@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
-// import { GameBoard } from '../gameboard';
 import { PhysicsService } from '../physics.service';
 import { DrawObject } from '../drawobject';
+import { getColorName } from '../utilities/getColorName';
 
+type GAME_STATE = 'unstarted' | 'in progress' | 'success' | 'failed';
 @Component({
   selector: 'app-game-board',
   templateUrl: './game-board.component.html',
@@ -12,9 +13,15 @@ import { DrawObject } from '../drawobject';
 export class GameBoardComponent implements OnInit {
   @Input() drawList: Array<DrawObject> = [];
   @Input() numColumns: number = 3;
+  @Input() startingBalls: string = '';
+  @Input() endingBalls: string = '';
 
   launchButtons: Array<string> = [];
   currentStyle = { left: '300px' };
+
+  ballNumber: number = 0;
+
+  gameState: GAME_STATE = 'unstarted';
 
   constructor(private physicsService: PhysicsService) {
     this.launchButtons = new Array<string>(this.numColumns);
@@ -40,7 +47,12 @@ export class GameBoardComponent implements OnInit {
   }
 
   launch = (chuteNumber: number) => {
-    this.physicsService.launchBall(chuteNumber);
+    if (this.ballNumber < this.startingBalls.length) {
+      const colorCode = this.startingBalls[this.ballNumber];
+      this.physicsService.launchBall(chuteNumber, getColorName(colorCode));
+
+      this.ballNumber += 1;
+    }
   };
 
   onClick(drawObject: DrawObject) {

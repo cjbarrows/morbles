@@ -22,6 +22,7 @@ export function minMaxSizeValidator(): ValidatorFn {
       : null;
   };
 }
+
 @Component({
   selector: 'app-controls',
   templateUrl: './controls.component.html',

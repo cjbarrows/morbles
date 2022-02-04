@@ -5,6 +5,7 @@ import { PhysicsService } from './physics.service';
 import { getCellFromName } from './cellFactory';
 import { Size } from './size';
 import { convertShorthandMap } from './utilities/convertShorthand';
+import { BallOrder } from './ballOrder';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,8 @@ export class AppComponent {
   TIME_PER_FRAME = 33;
 
   startMap: Array<string> = [];
+  startingBalls: string = '';
+  endingBalls: string = '';
 
   constructor(
     public physics: PhysicsService,
@@ -127,6 +130,15 @@ export class AppComponent {
     const cell = getCellFromName(cellChange.value);
 
     this.physics.setCell(x, y, cell);
+  }
+
+  onNotifyBallOrderChange(changeToOrder: BallOrder) {
+    if (changeToOrder.startingBalls) {
+      this.startingBalls = changeToOrder.startingBalls;
+    }
+    if (changeToOrder.endingBalls) {
+      this.endingBalls = changeToOrder.endingBalls;
+    }
   }
 
   getRenderer(): RendererService {

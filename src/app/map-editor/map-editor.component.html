@@ -1,7 +1,17 @@
 <p>Incoming: {{ numRows }} x {{ numColumns }}</p>
 <form [formGroup]="mapForm">
-  <label for="mapName">Map Name: </label>
-  <input id="mapName" type="text" formControlName="mapName" />
+  <div class="input-group">
+    <label for="mapName">Map Name: </label>
+    <input id="mapName" type="text" formControlName="mapName" />
+  </div>
+  <div class="input-group">
+    <label for="startingBalls">Starting Balls: </label>
+    <input id="startingBalls" type="text" formControlName="startingBalls" />
+  </div>
+  <div class="input-group">
+    <label for="endingBalls">Ending Balls: </label>
+    <input id="endingBalls" type="text" formControlName="endingBalls" />
+  </div>
   <div formArrayName="rows">
     <h2>Map</h2>
     <div *ngFor="let row of rows.controls; let i = index">
@@ -16,7 +26,7 @@
           <option value="bumper-right">Bumper Right</option>
           <option value="gate-left">Gate Left</option>
           <option value="gate-right">Gate Right</option>
-          <option value="gate-proxy">Gate Proxy</option>
+          <option value="gate-handoff">Gate Handoff</option>
         </select>
       </div>
     </div>

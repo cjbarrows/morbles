@@ -1,13 +1,19 @@
-<div class="game-board">
-  <app-launch-button
-    *ngFor="let button of this.launchButtons; let i = index"
-    [index]="i"
-    [launchFunction]="this.launch"
-  ></app-launch-button>
-  <div
-    [class]="drawObject.className"
-    [style]="drawObject.styleObject"
-    (click)="onClick(drawObject)"
-    *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
-  ></div>
+<div class="game-interface">
+  <div>State: {{gameState}}</div>
+  <div>Time:</div>
+  <div>Balls: {{startingBalls}}</div>
+  <div class="game-board">
+    <app-launch-button
+      *ngFor="let button of this.launchButtons; let i = index"
+      [index]="i"
+      [launchFunction]="this.launch"
+    ></app-launch-button>
+    <div
+      [class]="drawObject.className"
+      [style]="drawObject.styleObject"
+      (click)="onClick(drawObject)"
+      *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
+    ></div>
+  </div>
+  <div>Finish: <br><span>Needs to be: {{endingBalls}}</span></div>
 </div>

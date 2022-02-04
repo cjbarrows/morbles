@@ -7,10 +7,28 @@ import {
   SimpleChange,
   SimpleChanges,
 } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  Validators,
+  ValidatorFn,
+  ValidationErrors,
+} from '@angular/forms';
 import { map, merge } from 'rxjs';
 
 import { PhysicsService } from '../physics.service';
+import { BallOrder } from '../ballOrder';
+
+function colorCodeValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const colorCodeRe: RegExp = /[RGBP]+$/;
+
+    return !colorCodeRe.test(control.value)
+      ? { notColorCode: { value: control.value } }
+      : null;
+  };
+}
 
 @Component({
   selector: 'app-map-editor',
@@ -24,6 +42,7 @@ export class MapEditorComponent implements OnInit {
 
   @Output() notifyCellChange = new EventEmitter();
   @Output() notifyLoadMap = new EventEmitter();
+  @Output() notifyBallOrderChange = new EventEmitter<BallOrder>();
 
   public mapForm: any;
 
@@ -56,8 +75,40 @@ export class MapEditorComponent implements OnInit {
   ngOnInit(): void {
     this.mapForm = this.fb.group({
       mapName: [''],
+      startingBalls: ['', [colorCodeValidator()]],
+      endingBalls: ['', [colorCodeValidator()]],
       rows: this.makeRows(),
     });
+
+    this.mapForm.controls['startingBalls'].valueChanges.subscribe(
+      (newOrder: string) => {
+        const newOrderInUpperCase = newOrder.toUpperCase();
+        this.mapForm.patchValue(
+          {
+            startingBalls: newOrderInUpperCase,
+          },
+          {
+            emitEvent: false,
+          }
+        );
+        this.notifyBallOrderChange.emit({ startingBalls: newOrderInUpperCase });
+      }
+    );
+
+    this.mapForm.controls['endingBalls'].valueChanges.subscribe(
+      (newOrder: string) => {
+        const newOrderInUpperCase = newOrder.toUpperCase();
+        this.mapForm.patchValue(
+          {
+            endingBalls: newOrderInUpperCase,
+          },
+          {
+            emitEvent: false,
+          }
+        );
+        this.notifyBallOrderChange.emit({ endingBalls: newOrderInUpperCase });
+      }
+    );
 
     this.subscribeToCellChanges();
 

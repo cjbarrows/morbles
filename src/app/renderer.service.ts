@@ -61,6 +61,7 @@ export class RendererService {
         return new DrawObject({
           id: ball && ball.id ? ball.id : 0,
           type: 'ball',
+          color: ball.color,
           x: ball.x,
           y: ball.y,
         });

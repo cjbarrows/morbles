@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import Ball from './ball';
+import Ball, { ColorName } from './ball';
 import { GameCell } from './gamecell';
 import { Bumper } from './bumper';
 import { Gate } from './gate';
@@ -76,8 +76,9 @@ export class PhysicsService {
     return undefined;
   }
 
-  launchBall(xCell: number) {
+  launchBall(xCell: number, colorName: ColorName) {
     const ball = new Ball();
+    ball.color = colorName;
     ball.id = this.index;
     this.index += 1;
 
@@ -117,7 +118,12 @@ export class PhysicsService {
     const arrayOfBalls = this.cells.map(({ x, y, cell }) => {
       const cellBalls = cell.getBalls();
       return cellBalls.map((ball) => {
-        return new Ball(x * 100 + ball.x, y * 100 + ball.y, ball.id);
+        return new Ball(
+          x * 100 + ball.x,
+          y * 100 + ball.y,
+          ball.id,
+          ball.color
+        );
       });
     });
 

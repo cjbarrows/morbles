@@ -25,6 +25,18 @@
   height: 50px;
 }
 
+.ball.green {
+  filter: hue-rotate(250deg);
+}
+
+.ball.red {
+  filter: hue-rotate(100deg);
+}
+
+.ball.purple {
+  filter: hue-rotate(50deg);
+}
+
 .bumper {
   position: absolute;
   background-image: url("/assets/bumper-right.png");

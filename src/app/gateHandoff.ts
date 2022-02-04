@@ -2,7 +2,7 @@ import Ball from './ball';
 import { BallTracker, GameCell } from './gamecell';
 import { PhysicsService } from './physics.service';
 
-export class GateProxy extends GameCell {
+export class GateHandoff extends GameCell {
   override addBall(
     physics: PhysicsService,
     ball: Ball,

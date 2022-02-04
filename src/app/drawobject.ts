@@ -9,6 +9,7 @@ interface DrawObjectOptions {
   height?: number;
   onClickHandler?: Function;
   flipped?: boolean;
+  color?: string;
 }
 
 interface DrawObjectStyles {
@@ -35,7 +36,7 @@ export class DrawObject {
     };
     this.className = `${properties.type}${
       properties.flipped ? ' flipped' : ''
-    }`;
+    }${properties.color ? ` ${properties.color}` : ''}`;
     this.onClickHandler = properties.onClickHandler;
   }
 

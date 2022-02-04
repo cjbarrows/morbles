@@ -22,6 +22,17 @@ const bumpAnim = [
   [5, 25],
 ];
 
+const secondBallAnim = [
+  [20, -12],
+  [30, -15],
+  [48, -12],
+  [59, -8],
+  [71, 3],
+  [83, 12],
+  [92, 20],
+  [100, 28],
+];
+
 export class Gate extends Air {
   flipped: boolean = false;
   previousFlipped: boolean = false;
@@ -45,21 +56,53 @@ export class Gate extends Air {
     return ballTracker;
   }
 
+  otherBallInCatcher(firstBall: Ball) {
+    const otherBall = this.balls.find((entry: BallTracker) => {
+      const { atRest, ball } = entry;
+      return ball !== firstBall && atRest;
+    });
+
+    return otherBall;
+  }
+
+  headingToCatcher(ball: Ball) {
+    return (ball.x < 100 && this.flipped) || (ball.x >= 100 && !this.flipped);
+  }
+
   override tick(physics: PhysicsService) {
     let newFlip = this.flipped;
 
     this.balls.forEach((entry: BallTracker) => {
-      const { ball, ticks, atrest, proxy } = entry;
+      const { ball, ticks, atRest, proxy } = entry;
 
-      if (!atrest) {
+      if (!atRest) {
         entry.ticks += 1;
 
-        if (ticks === 4) {
-          const toCatcher =
-            (ball.x < 100 && this.flipped) || (ball.x >= 100 && !this.flipped);
-          entry.toCatcher = toCatcher;
+        if (
+          entry.ticks === 1 &&
+          this.headingToCatcher(ball) &&
+          this.otherBallInCatcher(ball)
+        ) {
+          entry.secondBall = true;
         }
-        if (!entry.toCatcher) {
+
+        if (ticks === 4) {
+          entry.toCatcher = this.headingToCatcher(ball);
+        }
+
+        if (entry.secondBall) {
+          if (ticks < 8) {
+            ball.x = proxy
+              ? 100 - secondBallAnim[ticks][0]
+              : secondBallAnim[ticks][0];
+            ball.y = secondBallAnim[ticks][1];
+          } else {
+            ball.y += BALL_SPEED;
+            if (ticks === 13) {
+              newFlip = !this.flipped;
+            }
+          }
+        } else if (!entry.toCatcher) {
           ball.y += BALL_SPEED;
           if (ticks === 9) {
             newFlip = !this.flipped;
@@ -71,7 +114,7 @@ export class Gate extends Air {
               : catchAnim[ticks - 4][0];
             ball.y = catchAnim[ticks - 4][1];
           } else if (ticks === 11) {
-            entry.atrest = true;
+            entry.atRest = true;
           } else if (ticks > 11 && ticks < 16) {
             ball.x = proxy
               ? 100 - bumpAnim[ticks - 11][0]
@@ -87,13 +130,13 @@ export class Gate extends Air {
 
         if (ball.y > 100) {
           physics.onBallExit(this, ball, {
-            x: ball.x >= 100 || proxy ? 1 : 0,
+            x: ball.x >= 90 ? 1 : 0,
             y: 1,
           });
         }
       } else {
         if (this.flipped !== this.previousFlipped) {
-          entry.atrest = false;
+          entry.atRest = false;
         }
       }
     });

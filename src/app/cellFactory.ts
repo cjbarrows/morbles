@@ -2,7 +2,7 @@ import { GameCell } from './gamecell';
 import { Air } from './air';
 import { Bumper } from './bumper';
 import { Gate } from './gate';
-import { GateProxy } from './gateproxy';
+import { GateHandoff } from './gateHandoff';
 
 export const getCellFromName = (name: string): GameCell => {
   let cell: GameCell;
@@ -23,8 +23,8 @@ export const getCellFromName = (name: string): GameCell => {
     case 'gate-right':
       cell = new Gate();
       break;
-    case 'gate-proxy':
-      cell = new GateProxy();
+    case 'gate-handoff':
+      cell = new GateHandoff();
       break;
     default:
       cell = new Air();

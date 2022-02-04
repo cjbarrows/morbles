@@ -4,9 +4,10 @@ import { PhysicsService } from './physics.service';
 export interface BallTracker {
   ball: Ball;
   ticks: number;
-  atrest?: boolean;
+  atRest?: boolean;
   proxy?: boolean;
   toCatcher?: boolean;
+  secondBall?: boolean;
 }
 
 export class GameCell {
@@ -18,7 +19,7 @@ export class GameCell {
     const ballTracker: BallTracker = {
       ball,
       ticks: entryParams && entryParams.ticks ? entryParams.ticks : 0,
-      atrest: false,
+      atRest: false,
       proxy: false,
     };
     this.balls.push(ballTracker);
