@@ -2,7 +2,9 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
 import { PhysicsService } from '../physics.service';
 import { DrawObject } from '../drawobject';
+import { ColorName } from '../ball';
 import { getColorName } from '../utilities/getColorName';
+import { getColorCode } from '../utilities/getColorCode';
 
 type GAME_STATE = 'unstarted' | 'in progress' | 'success' | 'failed';
 @Component({
@@ -23,8 +25,12 @@ export class GameBoardComponent implements OnInit {
 
   gameState: GAME_STATE = 'unstarted';
 
+  ballsAtFinish: string = '';
+
   constructor(private physicsService: PhysicsService) {
     this.launchButtons = new Array<string>(this.numColumns);
+
+    this.physicsService.ballExitObservable.subscribe(this.onBallExit);
   }
 
   ngOnInit(): void {
@@ -64,4 +70,29 @@ export class GameBoardComponent implements OnInit {
   getDrawObjectId(index: number, drawObject: DrawObject): number {
     return drawObject.id;
   }
+
+  onBallExit = (colorName: ColorName) => {
+    console.log(`ball exiting: ${colorName}`);
+
+    const colorCode = getColorCode(colorName);
+    this.ballsAtFinish = this.ballsAtFinish.concat(colorCode);
+
+    if (this.ballsAtFinish === this.endingBalls) {
+      console.log('you win!');
+    } else if (
+      this.ballsAtFinish.length === this.endingBalls.length &&
+      this.ballsAtFinish !== this.endingBalls
+    ) {
+      console.log('you lose!');
+    } else {
+      const anyOutOfOrder = this.ballsAtFinish
+        .split('')
+        .some((colorCode: string, index) => {
+          return colorCode !== this.endingBalls[index];
+        });
+      if (anyOutOfOrder) {
+        console.log('you lose!');
+      }
+    }
+  };
 }

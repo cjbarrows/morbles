@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import Ball, { ColorName } from './ball';
 import { GameCell } from './gamecell';
@@ -29,6 +30,8 @@ export class PhysicsService {
 
   numColumns: number = 8;
   numRows: number = 3;
+
+  ballExitObservable: Subject<ColorName> = new Subject<ColorName>();
 
   getNumColumns() {
     return this.numColumns;
@@ -183,6 +186,8 @@ export class PhysicsService {
     );
     if (nextCell) {
       nextCell.cell.addBall(this, ball);
+    } else {
+      this.ballExitObservable.next(ball.color || 'blue');
     }
   }
 

@@ -4,11 +4,16 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] also add 'gate handoff' when 'gate' is added to map
+[ ] retry button
+[ ] animation for ball drop
+[ ] animation for ball exit
+[ ] move colorName to constants
+[ ] reconcile app / gameboard responsibility (start/stop, time, ball order, etc)
+[ ] get game states working
 [ ] put # rows/cols on mapeditor?
     - or move controls component to mapeditor?
 [ ] refactor gate "curves" into keyframe animations
-[ ] add ramp so one ball off the gate can "pass" another
-[ ] add target ball order from text field
 [ ] BUG: expanding the # of rows did not add to the physics cells
 [ ] BUG: check proxy above-and-to-the-right of gate
 [ ] codify entryParams
@@ -60,6 +65,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] what to do about a ball already in a catcher with another ball on the way?
     [x] second ball should hop over and trigger the gate
 [x] add incoming ball stream from text field
+[x] add target ball order from text field
+[-] add ramp so one ball off the gate can "pass" another
+    - the gate seems to work for this
 
 ## Notes
 
