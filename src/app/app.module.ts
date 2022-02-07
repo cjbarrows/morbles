@@ -9,6 +9,7 @@ import { GameBoardComponent } from './game-board/game-board.component';
 import { ControlsComponent } from './controls/controls.component';
 import { LaunchButtonsComponent } from './launch-button/launch-button.component';
 import { MapEditorComponent } from './map-editor/map-editor.component';
+import { BallExitComponent } from './ball-exit/ball-exit.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { MapEditorComponent } from './map-editor/map-editor.component';
     ControlsComponent,
     LaunchButtonsComponent,
     MapEditorComponent,
+    BallExitComponent,
   ],
   imports: [BrowserModule, NgbModule, FormsModule, ReactiveFormsModule],
   providers: [],

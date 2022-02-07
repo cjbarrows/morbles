@@ -7,7 +7,7 @@
   (notifySize)="onNotifySize($event)"
   [runButtonState]="true"
   [levels]="levels"
-  [playerStatus]="getPlayerStatus()"
+  [playerStatus]="currentPlayerStatus"
 ></app-controls>
 <app-map-editor
   (notifyCellChange)="onNotifyCellChange($event)"

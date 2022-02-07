@@ -1,7 +1,7 @@
 <div class="game-interface">
-  <div>State: {{gameState}}</div>
+  <div>State: {{ gameState }}</div>
   <div>Time:</div>
-  <div>Balls: {{startingBalls.substr(ballNumber)}}</div>
+  <div>Balls: {{ startingBalls.substr(ballNumber) }}</div>
   <div class="game-board">
     <app-launch-button
       *ngFor="let button of this.launchButtons; let i = index"
@@ -14,6 +14,9 @@
       (click)="onClick(drawObject)"
       *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
     ></div>
+    <app-ball-exit></app-ball-exit>
   </div>
-  <div>Finish: {{ballsAtFinish}}<br><span>Needs to be: {{endingBalls}}</span></div>
+  <div>
+    Finish: {{ ballsAtFinish }}<br /><span>Needs to be: {{ endingBalls }}</span>
+  </div>
 </div>

@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   Validators,
@@ -11,6 +17,7 @@ import {
 import { PhysicsService } from '../physics.service';
 import { Size } from '../size';
 import { GameLevel } from '../gameLevel';
+import { LevelStatus } from '../levelStatus';
 
 const valueInRange = (value: number) => {
   return value >= 3 && value <= 10;
@@ -24,11 +31,6 @@ export function minMaxSizeValidator(): ValidatorFn {
   };
 }
 
-interface PlayerLevelStatus {
-  attempted: boolean;
-  completed: boolean;
-}
-
 @Component({
   selector: 'app-controls',
   templateUrl: './controls.component.html',
@@ -37,7 +39,7 @@ interface PlayerLevelStatus {
 export class ControlsComponent {
   @Input() runButtonState = false;
   @Input() levels: Array<GameLevel> = [];
-  @Input() playerStatus: Array<PlayerLevelStatus> = [];
+  @Input() playerStatus: Array<LevelStatus> = [];
 
   @Output() notifyTimer = new EventEmitter<boolean>();
   @Output() notifyLoad: EventEmitter<number> = new EventEmitter<number>();
@@ -100,6 +102,11 @@ export class ControlsComponent {
     }
   }
 
+  ngOnChanges(s: SimpleChanges) {
+    console.log('changes');
+    console.log(s);
+  }
+
   setTimerState(timerState: boolean) {
     this.notifyTimer.emit(timerState);
   }
@@ -124,7 +131,7 @@ export class ControlsComponent {
   getClassNameForButton(i: number) {
     if (this.playerStatus[i].completed) {
       return 'btn btn-success';
-    } else if (this.playerStatus[i].attempted) {
+    } else if (this.playerStatus[i].attempts > 0) {
       return 'btn btn-danger';
     }
     return 'btn btn-primary';

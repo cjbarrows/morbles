@@ -11,6 +11,7 @@ import { GameLevel } from './gameLevel';
 import { level1, level2, level3, level4 } from './levels';
 import { Player } from './player';
 import { GAME_STATE } from './constants';
+import { LevelStatus } from './levelStatus';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,8 @@ export class AppComponent {
 
   player: Player;
 
+  currentPlayerStatus: Array<LevelStatus> = [];
+
   constructor(
     public physics: PhysicsService,
     private renderer: RendererService
@@ -46,21 +49,23 @@ export class AppComponent {
 
     this.player = new Player('Test Player');
 
+    this.refreshPlayerStatus();
+
     this.startClock();
   }
 
-  getPlayerStatus(): any {
+  refreshPlayerStatus() {
+    this.currentPlayerStatus = this.getPlayerStatus();
+  }
+
+  getPlayerStatus(): Array<LevelStatus> {
     const playerLevelsCompleted = this.levels.map((level) => {
-      return {
-        completed: this.player.levelStatuses.some(
-          (levelStatus) =>
-            levelStatus.levelId === level.id && levelStatus.completed
-        ),
-        attempted: this.player.levelStatuses.some(
-          (levelStatus) =>
-            levelStatus.levelId === level.id && levelStatus.attempts > 0
-        ),
-      };
+      const lookupLevel = this.player.levelStatuses.find(
+        (playerLevel) => playerLevel.levelId === level.id
+      );
+      return lookupLevel
+        ? { ...lookupLevel }
+        : { levelId: level.id, attempts: 0, completed: false };
     });
 
     return playerLevelsCompleted;
@@ -183,6 +188,8 @@ export class AppComponent {
     } else if (state === 'failed') {
       level.attempts += 1;
     }
+
+    this.refreshPlayerStatus();
   }
 
   getRenderer(): RendererService {
