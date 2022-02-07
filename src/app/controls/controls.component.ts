@@ -24,14 +24,20 @@ export function minMaxSizeValidator(): ValidatorFn {
   };
 }
 
+interface PlayerLevelStatus {
+  attempted: boolean;
+  completed: boolean;
+}
+
 @Component({
   selector: 'app-controls',
   templateUrl: './controls.component.html',
   styleUrls: ['./controls.component.css'],
 })
 export class ControlsComponent {
-  @Input() buttonState = false;
+  @Input() runButtonState = false;
   @Input() levels: Array<GameLevel> = [];
+  @Input() playerStatus: Array<PlayerLevelStatus> = [];
 
   @Output() notifyTimer = new EventEmitter<boolean>();
   @Output() notifyLoad: EventEmitter<number> = new EventEmitter<number>();
@@ -113,5 +119,14 @@ export class ControlsComponent {
 
   updateRows() {
     this.gameSettings.patchValue({ rows: 2 });
+  }
+
+  getClassNameForButton(i: number) {
+    if (this.playerStatus[i].completed) {
+      return 'btn btn-success';
+    } else if (this.playerStatus[i].attempted) {
+      return 'btn btn-danger';
+    }
+    return 'btn btn-primary';
   }
 }

@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 import { PhysicsService } from '../physics.service';
 import { DrawObject } from '../drawobject';
@@ -6,17 +13,20 @@ import { ColorName } from '../ball';
 import { getColorName } from '../utilities/getColorName';
 import { getColorCode } from '../utilities/getColorCode';
 
-type GAME_STATE = 'unstarted' | 'in progress' | 'success' | 'failed';
+import { GAME_STATE } from '../constants';
+
 @Component({
   selector: 'app-game-board',
   templateUrl: './game-board.component.html',
   styleUrls: ['./game-board.component.css'],
 })
-export class GameBoardComponent implements OnInit {
+export class GameBoardComponent {
   @Input() drawList: Array<DrawObject> = [];
   @Input() numColumns: number = 3;
   @Input() startingBalls: string = '';
   @Input() endingBalls: string = '';
+
+  @Output() notifyGameState = new EventEmitter();
 
   launchButtons: Array<string> = [];
   currentStyle = { left: '300px' };
@@ -43,14 +53,12 @@ export class GameBoardComponent implements OnInit {
 
   public set gameState(newGameState: GAME_STATE) {
     this._gameState = newGameState;
+
+    this.notifyGameState.emit(newGameState);
   }
 
   public get gameState(): GAME_STATE {
     return this._gameState;
-  }
-
-  ngOnInit(): void {
-    console.log('OnInit');
   }
 
   ngOnChanges(changes: SimpleChanges): void {

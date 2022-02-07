@@ -4,13 +4,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] show level hint at start
+[ ] animation for ball drop
+[ ] animation for ball exit
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
 [ ] auto-load levels from /index
 [ ] auto-load levels from db
 [ ] refactor map-editor.component.ts ngOnChanges
 [ ] also add 'gate handoff' when 'gate' is added to map
-[ ] animation for ball drop
-[ ] animation for ball exit
 [ ] move colorName to constants
 [ ] reconcile app / gameboard responsibility (start/stop, time, ball order, etc)
 [ ] put # rows/cols on mapeditor?
@@ -76,6 +77,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] make any ball that goes out-of-bounds *not* count
     - doesn't fail the level instantly in case we *want* some balls to go out of bounds
 [x] get game states working
+[x] player object (to track level completion, etc)
+[x] button status for level completion
 
 ## Notes
 

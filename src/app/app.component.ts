@@ -9,6 +9,8 @@ import { convertShorthandMap } from './utilities/convertShorthand';
 import { BallOrder } from './ballOrder';
 import { GameLevel } from './gameLevel';
 import { level1, level2, level3, level4 } from './levels';
+import { Player } from './player';
+import { GAME_STATE } from './constants';
 
 @Component({
   selector: 'app-root',
@@ -27,11 +29,14 @@ export class AppComponent {
   startMap: Array<string> = [];
   startingBalls: string = '';
   endingBalls: string = '';
+  currentLevelId?: number = undefined;
 
   levels: Array<GameLevel> = [level1, level2, level3, level4];
 
   @ViewChild(GameBoardComponent)
   private gameBoardComponent!: GameBoardComponent;
+
+  player: Player;
 
   constructor(
     public physics: PhysicsService,
@@ -39,7 +44,26 @@ export class AppComponent {
   ) {
     this.renderer.createDrawlistFromPhysics(this.physics);
 
+    this.player = new Player('Test Player');
+
     this.startClock();
+  }
+
+  getPlayerStatus(): any {
+    const playerLevelsCompleted = this.levels.map((level) => {
+      return {
+        completed: this.player.levelStatuses.some(
+          (levelStatus) =>
+            levelStatus.levelId === level.id && levelStatus.completed
+        ),
+        attempted: this.player.levelStatuses.some(
+          (levelStatus) =>
+            levelStatus.levelId === level.id && levelStatus.attempts > 0
+        ),
+      };
+    });
+
+    return playerLevelsCompleted;
   }
 
   startClock() {
@@ -79,7 +103,7 @@ export class AppComponent {
   }
 
   onNotifyLoad(levelIndex: number) {
-    const { name, columns, rows, map, startingBalls, endingBalls } =
+    const { id, name, columns, rows, map, startingBalls, endingBalls } =
       this.levels[levelIndex];
 
     this.gameBoardComponent.doResetLevel();
@@ -95,6 +119,8 @@ export class AppComponent {
 
     this.startingBalls = startingBalls;
     this.endingBalls = endingBalls;
+
+    this.currentLevelId = id;
   }
 
   onNotifySize(size: Size) {
@@ -129,6 +155,33 @@ export class AppComponent {
     }
     if (changeToOrder.endingBalls) {
       this.endingBalls = changeToOrder.endingBalls;
+    }
+  }
+
+  onNotifyGameState(state: GAME_STATE) {
+    if (this.currentLevelId) {
+      if (state === 'success') {
+        this.updatePlayerStatus(this.currentLevelId, state);
+      } else if (state === 'failed') {
+        this.updatePlayerStatus(this.currentLevelId, state);
+      }
+    }
+  }
+
+  updatePlayerStatus(levelId: number, state: GAME_STATE) {
+    let level = this.player.levelStatuses.find(
+      (status) => status.levelId === levelId
+    );
+
+    if (!level) {
+      level = { levelId, attempts: 0, completed: false };
+      this.player.levelStatuses.push(level);
+    }
+    if (state === 'success') {
+      level.attempts += 1;
+      level.completed = true;
+    } else if (state === 'failed') {
+      level.attempts += 1;
     }
   }
 

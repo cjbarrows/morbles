@@ -5,8 +5,9 @@
   (notifyLoad)="onNotifyLoad($event)"
   (notifyExamine)="onNotifyExamine()"
   (notifySize)="onNotifySize($event)"
-  [buttonState]="true"
+  [runButtonState]="true"
   [levels]="levels"
+  [playerStatus]="getPlayerStatus()"
 ></app-controls>
 <app-map-editor
   (notifyCellChange)="onNotifyCellChange($event)"
@@ -24,4 +25,5 @@
   [numColumns]="physics.getNumColumns()"
   [startingBalls]="startingBalls"
   [endingBalls]="endingBalls"
+  (notifyGameState)="onNotifyGameState($event)"
 ></app-game-board>

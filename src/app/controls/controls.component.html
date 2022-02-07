@@ -11,7 +11,7 @@
       *ngFor="let level of this.levels; let i = index"
       button
       type="button"
-      class="btn btn-secondary"
+      [ngClass]="getClassNameForButton(i)"
       (click)="onLoadLevel(i)"
     >
       {{ i + 1 }}
@@ -23,8 +23,9 @@
     type="checkbox"
     class="custom-control-input"
     id="runningSwitch"
-    [(ngModel)]="buttonState"
+    [(ngModel)]="runButtonState"
     (ngModelChange)="setTimerState($event)"
   />
   <label class="custom-control-label" for="runningSwitch">Running</label>
 </div>
+{{playerStatus | json}}
