@@ -12,6 +12,7 @@ import { DrawObject } from '../drawobject';
 import { ColorName } from '../ball';
 import { getColorName } from '../utilities/getColorName';
 import { getColorCode } from '../utilities/getColorCode';
+import { ExitBallInfo } from '../exitBallInfo';
 
 import { GAME_STATE } from '../constants';
 
@@ -36,6 +37,7 @@ export class GameBoardComponent {
   private _gameState: GAME_STATE = 'unstarted';
 
   ballsAtFinish: string = '';
+  exitBallInfo: Array<ExitBallInfo> = [];
 
   constructor(private physicsService: PhysicsService) {
     this.launchButtons = new Array<string>(this.numColumns);
@@ -49,6 +51,7 @@ export class GameBoardComponent {
     this.ballNumber = 0;
     this.gameState = 'unstarted';
     this.ballsAtFinish = '';
+    this.exitBallInfo = [];
   }
 
   public set gameState(newGameState: GAME_STATE) {
@@ -103,10 +106,11 @@ export class GameBoardComponent {
     return drawObject.id;
   }
 
-  onBallExit = ([colorName, inBounds]: [ColorName, boolean]) => {
+  onBallExit = ([colorName, x, inBounds]: [ColorName, number, boolean]) => {
     const colorCode = getColorCode(colorName);
 
     if (inBounds) {
+      this.exitBallInfo = this.exitBallInfo.concat({ colorCode, x, inBounds });
       this.ballsAtFinish = this.ballsAtFinish.concat(colorCode);
 
       if (this.ballsAtFinish === this.endingBalls) {

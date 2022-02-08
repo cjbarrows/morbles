@@ -7,6 +7,7 @@ import { Bumper } from './bumper';
 import { Gate } from './gate';
 import Point from './point';
 import { mapCells } from './physicsMapping';
+import { CELL_WIDTH } from './constants';
 
 interface GameCellEntry {
   id: number;
@@ -31,8 +32,8 @@ export class PhysicsService {
   numColumns: number = 8;
   numRows: number = 3;
 
-  ballExitObservable: Subject<[ColorName, boolean]> = new Subject<
-    [ColorName, boolean]
+  ballExitObservable: Subject<[ColorName, number, boolean]> = new Subject<
+    [ColorName, number, boolean]
   >();
 
   getNumColumns() {
@@ -70,6 +71,14 @@ export class PhysicsService {
 
   getGameCell(x: number, y: number): GameCellEntry | undefined {
     return this.cells.find((cell) => cell.x === x && cell.y === y);
+  }
+
+  getCellPosition(cell: GameCell): { x: number; y: number } | undefined {
+    const entry = this.cells.find((aCell) => aCell.cell === cell);
+    if (entry) {
+      return { x: entry.x, y: entry.y };
+    }
+    return undefined;
   }
 
   findNextCell(cell: GameCell, offset: Point): GameCellEntry | undefined {
@@ -111,8 +120,8 @@ export class PhysicsService {
       return {
         id: entry.id,
         type: 'boundary',
-        x: entry.x * 100,
-        y: entry.y * 100,
+        x: entry.x * CELL_WIDTH,
+        y: entry.y * CELL_WIDTH,
         width: entry.cell.getWidth(),
         height: entry.cell.getHeight(),
       };
@@ -124,8 +133,8 @@ export class PhysicsService {
       const cellBalls = cell.getBalls();
       return cellBalls.map((ball) => {
         return new Ball(
-          x * 100 + ball.x,
-          y * 100 + ball.y,
+          x * CELL_WIDTH + ball.x,
+          y * CELL_WIDTH + ball.y,
           ball.id,
           ball.color
         );
@@ -145,8 +154,8 @@ export class PhysicsService {
         if (pos) {
           bumpers.push({
             id: entry.id,
-            x: entry.x * 100 + pos.x,
-            y: entry.y * 100 + pos.y,
+            x: entry.x * CELL_WIDTH + pos.x,
+            y: entry.y * CELL_WIDTH + pos.y,
             flipped: bumper.flipped,
             onClickHandler: () => bumper.onClick(),
           });
@@ -167,8 +176,8 @@ export class PhysicsService {
         if (pos) {
           gates.push({
             id: entry.id,
-            x: entry.x * 100 + pos.x,
-            y: entry.y * 100 + pos.y,
+            x: entry.x * CELL_WIDTH + pos.x,
+            y: entry.y * CELL_WIDTH + pos.y,
             flipped: gate.flipped,
             onClickHandler: () => gate.onClick(),
           });
@@ -189,8 +198,10 @@ export class PhysicsService {
     if (nextCell) {
       nextCell.cell.addBall(this, ball);
     } else {
+      const pos = this.getCellPosition(cell);
       this.ballExitObservable.next([
         ball.color || 'blue',
+        pos ? (pos.x + 0.5) * CELL_WIDTH : 0,
         exitPoint.x >= 0 && exitPoint.x < this.numColumns,
       ]);
     }

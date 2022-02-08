@@ -1,13 +1,10 @@
 <div class="ball-exit">
   <div
-    class="ball"
+    [ngClass]="getBallClass(i)"
     [@dropIn]="{
-      value: isNewBall ? 'new' : 'old',
-      params: { leftStart: '140px', leftStop: '1600px' }
+      value: 'new',
+      params: { leftStart: b.chuteX + 'px', leftStop: b.endX + 'px' }
     }"
-    (@dropIn.start)="onAnimationEvent($event)"
-    (@dropIn.done)="onAnimationEvent($event)"
-    *ngFor="let b of balls.split('')"
+    *ngFor="let b of ballInfo; let i = index"
   ></div>
-  <button (click)="setNewBall()">Click Me</button>
 </div>

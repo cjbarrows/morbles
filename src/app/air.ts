@@ -1,7 +1,7 @@
 import Ball from './ball';
 import { BallTracker, GameCell } from './gamecell';
 import { PhysicsService } from './physics.service';
-import { BALL_SPEED } from './constants';
+import { BALL_SPEED, CELL_WIDTH } from './constants';
 
 export class Air extends GameCell {
   override addBall(
@@ -28,7 +28,7 @@ export class Air extends GameCell {
 
   override getBalls(): Array<Ball> {
     return this.balls.map(({ ball }) => ({
-      x: ball.x + 50,
+      x: ball.x + CELL_WIDTH * 0.5,
       y: ball.y,
       id: ball.id,
       color: ball.color,

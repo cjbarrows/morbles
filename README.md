@@ -4,10 +4,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: red inbounds, green out-of-bounds: didn't fail level
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start
 [ ] animation for ball drop
-[ ] animation for ball exit
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
 [ ] auto-load levels from /index
 [ ] auto-load levels from db
@@ -81,6 +81,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] get game states working
 [x] player object (to track level completion, etc)
 [x] button status for level completion
+[x] animation for ball exit
 
 ## Notes
 
