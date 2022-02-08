@@ -112,23 +112,23 @@ export class GameBoardComponent {
     if (inBounds) {
       this.exitBallInfo = this.exitBallInfo.concat({ colorCode, x, inBounds });
       this.ballsAtFinish = this.ballsAtFinish.concat(colorCode);
+    }
 
-      if (this.ballsAtFinish === this.endingBalls) {
-        this.gameState = 'success';
-      } else if (
-        this.ballsAtFinish.length === this.endingBalls.length &&
-        this.ballsAtFinish !== this.endingBalls
-      ) {
+    if (this.ballsAtFinish === this.endingBalls) {
+      this.gameState = 'success';
+    } else if (
+      this.ballsAtFinish.length === this.endingBalls.length &&
+      this.ballsAtFinish !== this.endingBalls
+    ) {
+      this.gameState = 'failed';
+    } else {
+      const anyOutOfOrder = this.ballsAtFinish
+        .split('')
+        .some((colorCode: string, index) => {
+          return colorCode !== this.endingBalls[index];
+        });
+      if (anyOutOfOrder || this.ballNumber === this.endingBalls.length) {
         this.gameState = 'failed';
-      } else {
-        const anyOutOfOrder = this.ballsAtFinish
-          .split('')
-          .some((colorCode: string, index) => {
-            return colorCode !== this.endingBalls[index];
-          });
-        if (anyOutOfOrder) {
-          this.gameState = 'failed';
-        }
       }
     }
   };

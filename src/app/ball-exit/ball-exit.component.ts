@@ -30,17 +30,20 @@ export class BallExitComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if ('exitBalls' in changes) {
-      const updatedBalls = changes['exitBalls'].currentValue;
-      if (!updatedBalls.length) {
-        this.ballInfo = [];
-      } else {
-        const newBall: ExitBallInfo = updatedBalls.at(-1);
-        this.ballInfo.push({
-          chuteX: newBall.x,
-          endX: 1600 - updatedBalls.length * 60,
-          color: getColorName(newBall.colorCode),
-        });
-      }
+      this.refreshExitBallsForAnimation();
+    }
+  }
+
+  refreshExitBallsForAnimation() {
+    if (!this.exitBalls.length) {
+      this.ballInfo = [];
+    } else {
+      const newBall: ExitBallInfo = this.exitBalls[this.exitBalls.length - 1];
+      this.ballInfo.push({
+        chuteX: newBall.x,
+        endX: 1600 - this.exitBalls.length * 60,
+        color: getColorName(newBall.colorCode),
+      });
     }
   }
 
