@@ -1,12 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-  AnimationEvent,
-} from '@angular/animations';
+import { AnimationEvent } from '@angular/animations';
 
 import { dropInTrigger } from './dropIn.trigger.animation';
 
@@ -20,9 +13,6 @@ export class BallExitComponent implements OnInit {
   @Input() balls: string = '';
 
   isNewBall: boolean = false;
-  currentStyles = {
-    left: '75px',
-  };
 
   constructor() {}
 

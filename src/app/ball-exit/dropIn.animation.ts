@@ -1,12 +1,4 @@
-import {
-  animation,
-  style,
-  animate,
-  keyframes,
-  trigger,
-  transition,
-  useAnimation,
-} from '@angular/animations';
+import { animation, style, animate, keyframes } from '@angular/animations';
 
 export const dropInAnimation = animation([
   style({

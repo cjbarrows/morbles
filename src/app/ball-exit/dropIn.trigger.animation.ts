@@ -1,8 +1,6 @@
 import {
-  animation,
   state,
   style,
-  animate,
   trigger,
   transition,
   useAnimation,
@@ -20,31 +18,5 @@ export const dropInTrigger = trigger('dropIn', [
     }),
     { params: { leftStop: '900px' } }
   ),
-  state(
-    'old',
-    style({
-      top: '10px',
-    })
-  ),
-  transition(
-    '* => new',
-    [
-      useAnimation(
-        dropInAnimation /*, {
-        params: { leftStart: '75px', leftStop: '900px' },
-      }*/
-      ),
-    ]
-    // [animate('1s')]
-  ),
-  transition('old => new', [
-    useAnimation(dropInAnimation, {
-      params: { leftStart: '75px', leftStop: '900px' },
-    }),
-  ]),
-  transition('new => old', [
-    useAnimation(dropInAnimation, {
-      params: { leftStart: '75px', leftStop: '900px' },
-    }),
-  ]),
+  transition('* => new', [useAnimation(dropInAnimation)]),
 ]);

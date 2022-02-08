@@ -5,7 +5,6 @@
       value: isNewBall ? 'new' : 'old',
       params: { leftStart: '140px', leftStop: '1600px' }
     }"
-    [ngStyle]="currentStyles"
     (@dropIn.start)="onAnimationEvent($event)"
     (@dropIn.done)="onAnimationEvent($event)"
     *ngFor="let b of balls.split('')"
