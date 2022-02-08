@@ -4,22 +4,24 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start
 [ ] animation for ball drop
 [ ] animation for ball exit
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
 [ ] auto-load levels from /index
 [ ] auto-load levels from db
-[ ] refactor map-editor.component.ts ngOnChanges
+[ ] REFACTOR: map-editor.component.ts ngOnChanges
 [ ] also add 'gate handoff' when 'gate' is added to map
-[ ] move colorName to constants
-[ ] reconcile app / gameboard responsibility (start/stop, time, ball order, etc)
-[ ] put # rows/cols on mapeditor?
+[ ] REFACTOR: move colorName to constants
+[ ] REFACTOR: reconcile app / gameboard responsibility (start/stop, time, ball order, etc)
+[ ] REFACTOR: put # rows/cols on mapeditor?
     - or move controls component to map editor?
-[ ] refactor gate "curves" into keyframe animations
+[ ] REFACTOR: gate "curves" into keyframe animations
+    - maybe use Angular animations?
 [ ] BUG: expanding the # of rows did not add to the physics cells
 [ ] BUG: check proxy above-and-to-the-right of gate
-[ ] codify entryParams
+[ ] REFACTOR: codify entryParams
 [ ] easy adjustment of graphics scaling?
 [ ] add Angular UI controls/interactions (for learning)
 

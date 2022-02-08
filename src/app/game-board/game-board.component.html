@@ -14,7 +14,7 @@
       (click)="onClick(drawObject)"
       *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
     ></div>
-    <app-ball-exit></app-ball-exit>
+    <app-ball-exit [balls]="ballsAtFinish"></app-ball-exit>
   </div>
   <div>
     Finish: {{ ballsAtFinish }}<br /><span>Needs to be: {{ endingBalls }}</span>

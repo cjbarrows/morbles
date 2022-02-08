@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { GameBoardComponent } from './game-board/game-board.component';
@@ -20,7 +21,13 @@ import { BallExitComponent } from './ball-exit/ball-exit.component';
     MapEditorComponent,
     BallExitComponent,
   ],
-  imports: [BrowserModule, NgbModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
