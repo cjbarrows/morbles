@@ -1,7 +1,7 @@
 <div class="ball-exit">
   <div
     [ngClass]="getBallClass(i)"
-    [@dropIn]="{
+    [@dropOut]="{
       value: 'new',
       params: { leftStart: b.chuteX + 'px', leftStop: b.endX + 'px' }
     }"

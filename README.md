@@ -4,7 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] animation for ball drop
+[ ] make sure 2 balls can't be in the entry chute at once (or fix it so they can...)
+[ ] show target balls in transparent colors at finish
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
@@ -82,6 +83,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] button status for level completion
 [x] animation for ball exit
 [x] BUG: red inbounds, green out-of-bounds: didn't fail level
+[x] animation for ball drop
 
 ## Notes
 

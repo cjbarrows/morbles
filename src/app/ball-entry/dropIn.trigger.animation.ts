@@ -10,12 +10,12 @@ import { dropInAnimation } from './dropIn.animation';
 
 export const dropInTrigger = trigger('dropIn', [
   state(
-    'new',
+    'drop',
     style({
-      top: '30px',
+      top: '25px',
       left: '{{ leftStop }}',
     }),
     { params: { leftStop: '900px' } }
   ),
-  transition('* => new', [useAnimation(dropInAnimation)]),
+  transition('* => drop', [useAnimation(dropInAnimation)]),
 ]);

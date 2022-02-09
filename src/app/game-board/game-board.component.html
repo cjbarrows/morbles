@@ -3,17 +3,20 @@
   <div>Time:</div>
   <div>Balls: {{ startingBalls.substr(ballNumber) }}</div>
   <div class="game-board">
-    <app-launch-button
-      *ngFor="let button of this.launchButtons; let i = index"
-      [index]="i"
-      [launchFunction]="this.launch"
-    ></app-launch-button>
-    <div
-      [class]="drawObject.className"
-      [style]="drawObject.styleObject"
-      (click)="onClick(drawObject)"
-      *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
-    ></div>
+    <app-ball-entry [entryBalls]="startingBalls.substr(ballNumber)" (notifyDoLaunch)="doLaunch($event)"></app-ball-entry>
+    <div class="game-board-proper">
+      <app-launch-button
+        *ngFor="let button of this.launchButtons; let i = index"
+        [index]="i"
+        [launchFunction]="this.launch"
+      ></app-launch-button>
+      <div
+        [class]="drawObject.className"
+        [style]="drawObject.styleObject"
+        (click)="onClick(drawObject)"
+        *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
+      ></div>
+    </div>
     <app-ball-exit [exitBalls]="exitBallInfo"></app-ball-exit>
   </div>
   <div>

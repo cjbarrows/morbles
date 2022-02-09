@@ -102,11 +102,6 @@ export class ControlsComponent {
     }
   }
 
-  ngOnChanges(s: SimpleChanges) {
-    console.log('changes');
-    console.log(s);
-  }
-
   setTimerState(timerState: boolean) {
     this.notifyTimer.emit(timerState);
   }

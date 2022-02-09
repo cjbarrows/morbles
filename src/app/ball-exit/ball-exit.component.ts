@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
-import { dropInTrigger } from './dropIn.trigger.animation';
+import { dropOutTrigger } from './dropOut.trigger.animation';
 import { getColorName } from '../utilities/getColorName';
 import { ExitBallInfo } from '../exitBallInfo';
 
@@ -14,7 +14,7 @@ interface BallInfo {
   selector: 'app-ball-exit',
   templateUrl: './ball-exit.component.html',
   styleUrls: ['./ball-exit.component.css'],
-  animations: [dropInTrigger],
+  animations: [dropOutTrigger],
 })
 export class BallExitComponent implements OnInit {
   @Input() exitBalls: Array<ExitBallInfo> = [];

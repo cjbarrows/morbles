@@ -2,10 +2,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { ViewChild } from '@angular/core';
 
 import { PhysicsService } from '../physics.service';
 import { DrawObject } from '../drawobject';
@@ -13,6 +13,7 @@ import { ColorName } from '../ball';
 import { getColorName } from '../utilities/getColorName';
 import { getColorCode } from '../utilities/getColorCode';
 import { ExitBallInfo } from '../exitBallInfo';
+import { BallEntryComponent } from '../ball-entry/ball-entry.component';
 
 import { GAME_STATE } from '../constants';
 
@@ -28,6 +29,9 @@ export class GameBoardComponent {
   @Input() endingBalls: string = '';
 
   @Output() notifyGameState = new EventEmitter();
+
+  @ViewChild(BallEntryComponent)
+  private ballEntryComponent!: BallEntryComponent;
 
   launchButtons: Array<string> = [];
   currentStyle = { left: '300px' };
@@ -87,13 +91,17 @@ export class GameBoardComponent {
       !((this.gameState as string) in ['failed', 'success']) &&
       this.ballNumber < this.startingBalls.length
     ) {
-      const colorCode = this.startingBalls[this.ballNumber];
-      this.physicsService.launchBall(chuteNumber, getColorName(colorCode));
-
-      this.ballNumber += 1;
-
-      this.gameState = 'in progress';
+      this.ballEntryComponent.launchNextBall(chuteNumber);
     }
+  };
+
+  doLaunch = (chuteNumber: number) => {
+    const colorCode = this.startingBalls[this.ballNumber];
+    this.physicsService.launchBall(chuteNumber, getColorName(colorCode));
+
+    this.ballNumber += 1;
+
+    this.gameState = 'in progress';
   };
 
   onClick(drawObject: DrawObject) {

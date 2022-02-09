@@ -1,0 +1,16 @@
+<div class="ball-entry">
+  <div
+    [ngClass]="getBallClass(i)"
+    [ngStyle]="getBallStyle(i)"
+    [@dropIn]="
+      b.moving
+        ? {
+            value: 'drop',
+            params: { leftStart: b.x + 'px', leftStop: b.chuteX + 'px' }
+          }
+        : ''
+    "
+    *ngFor="let b of ballInfo; let i = index"
+    (@dropIn.done)="onAnimationEvent($event)"
+  ></div>
+</div>
