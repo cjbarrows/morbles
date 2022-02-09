@@ -5,7 +5,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Todo
 
 [ ] BUG: slight flicker when ball drops in from top
-[ ] show target balls in transparent colors at finish
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
@@ -86,6 +85,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] animation for ball drop
 [x] BUG: ball entry ballEntryInfo count of items should not change during gameplay
 [x] make sure 2 balls can't be in the entry chute at once (or fix it so they can...)
+[x] show target balls in transparent colors at finish
 
 ## Notes
 

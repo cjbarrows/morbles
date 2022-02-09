@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 
 import { dropOutTrigger } from './dropOut.trigger.animation';
 import { getColorName } from '../utilities/getColorName';
@@ -18,11 +19,14 @@ interface BallInfo {
 })
 export class BallExitComponent implements OnInit {
   @Input() exitBalls: Array<ExitBallInfo> = [];
+  @Input() endingBalls: string = '';
 
   ballInfo: Array<BallInfo> = [];
 
   chuteX: number = 0;
   endX: number = 0;
+
+  completeBallCount: number = 0;
 
   constructor() {}
 
@@ -37,6 +41,7 @@ export class BallExitComponent implements OnInit {
   refreshExitBallsForAnimation() {
     if (!this.exitBalls.length) {
       this.ballInfo = [];
+      this.completeBallCount = 0;
     } else {
       const newBall: ExitBallInfo = this.exitBalls[this.exitBalls.length - 1];
       this.ballInfo.push({
@@ -49,5 +54,24 @@ export class BallExitComponent implements OnInit {
 
   getBallClass(index: number) {
     return `ball ${this.ballInfo[index].color}`;
+  }
+
+  getTargetBallClass(index: number) {
+    return this.completeBallCount > index
+      ? 'ball complete'
+      : `ball ${getColorName(this.endingBalls.split('')[index])}`;
+  }
+
+  getTargetBallStyle(index: number) {
+    return {
+      left: 1600 - (index + 1) * 60 + 'px',
+      opacity: 0.5,
+    };
+  }
+
+  onAnimationEvent(event: any) {
+    if (event.toState === 'new' && event.phaseName === 'done') {
+      this.completeBallCount += 1;
+    }
   }
 }

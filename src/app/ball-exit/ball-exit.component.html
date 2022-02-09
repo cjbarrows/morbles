@@ -6,5 +6,13 @@
       params: { leftStart: b.chuteX + 'px', leftStop: b.endX + 'px' }
     }"
     *ngFor="let b of ballInfo; let i = index"
+    (@dropOut.done)="onAnimationEvent($event)"
   ></div>
+  <div class="target-area">
+    <div
+      [ngClass]="getTargetBallClass(i)"
+      [ngStyle]="getTargetBallStyle(i)"
+      *ngFor="let b of endingBalls.split(''); let i = index"
+    ></div>
+  </div>
 </div>

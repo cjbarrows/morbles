@@ -21,7 +21,7 @@
         *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
       ></div>
     </div>
-    <app-ball-exit [exitBalls]="exitBallInfo"></app-ball-exit>
+    <app-ball-exit [exitBalls]="exitBallInfo" [endingBalls]="endingBalls"></app-ball-exit>
   </div>
   <div>
     Finish: {{ ballsAtFinish }}<br /><span>Needs to be: {{ endingBalls }}</span>

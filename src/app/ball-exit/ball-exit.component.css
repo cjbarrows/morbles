@@ -7,6 +7,25 @@
   margin-top: 5px;
 }
 
+.target-area {
+  position: absolute;
+  top: 55px;
+}
+
+@keyframes pulse {
+  0% { transform: translate(-25px, -25px) scale(1.2); opacity: 0.5; }
+  50% { transform: translate(-25px, -25px) scale(1.0); opacity: 0.2; }
+  100% { transform: translate(-25px, -25px) scale(1.2); opacity: 0.5; }
+}
+
+.target-area .ball {
+  animation: pulse 3s infinite ease-in-out;
+}
+
+.target-area .ball.complete {
+  display:none;
+}
+
 .ball {
   position: absolute;
   background-image: url("/assets/ball.png");
