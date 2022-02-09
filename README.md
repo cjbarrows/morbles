@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] make sure 2 balls can't be in the entry chute at once (or fix it so they can...)
+[ ] BUG: slight flicker when ball drops in from top
 [ ] show target balls in transparent colors at finish
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start
@@ -84,6 +84,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] animation for ball exit
 [x] BUG: red inbounds, green out-of-bounds: didn't fail level
 [x] animation for ball drop
+[x] BUG: ball entry ballEntryInfo count of items should not change during gameplay
+[x] make sure 2 balls can't be in the entry chute at once (or fix it so they can...)
 
 ## Notes
 

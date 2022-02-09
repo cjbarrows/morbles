@@ -14,6 +14,7 @@ export const dropInTrigger = trigger('dropIn', [
     style({
       top: '25px',
       left: '{{ leftStop }}',
+      display: 'none',
     }),
     { params: { leftStop: '900px' } }
   ),

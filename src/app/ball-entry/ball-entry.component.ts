@@ -11,6 +11,7 @@ import { AnimationEvent } from '@angular/animations';
 import { dropInTrigger } from './dropIn.trigger.animation';
 import { EntryBallInfo } from '../entryBallInfo';
 import { getColorName } from '../utilities/getColorName';
+import { ChuteInfo } from '../chuteInfo';
 
 @Component({
   selector: 'app-ball-entry',
@@ -19,57 +20,56 @@ import { getColorName } from '../utilities/getColorName';
   animations: [dropInTrigger],
 })
 export class BallEntryComponent implements OnInit {
-  @Input() entryBalls: string = '';
-  @Output() notifyDoLaunch: EventEmitter<number> = new EventEmitter<number>();
+  @Input() entryBalls: Array<EntryBallInfo> = [];
+  @Input() startingBalls: string = '';
+  @Output() notifyDoLaunch: EventEmitter<ChuteInfo> =
+    new EventEmitter<ChuteInfo>();
 
-  ballInfo: Array<EntryBallInfo> = [];
-
-  currentChuteNumber: number = 0;
+  chuteNumberQueue: Array<ChuteInfo> = [];
 
   constructor() {}
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
     if ('entryBalls' in changes) {
-      this.refreshBallPositions();
+      this.chuteNumberQueue = [];
     }
   }
 
-  refreshBallPositions() {
-    this.ballInfo = this.entryBalls.split('').map((colorCode, index) => {
-      return {
-        x: this.getBallStart(index),
-        colorCode,
-        moving: false,
-        chuteX: 0,
-      };
-    });
-  }
-
-  getBallStart(index: number): number {
-    return 1400 - (this.entryBalls.length - index) * 60;
+  get currentBallIndex() {
+    return this.startingBalls.length - this.entryBalls.length;
   }
 
   getBallClass(index: number) {
-    return `ball ${getColorName(this.ballInfo[index].colorCode)}`;
+    return `ball ${getColorName(this.entryBalls[index].colorCode)}`;
   }
 
   getBallStyle(index: number) {
     return {
-      left: this.ballInfo[index].x + 'px',
+      left: this.entryBalls[index].x + 'px',
     };
   }
 
-  launchNextBall(chuteNumber: number) {
-    this.currentChuteNumber = chuteNumber;
-    this.ballInfo[0].moving = true;
-    this.ballInfo[0].chuteX = chuteNumber * 100 + 50;
+  launchNextBall(ballIndex: number, chuteNumber: number) {
+    console.log(`setting ball ${ballIndex} to chute ${chuteNumber}`);
+
+    console.log(`pushing ${chuteNumber}`);
+
+    this.chuteNumberQueue.push({ chuteNumber, ballIndex });
+    this.entryBalls[ballIndex].moving = true;
+    this.entryBalls[ballIndex].chuteX = chuteNumber * 100 + 50;
   }
 
   onAnimationEvent(event: AnimationEvent) {
     if (event.toState === 'drop') {
-      this.notifyDoLaunch.emit(this.currentChuteNumber);
+      console.log(this.chuteNumberQueue);
+      const { chuteNumber, ballIndex } = this.chuteNumberQueue.shift() || {};
+      this.notifyDoLaunch.emit({
+        chuteNumber: chuteNumber || 0,
+        ballIndex: ballIndex || 0,
+      });
     }
   }
 }

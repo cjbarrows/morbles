@@ -3,7 +3,11 @@
   <div>Time:</div>
   <div>Balls: {{ startingBalls.substr(ballNumber) }}</div>
   <div class="game-board">
-    <app-ball-entry [entryBalls]="startingBalls.substr(ballNumber)" (notifyDoLaunch)="doLaunch($event)"></app-ball-entry>
+    <app-ball-entry
+      [startingBalls]="startingBalls"
+      [entryBalls]="entryBallInfo"
+      (notifyDoLaunch)="doLaunch($event)"
+    ></app-ball-entry>
     <div class="game-board-proper">
       <app-launch-button
         *ngFor="let button of this.launchButtons; let i = index"

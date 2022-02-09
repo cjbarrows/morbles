@@ -91,6 +91,8 @@ export class PhysicsService {
   }
 
   launchBall(xCell: number, colorName: ColorName) {
+    console.log(`launching ${colorName}`);
+
     const ball = new Ball();
     ball.color = colorName;
     ball.id = this.index;

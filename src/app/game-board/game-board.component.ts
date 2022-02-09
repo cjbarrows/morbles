@@ -12,7 +12,9 @@ import { DrawObject } from '../drawobject';
 import { ColorName } from '../ball';
 import { getColorName } from '../utilities/getColorName';
 import { getColorCode } from '../utilities/getColorCode';
+import { EntryBallInfo } from '../entryBallInfo';
 import { ExitBallInfo } from '../exitBallInfo';
+import { ChuteInfo } from '../chuteInfo';
 import { BallEntryComponent } from '../ball-entry/ball-entry.component';
 
 import { GAME_STATE } from '../constants';
@@ -40,8 +42,9 @@ export class GameBoardComponent {
 
   private _gameState: GAME_STATE = 'unstarted';
 
-  ballsAtFinish: string = '';
+  entryBallInfo: Array<EntryBallInfo> = [];
   exitBallInfo: Array<ExitBallInfo> = [];
+  ballsAtFinish: string = '';
 
   constructor(private physicsService: PhysicsService) {
     this.launchButtons = new Array<string>(this.numColumns);
@@ -55,6 +58,7 @@ export class GameBoardComponent {
     this.ballNumber = 0;
     this.gameState = 'unstarted';
     this.ballsAtFinish = '';
+    this.entryBallInfo = this.getEntryBallsFromStartingBalls();
     this.exitBallInfo = [];
   }
 
@@ -68,10 +72,29 @@ export class GameBoardComponent {
     return this._gameState;
   }
 
+  getBallStart(index: number): number {
+    return 1400 - (this.startingBalls.length - index) * 60;
+  }
+
+  getEntryBallsFromStartingBalls(): Array<EntryBallInfo> {
+    return this.startingBalls.split('').map((colorCode, index) => {
+      return {
+        x: this.getBallStart(index),
+        colorCode,
+        moving: false,
+        chuteX: 0,
+      };
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if ('numColumns' in changes) {
       console.log('changing columns');
       this.launchButtons = new Array<string>(this.numColumns);
+    }
+
+    if ('startingBalls' in changes) {
+      this.entryBallInfo = this.getEntryBallsFromStartingBalls();
     }
 
     /*
@@ -91,17 +114,23 @@ export class GameBoardComponent {
       !((this.gameState as string) in ['failed', 'success']) &&
       this.ballNumber < this.startingBalls.length
     ) {
-      this.ballEntryComponent.launchNextBall(chuteNumber);
+      this.ballEntryComponent.launchNextBall(this.ballNumber, chuteNumber);
+      this.ballNumber += 1;
+      this.gameState = 'in progress';
     }
   };
 
-  doLaunch = (chuteNumber: number) => {
-    const colorCode = this.startingBalls[this.ballNumber];
+  doLaunch = (chuteInfo: ChuteInfo) => {
+    const { chuteNumber, ballIndex } = chuteInfo;
+    const colorCode = this.startingBalls[ballIndex];
+
+    console.log(
+      `chute ${chuteNumber} launches ball ${ballIndex} with ${getColorName(
+        colorCode
+      )}`
+    );
+
     this.physicsService.launchBall(chuteNumber, getColorName(colorCode));
-
-    this.ballNumber += 1;
-
-    this.gameState = 'in progress';
   };
 
   onClick(drawObject: DrawObject) {
