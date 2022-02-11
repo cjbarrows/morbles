@@ -119,6 +119,10 @@ export class ControlsComponent {
   }
 
   getClassNameForButton(i: number) {
+    if (!this.playerStatus || i >= this.playerStatus.length) {
+      return 'btn';
+    }
+
     if (this.playerStatus[i].completed) {
       return 'btn btn-success';
     } else if (this.playerStatus[i].attempts > 0) {

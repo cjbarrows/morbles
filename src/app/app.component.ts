@@ -33,12 +33,12 @@ export class AppComponent {
   endingBalls: string = '';
   currentLevelId?: number = undefined;
 
-  levels: Observable<Array<GameLevel>>;
+  levels: Array<GameLevel> = [];
 
   @ViewChild(GameBoardComponent)
   private gameBoardComponent!: GameBoardComponent;
 
-  player: Player;
+  player: Player = new Player();
 
   currentPlayerStatus: Array<LevelStatus> = [];
 
@@ -49,19 +49,19 @@ export class AppComponent {
   ) {
     this.renderer.createDrawlistFromPhysics(this.physics);
 
-    this.levels = this.db.getLevels();
-
-    this.levels.subscribe((data) => {
-      this.initializePlayerStatus(data);
-    });
-
-    this.player = new Player('Test Player');
-
     this.startClock();
   }
 
-  initializePlayerStatus(levels: Array<GameLevel>) {
-    this.currentPlayerStatus = this.getPlayerStatus(levels);
+  async ngOnInit() {
+    this.levels = await this.db.getLevels();
+
+    this.player = await this.db.getPlayer(1);
+
+    this.refreshPlayerStatus();
+  }
+
+  refreshPlayerStatus() {
+    this.currentPlayerStatus = this.getPlayerStatus(this.levels);
   }
 
   getPlayerStatus(levels: Array<GameLevel>): Array<LevelStatus> {

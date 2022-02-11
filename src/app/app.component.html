@@ -1,12 +1,13 @@
 <p>{{ title }} app is running!</p>
-
+{{player|json}}
 <app-controls
   (notifyTimer)="onNotifyTimer($event)"
   (notifyLoad)="onNotifyLoad($event)"
   (notifySize)="onNotifySize($event)"
   [runButtonState]="true"
-  [levels]="(levels | async) ?? []"
+  [levels]="levels"
   [playerStatus]="currentPlayerStatus"
+  *ngIf="levels.length > 0"
 ></app-controls>
 <app-map-editor
   (notifyCellChange)="onNotifyCellChange($event)"
