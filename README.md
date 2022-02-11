@@ -4,6 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: slight flicker when ball drops in from top
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start

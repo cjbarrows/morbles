@@ -3,12 +3,12 @@ import { Component, ViewChild } from '@angular/core';
 import { GameBoardComponent } from './game-board/game-board.component';
 import { RendererService } from './renderer.service';
 import { PhysicsService } from './physics.service';
+import { DatabaseService } from './database.service';
 import { getCellFromName } from './cellFactory';
 import { Size } from './size';
 import { convertShorthandMap } from './utilities/convertShorthand';
 import { BallOrder } from './ballOrder';
 import { GameLevel } from './gameLevel';
-import { level1, level2, level3, level4 } from './levels';
 import { Player } from './player';
 import { GAME_STATE } from './constants';
 import { LevelStatus } from './levelStatus';
@@ -32,7 +32,7 @@ export class AppComponent {
   endingBalls: string = '';
   currentLevelId?: number = undefined;
 
-  levels: Array<GameLevel> = [level1, level2, level3, level4];
+  levels: Array<GameLevel> = [];
 
   @ViewChild(GameBoardComponent)
   private gameBoardComponent!: GameBoardComponent;
@@ -43,9 +43,20 @@ export class AppComponent {
 
   constructor(
     public physics: PhysicsService,
-    private renderer: RendererService
+    private renderer: RendererService,
+    private db: DatabaseService
   ) {
     this.renderer.createDrawlistFromPhysics(this.physics);
+
+    /*
+    this.levels = [];
+    */
+    //*
+    this.db.getLevels().subscribe((data) => {
+      this.levels = data;
+      this.refreshPlayerStatus();
+    });
+    //*/
 
     this.player = new Player('Test Player');
 
