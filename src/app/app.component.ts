@@ -52,7 +52,7 @@ export class AppComponent {
     this.levels = this.db.getLevels();
 
     this.levels.subscribe((data) => {
-      this.refreshPlayerStatus(data);
+      this.initializePlayerStatus(data);
     });
 
     this.player = new Player('Test Player');
@@ -60,7 +60,7 @@ export class AppComponent {
     this.startClock();
   }
 
-  refreshPlayerStatus(levels: Array<GameLevel>) {
+  initializePlayerStatus(levels: Array<GameLevel>) {
     this.currentPlayerStatus = this.getPlayerStatus(levels);
   }
 
@@ -195,7 +195,7 @@ export class AppComponent {
         (levelStatus) => levelStatus.levelId !== levelId
       ),
       ...[level],
-    ];
+    ].sort((a, b) => a.levelId - b.levelId);
   }
 
   getRenderer(): RendererService {
