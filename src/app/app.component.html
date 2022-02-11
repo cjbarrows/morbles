@@ -3,10 +3,9 @@
 <app-controls
   (notifyTimer)="onNotifyTimer($event)"
   (notifyLoad)="onNotifyLoad($event)"
-  (notifyExamine)="onNotifyExamine()"
   (notifySize)="onNotifySize($event)"
   [runButtonState]="true"
-  [levels]="levels"
+  [levels]="(levels | async) ?? []"
   [playerStatus]="currentPlayerStatus"
 ></app-controls>
 <app-map-editor

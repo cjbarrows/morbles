@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { GameBoardComponent } from './game-board/game-board.component';
 import { RendererService } from './renderer.service';
@@ -32,7 +33,7 @@ export class AppComponent {
   endingBalls: string = '';
   currentLevelId?: number = undefined;
 
-  levels: Array<GameLevel> = [];
+  levels: Observable<Array<GameLevel>>;
 
   @ViewChild(GameBoardComponent)
   private gameBoardComponent!: GameBoardComponent;
@@ -48,29 +49,23 @@ export class AppComponent {
   ) {
     this.renderer.createDrawlistFromPhysics(this.physics);
 
-    /*
-    this.levels = [];
-    */
-    //*
-    this.db.getLevels().subscribe((data) => {
-      this.levels = data;
-      this.refreshPlayerStatus();
+    this.levels = this.db.getLevels();
+
+    this.levels.subscribe((data) => {
+      this.refreshPlayerStatus(data);
     });
-    //*/
 
     this.player = new Player('Test Player');
-
-    this.refreshPlayerStatus();
 
     this.startClock();
   }
 
-  refreshPlayerStatus() {
-    this.currentPlayerStatus = this.getPlayerStatus();
+  refreshPlayerStatus(levels: Array<GameLevel>) {
+    this.currentPlayerStatus = this.getPlayerStatus(levels);
   }
 
-  getPlayerStatus(): Array<LevelStatus> {
-    const playerLevelsCompleted = this.levels.map((level) => {
+  getPlayerStatus(levels: Array<GameLevel>): Array<LevelStatus> {
+    const playerLevelsCompleted = levels.map((level) => {
       const lookupLevel = this.player.levelStatuses.find(
         (playerLevel) => playerLevel.levelId === level.id
       );
@@ -114,13 +109,8 @@ export class AppComponent {
     }
   }
 
-  onNotifyExamine() {
-    console.log(this.renderer.getDrawlist());
-  }
-
-  onNotifyLoad(levelIndex: number) {
-    const { id, name, columns, rows, map, startingBalls, endingBalls } =
-      this.levels[levelIndex];
+  onNotifyLoad(level: GameLevel) {
+    const { id, name, columns, rows, map, startingBalls, endingBalls } = level;
 
     this.gameBoardComponent.doResetLevel();
 
@@ -200,7 +190,12 @@ export class AppComponent {
       level.attempts += 1;
     }
 
-    this.refreshPlayerStatus();
+    this.currentPlayerStatus = [
+      ...this.currentPlayerStatus.filter(
+        (levelStatus) => levelStatus.levelId !== levelId
+      ),
+      ...[level],
+    ];
   }
 
   getRenderer(): RendererService {

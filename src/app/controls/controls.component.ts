@@ -42,8 +42,7 @@ export class ControlsComponent {
   @Input() playerStatus: Array<LevelStatus> = [];
 
   @Output() notifyTimer = new EventEmitter<boolean>();
-  @Output() notifyLoad: EventEmitter<number> = new EventEmitter<number>();
-  @Output() notifyExamine = new EventEmitter();
+  @Output() notifyLoad: EventEmitter<GameLevel> = new EventEmitter<GameLevel>();
   @Output() notifySize = new EventEmitter();
 
   gameSettings: FormGroup;
@@ -107,11 +106,7 @@ export class ControlsComponent {
   }
 
   onLoadLevel(index: number) {
-    this.notifyLoad.emit(index);
-  }
-
-  onExamine() {
-    this.notifyExamine.emit();
+    this.notifyLoad.emit(this.levels[index]);
   }
 
   onSubmit() {
