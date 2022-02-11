@@ -57,6 +57,12 @@ export class DatabaseService {
     }
   }
 
+  savePlayer(player: Player) {
+    this.http
+      .put(`http://127.0.0.1:8080/player/${player.id}`, player)
+      .subscribe();
+  }
+
   handleError(error: any) {
     console.log('oops');
   }

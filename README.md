@@ -4,7 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] load player from service
+[ ] add front-end login route and server route
+[ ] save levels to server
+[ ] don't have level control buttons needing to be refreshed each tick
 [ ] BUG: level 4, first ball, marks "failed" attempt
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: slight flicker when ball drops in from top
@@ -89,6 +91,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] BUG: ball entry ballEntryInfo count of items should not change during gameplay
 [x] make sure 2 balls can't be in the entry chute at once (or fix it so they can...)
 [x] show target balls in transparent colors at finish
+[x] load player from service
+[x] save player to server
 
 ## Notes
 

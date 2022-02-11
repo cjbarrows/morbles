@@ -196,6 +196,8 @@ export class AppComponent {
       ),
       ...[level],
     ].sort((a, b) => a.levelId - b.levelId);
+
+    this.db.savePlayer(this.player);
   }
 
   getRenderer(): RendererService {
