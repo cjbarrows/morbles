@@ -15,6 +15,7 @@ import { BallExitComponent } from './ball-exit/ball-exit.component';
 import { BallEntryComponent } from './ball-entry/ball-entry.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
+import { LevelsComponent } from './levels/levels.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { LoginComponent } from './login/login.component';
     BallExitComponent,
     BallEntryComponent,
     LoginComponent,
+    LevelsComponent,
   ],
   imports: [
     BrowserModule,

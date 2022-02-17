@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { DrawObject } from './drawobject';
 import { PhysicsService } from './physics.service';
@@ -7,17 +8,13 @@ import { PhysicsService } from './physics.service';
   providedIn: 'root',
 })
 export class RendererService {
-  private drawlist: Array<DrawObject> = [];
+  private drawList$: Subject<Array<DrawObject>>;
 
-  constructor() {}
-
-  clearDrawlist() {
-    this.drawlist.splice(0);
+  constructor() {
+    this.drawList$ = new Subject<Array<DrawObject>>();
   }
 
   createDrawlistFromPhysics(physics: PhysicsService) {
-    this.clearDrawlist();
-
     const newDrawlist = [
       ...physics.getBoundaries().map((boundary) => {
         return new DrawObject({
@@ -68,10 +65,10 @@ export class RendererService {
       }),
     ];
 
-    this.drawlist.push(...newDrawlist);
+    this.drawList$.next(newDrawlist);
   }
 
-  getDrawlist(): Array<DrawObject> {
-    return this.drawlist;
+  getDrawlistObservable(): Subject<Array<DrawObject>> {
+    return this.drawList$;
   }
 }

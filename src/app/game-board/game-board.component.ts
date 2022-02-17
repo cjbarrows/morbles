@@ -2,33 +2,39 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { ViewChild } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { PhysicsService } from '../physics.service';
 import { DrawObject } from '../drawobject';
 import { ColorName } from '../ball';
 import { getColorName } from '../utilities/getColorName';
 import { getColorCode } from '../utilities/getColorCode';
+import { convertShorthandMap } from '../utilities/convertShorthand';
 import { EntryBallInfo } from '../entryBallInfo';
 import { ExitBallInfo } from '../exitBallInfo';
 import { ChuteInfo } from '../chuteInfo';
 import { BallEntryComponent } from '../ball-entry/ball-entry.component';
-
 import { GAME_STATE } from '../constants';
+import { GameLevel } from '../gameLevel';
+import { DatabaseService } from '../database.service';
+import { RendererService } from '../renderer.service';
 
 @Component({
   selector: 'app-game-board',
   templateUrl: './game-board.component.html',
   styleUrls: ['./game-board.component.css'],
 })
-export class GameBoardComponent {
-  @Input() drawList: Array<DrawObject> = [];
-  @Input() numColumns: number = 3;
-  @Input() startingBalls: string = '';
-  @Input() endingBalls: string = '';
+export class GameBoardComponent implements OnInit {
+  numColumns: number = 3;
+  startingBalls: string = '';
+  endingBalls: string = '';
 
   @Output() notifyGameState = new EventEmitter();
 
@@ -46,15 +52,57 @@ export class GameBoardComponent {
   exitBallInfo: Array<ExitBallInfo> = [];
   ballsAtFinish: string = '';
 
-  constructor(private physicsService: PhysicsService) {
-    this.launchButtons = new Array<string>(this.numColumns);
+  level$!: Observable<GameLevel>;
+  drawList: Array<DrawObject> = [];
 
-    this.physicsService.ballExitObservable.subscribe(this.onBallExit);
+  currentLevelId: number = 0;
+
+  constructor(
+    private physics: PhysicsService,
+    private db: DatabaseService,
+    private renderer: RendererService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.physics.ballExitObservable.subscribe(this.onBallExit);
+
+    this.renderer.getDrawlistObservable().subscribe({
+      next: (newDrawList: Array<DrawObject>) => {
+        this.drawList = newDrawList;
+      },
+    });
+  }
+
+  ngOnInit() {
+    this.level$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        this.currentLevelId = Number(params.get('id'));
+        return this.db.getLevel(this.currentLevelId);
+      })
+    );
+
+    this.level$.subscribe((level) => this.setupFromLevelData(level));
+  }
+
+  setupFromLevelData(level: GameLevel) {
+    const { columns, rows, map, startingBalls, endingBalls } = level;
+
+    this.physics.clearAll();
+
+    this.launchButtons = new Array<string>(columns);
+
+    this.physics.setNumColumns(columns);
+    this.physics.rows = rows;
+
+    this.physics.populateCellsFromMap(convertShorthandMap(map));
+
+    this.startingBalls = startingBalls;
+    this.endingBalls = endingBalls;
+
+    this.doResetLevel();
   }
 
   doResetLevel() {
-    console.log('resetting level');
-
     this.ballNumber = 0;
     this.gameState = 'unstarted';
     this.ballsAtFinish = '';
@@ -130,7 +178,7 @@ export class GameBoardComponent {
       )}`
     );
 
-    this.physicsService.launchBall(chuteNumber, getColorName(colorCode));
+    this.physics.launchBall(chuteNumber, getColorName(colorCode));
   };
 
   onClick(drawObject: DrawObject) {

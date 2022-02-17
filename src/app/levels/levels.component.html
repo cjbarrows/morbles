@@ -1,0 +1,14 @@
+<div id="levels" class="btn-toolbar" role="toolbar">
+  <div class="btn-group" role="group">
+    <button
+      *ngFor="let class of this.buttonClasses; let i = index"
+      button
+      type="button"
+      class="{{class}}"
+      (click)="onLoadLevel(i)"
+      onclick="this.blur()"
+    >
+      {{ i + 1 }}
+    </button>
+  </div>
+</div>

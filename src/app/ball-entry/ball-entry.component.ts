@@ -32,7 +32,6 @@ export class BallEntryComponent implements OnInit {
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if ('entryBalls' in changes) {
       this.chuteNumberQueue = [];
     }

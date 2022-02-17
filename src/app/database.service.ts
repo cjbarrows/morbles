@@ -66,6 +66,25 @@ export class DatabaseService {
       .toPromise();
   }
 
+  getLevel(id: number): Observable<GameLevel> {
+    return this.http
+      .get<any>(`http://localhost:8080/api/levels/${id}`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((level) => ({
+          id: level.ID,
+          name: level.Name,
+          hint: level.Hint,
+          rows: level.Rows,
+          columns: level.Columns,
+          startingBalls: level.StartingBalls,
+          endingBalls: level.EndingBalls,
+          map: level.MapData,
+        }))
+      );
+  }
+
   async getAuthenticatedPlayer(): Promise<Player> {
     try {
       const playerData: any = await this.http

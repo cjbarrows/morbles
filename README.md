@@ -4,10 +4,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] add level choosing screen
-[ ] add routing to the app
+[ ] save player progress to server
+[ ] "preventing unauthorized access" to routes
+[ ] have / redirect to /login or /levels depending on login status
 [ ] save levels to server
-[ ] don't have level control buttons needing to be refreshed each tick
 [ ] BUG: level 4, first ball, marks "failed" attempt
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: slight flicker when ball drops in from top
@@ -95,6 +95,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] load player from service
 [x] save player to server
 [x] add front-end login route and server route
+[x] add level choosing screen
+[x] add routing to the app
+[x] don't have level control buttons needing to be refreshed each tick
+[x] add level picker above game board
 
 ## Notes
 

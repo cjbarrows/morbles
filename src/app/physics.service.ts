@@ -8,6 +8,7 @@ import { Gate } from './gate';
 import Point from './point';
 import { mapCells } from './physicsMapping';
 import { CELL_WIDTH } from './constants';
+import { getCellFromName } from './cellFactory';
 
 interface GameCellEntry {
   id: number;
@@ -42,7 +43,6 @@ export class PhysicsService {
 
   setNumColumns(columns: number) {
     this.numColumns = columns;
-    console.log(`physics now has ${this.numColumns} columns`);
   }
 
   get rows(): number {
@@ -88,6 +88,18 @@ export class PhysicsService {
       return nextCell;
     }
     return undefined;
+  }
+
+  populateCellsFromMap(mapCells: Array<string>) {
+    this.clearAll();
+
+    mapCells.forEach((name, index) => {
+      const cell = getCellFromName(name);
+
+      const x = index % this.getNumColumns();
+      const y = (index - x) / this.getNumColumns();
+      this.addCell(x, y, cell);
+    });
   }
 
   launchBall(xCell: number, colorName: ColorName) {
