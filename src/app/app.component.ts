@@ -55,7 +55,7 @@ export class AppComponent {
   async ngOnInit() {
     this.levels = await this.db.getLevels();
 
-    this.player = await this.db.getPlayer(1);
+    this.player = await this.db.getAuthenticatedPlayer();
 
     this.refreshPlayerStatus();
   }

@@ -14,9 +14,41 @@ export class DatabaseService {
 
   constructor(private http: HttpClient) {}
 
+  async login(username: string, password: string) {
+    const formData = new FormData();
+
+    formData.append('username', username);
+    formData.append('password', password);
+
+    this.http
+      .post('http://localhost:8080/login', formData, { withCredentials: true })
+      .subscribe(
+        (response) => console.log(response),
+        (error) => console.error(error)
+      );
+  }
+
+  logout() {
+    this.http
+      .get('http://localhost:8080/api/logout', { withCredentials: true })
+      .subscribe(
+        (response) => console.log(response),
+        (error) => console.error(error)
+      );
+  }
+
+  showMe() {
+    this.http
+      .get('http://localhost:8080/api/me', { withCredentials: true })
+      .subscribe(
+        (response) => console.log(response),
+        (error) => console.error(error)
+      );
+  }
+
   async getLevels(): Promise<Array<GameLevel>> {
     return this.http
-      .get<any>('http://127.0.0.1:8080/levels')
+      .get<any>('http://localhost:8080/api/levels', { withCredentials: true })
       .pipe(
         map((result) =>
           result.map((level: any) => ({
@@ -34,10 +66,37 @@ export class DatabaseService {
       .toPromise();
   }
 
+  async getAuthenticatedPlayer(): Promise<Player> {
+    try {
+      const playerData: any = await this.http
+        .get<any>(`http://localhost:8080/api/player`, {
+          withCredentials: true,
+        })
+        .pipe(map((result) => result))
+        .toPromise();
+
+      return {
+        id: playerData.ID,
+        name: playerData.Name,
+        levelStatuses: playerData.LevelStatuses.map((levelStatus: any) => ({
+          levelId: levelStatus.LevelID,
+          attempts: levelStatus.Attempts,
+          completed: levelStatus.Completed,
+        })),
+      };
+    } catch (error) {
+      console.error(`Error getting player: ${JSON.stringify(error)}`);
+
+      return new Player();
+    }
+  }
+
   async getPlayer(id: number): Promise<Player> {
     try {
       const playerData: any = await this.http
-        .get<any>(`http://127.0.0.1:8080/player/${id}`)
+        .get<any>(`http://localhost:8080/api/player/${id}`, {
+          withCredentials: true,
+        })
         .pipe(map((result) => result))
         .toPromise();
 
@@ -59,7 +118,9 @@ export class DatabaseService {
 
   savePlayer(player: Player) {
     this.http
-      .put(`http://127.0.0.1:8080/player/${player.id}`, player)
+      .put(`http://localhost:8080/api/player/${player.id}`, player, {
+        withCredentials: true,
+      })
       .subscribe();
   }
 

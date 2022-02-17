@@ -13,6 +13,8 @@ import { LaunchButtonsComponent } from './launch-button/launch-button.component'
 import { MapEditorComponent } from './map-editor/map-editor.component';
 import { BallExitComponent } from './ball-exit/ball-exit.component';
 import { BallEntryComponent } from './ball-entry/ball-entry.component';
+import { AppRoutingModule } from './app-routing.module';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { BallEntryComponent } from './ball-entry/ball-entry.component';
     MapEditorComponent,
     BallExitComponent,
     BallEntryComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,6 +34,7 @@ import { BallEntryComponent } from './ball-entry/ball-entry.component';
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

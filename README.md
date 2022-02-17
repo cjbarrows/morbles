@@ -4,7 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] add front-end login route and server route
+[ ] add level choosing screen
+[ ] add routing to the app
 [ ] save levels to server
 [ ] don't have level control buttons needing to be refreshed each tick
 [ ] BUG: level 4, first ball, marks "failed" attempt
@@ -93,6 +94,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] show target balls in transparent colors at finish
 [x] load player from service
 [x] save player to server
+[x] add front-end login route and server route
 
 ## Notes
 
