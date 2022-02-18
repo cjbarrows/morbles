@@ -136,7 +136,7 @@ export class DatabaseService {
   }
 
   savePlayer(player: Player) {
-    this.http
+    return this.http
       .put(`http://localhost:8080/api/player/${player.id}`, player, {
         withCredentials: true,
       })

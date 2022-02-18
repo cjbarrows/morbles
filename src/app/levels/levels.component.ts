@@ -33,14 +33,16 @@ export class LevelsComponent implements OnInit {
 
   async ngOnInit() {
     this.levels = await this.db.getLevels();
+    this.refreshPlayer();
+  }
+
+  async refreshPlayer() {
     this.player = await this.db.getAuthenticatedPlayer();
 
     this.refreshButtonClasses();
   }
 
   refreshButtonClasses() {
-    console.log('refresh button classes');
-
     this.buttonClasses = this.player.levelStatuses.map((levelStatus, index) => {
       const startingClass = `btn${
         levelStatus.levelId === this.currentLevelId ? ' active' : ''

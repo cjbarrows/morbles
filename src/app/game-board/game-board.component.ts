@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { PhysicsService } from '../physics.service';
@@ -25,6 +25,8 @@ import { GAME_STATE } from '../constants';
 import { GameLevel } from '../gameLevel';
 import { DatabaseService } from '../database.service';
 import { RendererService } from '../renderer.service';
+import { Player } from '../player';
+import { LevelsComponent } from '../levels/levels.component';
 
 @Component({
   selector: 'app-game-board',
@@ -40,6 +42,9 @@ export class GameBoardComponent implements OnInit {
 
   @ViewChild(BallEntryComponent)
   private ballEntryComponent!: BallEntryComponent;
+
+  @ViewChild(LevelsComponent)
+  private levelsComponent!: LevelsComponent;
 
   launchButtons: Array<string> = [];
   currentStyle = { left: '300px' };
@@ -57,6 +62,8 @@ export class GameBoardComponent implements OnInit {
 
   currentLevelId: number = 0;
 
+  player!: Player;
+
   constructor(
     private physics: PhysicsService,
     private db: DatabaseService,
@@ -73,7 +80,9 @@ export class GameBoardComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.player = await this.db.getAuthenticatedPlayer();
+
     this.level$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.currentLevelId = Number(params.get('id'));
@@ -112,6 +121,10 @@ export class GameBoardComponent implements OnInit {
 
   public set gameState(newGameState: GAME_STATE) {
     this._gameState = newGameState;
+
+    this.updatePlayerStatus(this.currentLevelId, newGameState).then(() => {
+      this.levelsComponent.refreshPlayer();
+    });
 
     this.notifyGameState.emit(newGameState);
   }
@@ -217,4 +230,23 @@ export class GameBoardComponent implements OnInit {
       }
     }
   };
+
+  async updatePlayerStatus(levelId: number, state: GAME_STATE) {
+    let level = this.player.levelStatuses.find(
+      (status) => status.levelId === levelId
+    );
+
+    if (!level) {
+      level = { levelId, attempts: 0, completed: false };
+      this.player.levelStatuses.push(level);
+    }
+    if (state === 'success') {
+      level.attempts += 1;
+      level.completed = true;
+    } else if (state === 'failed') {
+      level.attempts += 1;
+    }
+
+    return this.db.savePlayer(this.player);
+  }
 }

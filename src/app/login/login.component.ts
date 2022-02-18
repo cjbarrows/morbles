@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
 
     try {
       await this.db.login(this.f['username'].value, this.f['password'].value);
-      this.router.navigateByUrl('/game');
+      this.router.navigateByUrl('/levels');
     } catch (error) {
       console.error(error);
       this.loading = false;
