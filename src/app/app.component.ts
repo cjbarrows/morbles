@@ -53,9 +53,17 @@ export class AppComponent {
   }
 
   async ngOnInit() {
-    this.levels = await this.db.getLevels();
+    try {
+      this.levels = await this.db.getLevels();
+    } catch (error) {
+      this.levels = [];
+    }
 
-    this.player = await this.db.getAuthenticatedPlayer();
+    try {
+      this.player = await this.db.getAuthenticatedPlayer();
+    } catch (error) {
+      this.player = new Player();
+    }
 
     this.refreshPlayerStatus();
   }
@@ -71,7 +79,7 @@ export class AppComponent {
       );
       return lookupLevel
         ? { ...lookupLevel }
-        : { levelId: level.id, attempts: 0, completed: false };
+        : { levelId: level.id, attempts: 0, failures: 0, completed: false };
     });
 
     return playerLevelsCompleted;
@@ -180,7 +188,7 @@ export class AppComponent {
     );
 
     if (!level) {
-      level = { levelId, attempts: 0, completed: false };
+      level = { levelId, attempts: 0, failures: 0, completed: false };
       this.player.levelStatuses.push(level);
     }
     if (state === 'success') {

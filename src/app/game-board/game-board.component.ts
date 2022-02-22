@@ -237,14 +237,16 @@ export class GameBoardComponent implements OnInit {
     );
 
     if (!level) {
-      level = { levelId, attempts: 0, completed: false };
+      level = { levelId, attempts: 0, failures: 0, completed: false };
       this.player.levelStatuses.push(level);
     }
-    if (state === 'success') {
+
+    if (state === 'in progress') {
       level.attempts += 1;
+    } else if (state === 'success') {
       level.completed = true;
     } else if (state === 'failed') {
-      level.attempts += 1;
+      level.failures += 1;
     }
 
     return this.db.savePlayer(this.player);

@@ -51,7 +51,7 @@ export class LevelsComponent implements OnInit {
       return `${startingClass} ${
         levelStatus.completed
           ? 'btn-success'
-          : levelStatus.attempts > 0
+          : levelStatus.failures > 0
           ? 'btn-danger'
           : 'btn-primary'
       }`;

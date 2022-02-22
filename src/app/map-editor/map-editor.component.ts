@@ -1,23 +1,16 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  Output,
-  EventEmitter,
-  SimpleChange,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
   FormBuilder,
   ValidatorFn,
   ValidationErrors,
+  Validators,
 } from '@angular/forms';
-import { map, merge } from 'rxjs';
 
+import { DatabaseService } from '../database.service';
 import { PhysicsService } from '../physics.service';
-import { BallOrder } from '../ballOrder';
+import { convertMapToShorthand } from '../utilities/convertShorthand';
 
 function colorCodeValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -35,52 +28,66 @@ function colorCodeValidator(): ValidatorFn {
   styleUrls: ['./map-editor.component.css'],
 })
 export class MapEditorComponent implements OnInit {
-  @Input() mapName: String = '';
-  @Input() numColumns: number;
-  @Input() numRows: number;
-  @Input() startingMap: Array<string> = [];
-  @Input() startingBalls: string = '';
-  @Input() endingBalls: string = '';
-
-  @Output() notifyCellChange = new EventEmitter();
-  @Output() notifyLoadMap = new EventEmitter();
-  @Output() notifyBallOrderChange = new EventEmitter<BallOrder>();
+  mapName: String = '';
+  startingMap: Array<string> = [];
+  startingBalls: string = '';
+  endingBalls: string = '';
 
   public mapForm: any;
 
+  constructor(
+    private fb: FormBuilder,
+    private physics: PhysicsService,
+    private db: DatabaseService
+  ) {}
+
   makeColumns = (rowIndex: number): FormArray => {
     return this.fb.array(
-      new Array<string>(this.numColumns).fill('').map((_, colIndex) => {
-        const index = rowIndex * this.numColumns + colIndex;
-        const cellType =
-          this.startingMap.length > index
-            ? this.startingMap[rowIndex * this.numColumns + colIndex]
-            : 'air';
-        return this.fb.control(cellType);
-      })
+      new Array<string>(this.physics.getNumColumns())
+        .fill('')
+        .map((_, colIndex) => {
+          const index = rowIndex * this.physics.getNumColumns() + colIndex;
+          const cellType =
+            this.startingMap.length > index
+              ? this.startingMap[
+                  rowIndex * this.physics.getNumColumns() + colIndex
+                ]
+              : 'air';
+          return this.fb.control(cellType);
+        })
     );
   };
 
   makeRows = (): FormArray => {
     return this.fb.array(
-      new Array<string>(this.numRows).fill('').map((_, rowIndex) => {
+      new Array<string>(this.physics.rows).fill('').map((_, rowIndex) => {
         return this.makeColumns(rowIndex);
       })
     );
   };
 
-  constructor(private fb: FormBuilder, private physics: PhysicsService) {
-    this.numColumns = this.physics.getNumColumns();
-    this.numRows = this.physics.rows;
-  }
-
   ngOnInit(): void {
     this.mapForm = this.fb.group({
-      mapName: '',
+      mapName: ['', [Validators.required]],
+      hint: '',
       startingBalls: ['', [colorCodeValidator()]],
       endingBalls: ['', [colorCodeValidator()]],
       rows: this.makeRows(),
+      numRows: [this.physics.rows],
+      numColumns: [this.physics.getNumColumns()],
     });
+
+    this.mapForm.controls['numRows'].valueChanges.subscribe((newValue: any) => {
+      this.physics.numRows = newValue;
+      this.rows = this.makeRows();
+    });
+
+    this.mapForm.controls['numColumns'].valueChanges.subscribe(
+      (newValue: any) => {
+        this.physics.setNumColumns(newValue);
+        this.rows = this.makeRows();
+      }
+    );
 
     this.mapForm.controls['startingBalls'].valueChanges.subscribe(
       (newOrder: string) => {
@@ -93,7 +100,6 @@ export class MapEditorComponent implements OnInit {
             emitEvent: false,
           }
         );
-        this.notifyBallOrderChange.emit({ startingBalls: newOrderInUpperCase });
       }
     );
 
@@ -108,64 +114,14 @@ export class MapEditorComponent implements OnInit {
             emitEvent: false,
           }
         );
-        this.notifyBallOrderChange.emit({ endingBalls: newOrderInUpperCase });
       }
     );
-
-    this.subscribeToCellChanges();
-
-    this.doNotifyLoadMap();
   }
 
   getAllCells() {
     return this.mapForm.controls['rows'].controls
       .map((row: FormArray) => row.controls.map((cell) => cell))
       .flat();
-  }
-
-  subscribeToCellChanges() {
-    if (this.mapForm) {
-      merge(
-        ...this.getAllCells().map((control: AbstractControl, index: number) =>
-          control.valueChanges.pipe(
-            map((value: any) => ({ cellIndex: index, value }))
-          )
-        )
-      ).subscribe((change: any) => {
-        this.notifyCellChange.emit(change);
-      });
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if ('startingMap' in changes) {
-      const change: SimpleChange = changes['startingMap'];
-      const map: Array<string> = change.currentValue;
-      this.notifyLoadMap.emit(map);
-    }
-
-    if (this.mapForm) {
-      if ('mapName' in changes) {
-        const change: SimpleChange = changes['mapName'];
-        this.mapForm.patchValue({ mapName: change.currentValue });
-      }
-
-      if ('startingBalls' in changes) {
-        const change: SimpleChange = changes['startingBalls'];
-        this.mapForm.patchValue({ startingBalls: change.currentValue });
-      }
-
-      if ('endingBalls' in changes) {
-        const change: SimpleChange = changes['endingBalls'];
-        this.mapForm.patchValue({ endingBalls: change.currentValue });
-      }
-    }
-
-    // TODO: not sure if we need/are able to unsubscribe,
-    //  especially since we aren't getting a "subscription" back
-    //  for each control -- just one for all of them
-    this.rows = this.makeRows();
-    this.subscribeToCellChanges();
   }
 
   get rows(): FormArray {
@@ -182,7 +138,16 @@ export class MapEditorComponent implements OnInit {
     return this.rows.at(n) as FormArray;
   }
 
-  doNotifyLoadMap() {
-    this.notifyLoadMap.emit(this.mapForm.value.rows.flat());
+  saveMap() {
+    this.db.saveMap({
+      id: -1,
+      rows: this.mapForm.get('numRows').value,
+      columns: this.mapForm.get('numColumns').value,
+      name: this.mapForm.get('mapName').value,
+      hint: this.mapForm.get('hint').value,
+      startingBalls: this.mapForm.get('startingBalls').value,
+      endingBalls: this.mapForm.get('endingBalls').value,
+      map: convertMapToShorthand(this.mapForm.get('rows').value.flat()),
+    });
   }
 }

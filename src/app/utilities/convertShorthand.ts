@@ -11,10 +11,33 @@ export const convertShorthandMap = (shorthand: string): string[] => {
         return 'gate-left';
       case 'H':
         return 'gate-right';
-      case 'F':
+      case 'O':
         return 'gate-handoff';
       default:
         return 'air';
     }
   });
+};
+
+export const convertMapToShorthand = (cellNames: string[]): string => {
+  return cellNames
+    .map((cellName) => {
+      switch (cellName) {
+        case 'air':
+          return ' ';
+        case 'bumper-left':
+          return 'L';
+        case 'bumper-right':
+          return 'R';
+        case 'gate-left':
+          return 'G';
+        case 'gate-right':
+          return 'H';
+        case 'gate-handoff':
+          return 'O';
+        default:
+          return ' ';
+      }
+    })
+    .join('');
 };

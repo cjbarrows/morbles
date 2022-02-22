@@ -4,13 +4,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] mark an attempt as soon as 1 ball is released
+[ ] make editor route for loading existing level
+[ ] make editor route
 [ ] cache some of the server queries on the client-side
-[ ] "preventing unauthorized access" to routes
-[ ] have / redirect to /login or /levels depending on login status
 [ ] save map editor levels to server
-[ ] BUG: level 4, first ball, marks "failed" attempt
-    - I don't like the "fail on first of 2 balls" problem
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: slight flicker when ball drops in from top
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
@@ -104,7 +101,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] save player progress to server
 [x] update levels immediately after game state changes
 [x] player stats screen
-
+[x] mark an attempt as soon as 1 ball is released
+[x] redirect to original, desired page after login
+[x] "preventing unauthorized access" to routes
+[x] have / redirect to /login or /levels depending on login status
+[x] BUG: level 4, first ball, marks "failed" attempt
+    - I don't like the "fail on first of 2 balls" problem
+[x] count failures and show level button in red for any level with a "failure"
+    - ie, not just started but definitely *failed*
 ## Notes
 
 - had to restart `ng serve` after adding ng-bootstrap
