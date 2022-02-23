@@ -17,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
 import { LevelsComponent } from './levels/levels.component';
 import { PlayerComponent } from './player/player.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { PlayerComponent } from './player/player.component';
     LoginComponent,
     LevelsComponent,
     PlayerComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,

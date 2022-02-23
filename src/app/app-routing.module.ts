@@ -9,6 +9,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { MapEditorComponent } from './map-editor/map-editor.component';
 
 const routes: Routes = [
+  { path: '', component: LevelsComponent },
   { path: 'login', component: LoginComponent },
   { path: 'levels', component: LevelsComponent },
   { path: 'game/:id', canActivate: [AuthGuard], component: GameBoardComponent },
