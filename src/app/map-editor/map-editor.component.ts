@@ -35,6 +35,8 @@ export class MapEditorComponent implements OnInit {
 
   public mapForm: any;
 
+  isSaving: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private physics: PhysicsService,
@@ -138,8 +140,10 @@ export class MapEditorComponent implements OnInit {
     return this.rows.at(n) as FormArray;
   }
 
-  saveMap() {
-    this.db.saveMap({
+  async saveMap() {
+    this.isSaving = true;
+
+    await this.db.saveMap({
       id: -1,
       rows: this.mapForm.get('numRows').value,
       columns: this.mapForm.get('numColumns').value,
@@ -149,5 +153,7 @@ export class MapEditorComponent implements OnInit {
       endingBalls: this.mapForm.get('endingBalls').value,
       map: convertMapToShorthand(this.mapForm.get('rows').value.flat()),
     });
+
+    this.isSaving = false;
   }
 }

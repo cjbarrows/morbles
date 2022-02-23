@@ -6,6 +6,17 @@ import { map, catchError, retry } from 'rxjs/operators';
 import { GameLevel } from './gameLevel';
 import { Player } from './player';
 
+const convertToDatabaseLevel = (level: GameLevel) => ({
+  ID: level.id,
+  Name: level.name,
+  Hint: level.hint,
+  Rows: level.rows,
+  Columns: level.columns,
+  StartingBalls: level.startingBalls,
+  EndingBalls: level.endingBalls,
+  MapData: level.map,
+});
+
 @Injectable({
   providedIn: 'root',
 })
@@ -171,7 +182,25 @@ export class DatabaseService {
     return this.postLoginUrl;
   }
 
-  saveMap(level: GameLevel) {
-    console.log(level);
+  async saveMap(level: GameLevel) {
+    if (level.id === -1) {
+      const newLevel = { ...convertToDatabaseLevel(level), ID: 0 };
+      await this.http
+        .post(`http://localhost:8080/api/levels`, newLevel, {
+          withCredentials: true,
+        })
+        .toPromise();
+    } else {
+      await this.http
+        .put(
+          `http://localhost:8080/api/levels/${level.id}`,
+          convertToDatabaseLevel(level),
+          {
+            withCredentials: true,
+          }
+        )
+        .toPromise();
+    }
+    return;
   }
 }

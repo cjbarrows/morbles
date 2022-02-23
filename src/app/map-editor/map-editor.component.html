@@ -40,8 +40,8 @@
       </div>
     </div>
   </div>
-  <button (click)="saveMap()" [disabled]="mapForm.status !== 'VALID'" class="btn btn-primary">
-    Save
+  <button (click)="saveMap()" [disabled]="mapForm.status !== 'VALID' || isSaving" class="btn btn-primary">
+    {{isSaving ? 'Saving...' : 'Save'}}
   </button>
 </form>
 <p>Form Status: {{ mapForm.status }}</p>

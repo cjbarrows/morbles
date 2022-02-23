@@ -4,10 +4,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] refresh player(s) after saving new levels
+[ ] BUG: attempts is still mis-counting
+     - for out-of-bounds balls at least
 [ ] make editor route for loading existing level
-[ ] make editor route
 [ ] cache some of the server queries on the client-side
-[ ] save map editor levels to server
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: slight flicker when ball drops in from top
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
@@ -109,6 +110,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - I don't like the "fail on first of 2 balls" problem
 [x] count failures and show level button in red for any level with a "failure"
     - ie, not just started but definitely *failed*
+[x] make editor route
+[x] save map editor levels to server
+
 ## Notes
 
 - had to restart `ng serve` after adding ng-bootstrap
