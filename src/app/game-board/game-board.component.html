@@ -1,11 +1,8 @@
 <app-levels [currentLevelId]="currentLevelId"></app-levels>
-<div *ngIf="level$ | async as level">
-  <h3>{{ level.name }}</h3>
-  <div class="game-interface">
-    <div>State: {{ gameState }}</div>
-    <div>Time:</div>
-    <div>Balls: {{ startingBalls.substr(ballNumber) }}</div>
-    <div class="game-board">
+<div *ngIf="level$ | async as level" class="game-board-container">
+  <div class="game-interface text-center">
+    <h3>{{ level.name }}</h3>
+    <div class="game-board" [ngStyle]="getGameBoardStyle()">
       <app-ball-entry
         [startingBalls]="startingBalls"
         [entryBalls]="entryBallInfo"
@@ -25,14 +22,10 @@
         ></div>
       </div>
       <app-ball-exit
+        [width]="getWidth()"
         [exitBalls]="exitBallInfo"
         [endingBalls]="endingBalls"
       ></app-ball-exit>
-    </div>
-    <div>
-      Finish: {{ ballsAtFinish }}<br /><span
-        >Needs to be: {{ endingBalls }}</span
-      >
     </div>
   </div>
 </div>

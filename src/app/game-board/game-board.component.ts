@@ -93,6 +93,20 @@ export class GameBoardComponent implements OnInit {
     this.level$.subscribe((level) => this.setupFromLevelData(level));
   }
 
+  getWidth(): number {
+    return Math.max(
+      300,
+      this.physics.numColumns * 100 + this.startingBalls.length * 75
+    );
+  }
+
+  getGameBoardStyle(): any {
+    return {
+      height: 150 + this.physics.rows * 100 + 'px',
+      width: this.getWidth() + 'px',
+    };
+  }
+
   setupFromLevelData(level: GameLevel) {
     const { columns, rows, map, startingBalls, endingBalls } = level;
 
@@ -134,7 +148,7 @@ export class GameBoardComponent implements OnInit {
   }
 
   getBallStart(index: number): number {
-    return 1400 - (this.startingBalls.length - index) * 60;
+    return this.getWidth() - (this.startingBalls.length - index) * 60;
   }
 
   getEntryBallsFromStartingBalls(): Array<EntryBallInfo> {

@@ -4,12 +4,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] UI for logout
-[ ] UI for login
+[ ] create method in editor to place balls
+[ ] make better launch buttons
+[ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
 [ ] UI for starting to edit a level
     [ ] with guard
 [ ] UI for starting a new level
-[ ] refresh player(s) after saving new levels
+[ ] refresh player(s) after adding & saving a new level
 [ ] BUG: attempts is still mis-counting
      - for out-of-bounds balls at least
 [ ] cache some of the server queries on the client-side
@@ -117,6 +118,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] save map editor levels to server
 [x] make editor route for loading existing level
 [x] REFACTOR: map-editor.component.ts ngOnChanges
+[x] adjust height of gameboard to match # of rows
+[x] center game and make it not-quite-so-wide
+[x] UI for logout
+[x] UI for login
+    [x] don't show login navbar on login screen
 
 ## Notes
 

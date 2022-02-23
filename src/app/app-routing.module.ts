@@ -9,13 +9,17 @@ import { AuthGuard } from './auth/auth.guard';
 import { MapEditorComponent } from './map-editor/map-editor.component';
 
 const routes: Routes = [
-  { path: '', component: LevelsComponent },
+  { path: '', canActivate: [AuthGuard], component: LevelsComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'levels', component: LevelsComponent },
+  { path: 'levels', canActivate: [AuthGuard], component: LevelsComponent },
   { path: 'game/:id', canActivate: [AuthGuard], component: GameBoardComponent },
-  { path: 'player', component: PlayerComponent },
-  { path: 'editor/:id', component: MapEditorComponent },
-  { path: 'editor', component: MapEditorComponent },
+  { path: 'player', canActivate: [AuthGuard], component: PlayerComponent },
+  {
+    path: 'editor/:id',
+    canActivate: [AuthGuard],
+    component: MapEditorComponent,
+  },
+  { path: 'editor', canActivate: [AuthGuard], component: MapEditorComponent },
 ];
 
 @NgModule({

@@ -6,7 +6,7 @@ export const dropInAnimation = animation([
     left: '{{ leftStart }}',
   }),
   animate(
-    '1s',
+    '.5s',
     keyframes([
       style({ left: '{{ leftStart }}', offset: 0 }),
       style({ left: '{{ leftStop }}', offset: 0.7 }),

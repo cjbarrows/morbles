@@ -1,11 +1,19 @@
+.game-board-container {
+  display: flex;
+  justify-content: center;
+}
+
 .game-board {
   position: relative;
   background-color: gray;
   margin: 20px 20px;
   border: 2px solid black;
   border-radius: 15px;
-  height: 350px;
   overflow: hidden;
+}
+
+.game-board-container h3 {
+  margin-top: 15px;
 }
 
 .game-board-proper {

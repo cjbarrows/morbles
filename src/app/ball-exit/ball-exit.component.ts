@@ -18,6 +18,7 @@ interface BallInfo {
   animations: [dropOutTrigger],
 })
 export class BallExitComponent implements OnInit {
+  @Input() width: number = 1600;
   @Input() exitBalls: Array<ExitBallInfo> = [];
   @Input() endingBalls: string = '';
 
@@ -46,7 +47,7 @@ export class BallExitComponent implements OnInit {
       const newBall: ExitBallInfo = this.exitBalls[this.exitBalls.length - 1];
       this.ballInfo.push({
         chuteX: newBall.x,
-        endX: 1600 - this.exitBalls.length * 60,
+        endX: this.width - this.exitBalls.length * 60,
         color: getColorName(newBall.colorCode),
       });
     }
@@ -64,7 +65,7 @@ export class BallExitComponent implements OnInit {
 
   getTargetBallStyle(index: number) {
     return {
-      left: 1600 - (index + 1) * 60 + 'px',
+      left: this.width - (index + 1) * 60 + 'px',
       opacity: 0.5,
     };
   }

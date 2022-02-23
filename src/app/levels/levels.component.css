@@ -1,8 +1,4 @@
-/*
-button:focus, button.focus {
-  outline: none;
-  box-shadow: none;
-  background-color:unset;
-  border-color: unset;
+:host {
+  display: flex;
+  justify-content: center;
 }
-*/

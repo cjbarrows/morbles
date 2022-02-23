@@ -23,6 +23,8 @@ const convertToDatabaseLevel = (level: GameLevel) => ({
 export class DatabaseService {
   postLoginUrl: string = '';
 
+  cachedIsLoggedIn: boolean = false;
+
   constructor(private http: HttpClient) {}
 
   async login(username: string, password: string) {
@@ -43,7 +45,10 @@ export class DatabaseService {
     this.http
       .get('http://localhost:8080/api/logout', { withCredentials: true })
       .subscribe(
-        (response) => console.log(response),
+        (response) => {
+          this.cachedIsLoggedIn = false;
+          console.log(response);
+        },
         (error) => console.error(error)
       );
   }
@@ -62,8 +67,12 @@ export class DatabaseService {
       this.http
         .get('http://localhost:8080/api/me', { withCredentials: true })
         .pipe(
-          map(() => true),
+          map(() => {
+            this.cachedIsLoggedIn = true;
+            return true;
+          }),
           catchError(() => {
+            this.cachedIsLoggedIn = false;
             return of(false);
           })
         )

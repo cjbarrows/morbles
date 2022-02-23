@@ -6,7 +6,7 @@ export const dropOutAnimation = animation([
     left: '{{ leftStart }}',
   }),
   animate(
-    '1s',
+    '.5s',
     keyframes([
       style({ top: '-25px', offset: 0 }),
       style({ top: '30px', offset: 0.3 }),
