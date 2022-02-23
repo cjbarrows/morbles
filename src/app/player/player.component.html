@@ -11,10 +11,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let level of player.levelStatuses">
+      <tr *ngFor="let level of player.levelStatuses; let i = index">
         <td>
           <a class="nav-link" href="/game/{{ level.levelId }}"
-            >{{ level.levelId }}: {{ getLevelName(level.levelId) }}</a
+            >{{ i + 1 }}: {{ getLevelName(level.levelId) }}</a
           >
         </td>
         <td>{{ level.attempts }}</td>

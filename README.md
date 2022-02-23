@@ -4,10 +4,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] UI for logout
+[ ] UI for login
+[ ] UI for starting to edit a level
+    [ ] with guard
+[ ] UI for starting a new level
 [ ] refresh player(s) after saving new levels
 [ ] BUG: attempts is still mis-counting
      - for out-of-bounds balls at least
-[ ] make editor route for loading existing level
 [ ] cache some of the server queries on the client-side
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: slight flicker when ball drops in from top
@@ -16,7 +20,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
 [ ] auto-load levels from /index
 [ ] auto-load levels from db
-[ ] REFACTOR: map-editor.component.ts ngOnChanges
 [ ] also add 'gate handoff' when 'gate' is added to map
 [ ] REFACTOR: move colorName to constants
 [ ] REFACTOR: reconcile app / gameboard responsibility (start/stop, time, ball order, etc)
@@ -112,6 +115,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - ie, not just started but definitely *failed*
 [x] make editor route
 [x] save map editor levels to server
+[x] make editor route for loading existing level
+[x] REFACTOR: map-editor.component.ts ngOnChanges
 
 ## Notes
 

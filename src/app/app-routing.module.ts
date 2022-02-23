@@ -13,6 +13,7 @@ const routes: Routes = [
   { path: 'levels', component: LevelsComponent },
   { path: 'game/:id', canActivate: [AuthGuard], component: GameBoardComponent },
   { path: 'player', component: PlayerComponent },
+  { path: 'editor/:id', component: MapEditorComponent },
   { path: 'editor', component: MapEditorComponent },
 ];
 

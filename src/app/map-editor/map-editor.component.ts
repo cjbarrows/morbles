@@ -7,10 +7,16 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable, of, switchMap } from 'rxjs';
 
+import { BlankGameLevel, GameLevel } from '../gameLevel';
 import { DatabaseService } from '../database.service';
 import { PhysicsService } from '../physics.service';
-import { convertMapToShorthand } from '../utilities/convertShorthand';
+import {
+  convertShorthandMap,
+  convertMapToShorthand,
+} from '../utilities/convertShorthand';
 
 function colorCodeValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -37,10 +43,14 @@ export class MapEditorComponent implements OnInit {
 
   isSaving: boolean = false;
 
+  level$!: Observable<GameLevel>;
+  currentLevelId: number = 0;
+
   constructor(
     private fb: FormBuilder,
     private physics: PhysicsService,
-    private db: DatabaseService
+    private db: DatabaseService,
+    private route: ActivatedRoute
   ) {}
 
   makeColumns = (rowIndex: number): FormArray => {
@@ -69,6 +79,30 @@ export class MapEditorComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.level$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        const levelId = Number(params.get('id'));
+        if (levelId > 0) {
+          this.currentLevelId = levelId;
+          return this.db.getLevel(this.currentLevelId);
+        }
+        return of(BlankGameLevel);
+      })
+    );
+
+    this.level$.subscribe((level) => {
+      this.startingMap = convertShorthandMap(level.map);
+      this.mapForm.patchValue({
+        mapName: level.name,
+        hint: level.hint,
+        startingBalls: level.startingBalls,
+        endingBalls: level.endingBalls,
+        numRows: level.rows,
+        numColumns: level.columns,
+      });
+      this.rows = this.makeRows();
+    });
+
     this.mapForm = this.fb.group({
       mapName: ['', [Validators.required]],
       hint: '',
@@ -144,7 +178,7 @@ export class MapEditorComponent implements OnInit {
     this.isSaving = true;
 
     await this.db.saveMap({
-      id: -1,
+      id: this.currentLevelId === 0 ? -1 : this.currentLevelId,
       rows: this.mapForm.get('numRows').value,
       columns: this.mapForm.get('numColumns').value,
       name: this.mapForm.get('mapName').value,
