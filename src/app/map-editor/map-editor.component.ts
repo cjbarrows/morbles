@@ -92,14 +92,16 @@ export class MapEditorComponent implements OnInit {
 
     this.level$.subscribe((level) => {
       this.startingMap = convertShorthandMap(level.map);
-      this.mapForm.patchValue({
-        mapName: level.name,
-        hint: level.hint,
-        startingBalls: level.startingBalls,
-        endingBalls: level.endingBalls,
-        numRows: level.rows,
-        numColumns: level.columns,
-      });
+      if (this.mapForm) {
+        this.mapForm.patchValue({
+          mapName: level.name,
+          hint: level.hint,
+          startingBalls: level.startingBalls,
+          endingBalls: level.endingBalls,
+          numRows: level.rows,
+          numColumns: level.columns,
+        });
+      }
       this.rows = this.makeRows();
     });
 

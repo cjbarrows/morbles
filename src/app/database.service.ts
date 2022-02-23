@@ -131,6 +131,7 @@ export class DatabaseService {
       return {
         id: playerData.ID,
         name: playerData.Name,
+        admin: playerData.Admin,
         levelStatuses: playerData.LevelStatuses.map((levelStatus: any) => ({
           levelId: levelStatus.LevelID,
           attempts: levelStatus.Attempts,
@@ -157,6 +158,7 @@ export class DatabaseService {
       return {
         id: playerData.ID,
         name: playerData.Name,
+        admin: playerData.Admin,
         levelStatuses: playerData.LevelStatuses.map((levelStatus: any) => ({
           levelId: levelStatus.LevelID,
           attempts: levelStatus.Attempts,

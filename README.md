@@ -4,13 +4,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] refresh player(s) after adding & saving a new level
+[ ] GAMEPLAY: should a ball landing on top of a ball in a gate act differently?
+    - right now it's the same effect as a ball flipping the gate
 [ ] create method in editor to place balls
 [ ] make better launch buttons
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
-[ ] UI for starting to edit a level
-    [ ] with guard
-[ ] UI for starting a new level
-[ ] refresh player(s) after adding & saving a new level
 [ ] BUG: attempts is still mis-counting
      - for out-of-bounds balls at least
 [ ] cache some of the server queries on the client-side
@@ -123,6 +122,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] UI for logout
 [x] UI for login
     [x] don't show login navbar on login screen
+[x] UI for starting to edit a level
+    [x] with guard
+        - for now: hard-coded to my email address upon player registration
+[x] UI for starting a new level
 
 ## Notes
 

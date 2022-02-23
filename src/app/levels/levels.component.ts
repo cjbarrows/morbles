@@ -69,8 +69,6 @@ export class LevelsComponent implements OnInit {
   }
 
   onLoadLevel(index: number) {
-    // this.notifyLoad.emit(this.levels[index]);
-    // this.router.navigate(['/game', { levelId: this.levels[index].id }]);
     this.router.navigate(['/game', this.levels[index].id]);
   }
 }
