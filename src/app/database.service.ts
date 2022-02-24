@@ -45,7 +45,7 @@ export class DatabaseService {
   }
 
   logout() {
-    this.http.get(`{API_URL}/api/logout`, { withCredentials: true }).subscribe(
+    this.http.get(`${API_URL}/api/logout`, { withCredentials: true }).subscribe(
       (response) => {
         this.cachedIsLoggedIn = false;
         console.log(response);
