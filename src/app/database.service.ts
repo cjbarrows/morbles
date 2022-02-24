@@ -5,6 +5,9 @@ import { map, catchError, retry } from 'rxjs/operators';
 
 import { GameLevel } from './gameLevel';
 import { Player } from './player';
+import { environment } from '../environments/environment';
+
+const API_URL = environment.apiUrl;
 
 const convertToDatabaseLevel = (level: GameLevel) => ({
   ID: level.id,
@@ -34,7 +37,7 @@ export class DatabaseService {
     formData.append('password', password);
 
     this.http
-      .post('http://localhost:8080/login', formData, { withCredentials: true })
+      .post(`${API_URL}/login`, formData, { withCredentials: true })
       .subscribe(
         (response) => console.log(response),
         (error) => console.error(error)
@@ -42,47 +45,41 @@ export class DatabaseService {
   }
 
   logout() {
-    this.http
-      .get('http://localhost:8080/api/logout', { withCredentials: true })
-      .subscribe(
-        (response) => {
-          this.cachedIsLoggedIn = false;
-          console.log(response);
-        },
-        (error) => console.error(error)
-      );
+    this.http.get(`{API_URL}/api/logout`, { withCredentials: true }).subscribe(
+      (response) => {
+        this.cachedIsLoggedIn = false;
+        console.log(response);
+      },
+      (error) => console.error(error)
+    );
   }
 
   showMe() {
-    this.http
-      .get('http://localhost:8080/api/me', { withCredentials: true })
-      .subscribe(
-        (response) => console.log(response),
-        (error) => console.error(error)
-      );
+    this.http.get(`${API_URL}/api/me`, { withCredentials: true }).subscribe(
+      (response) => console.log(response),
+      (error) => console.error(error)
+    );
   }
 
   isLoggedIn(): Promise<boolean | undefined> {
     return firstValueFrom(
-      this.http
-        .get('http://localhost:8080/api/me', { withCredentials: true })
-        .pipe(
-          map(() => {
-            this.cachedIsLoggedIn = true;
-            return true;
-          }),
-          catchError(() => {
-            this.cachedIsLoggedIn = false;
-            return of(false);
-          })
-        )
+      this.http.get(`${API_URL}/api/me`, { withCredentials: true }).pipe(
+        map(() => {
+          this.cachedIsLoggedIn = true;
+          return true;
+        }),
+        catchError(() => {
+          this.cachedIsLoggedIn = false;
+          return of(false);
+        })
+      )
     );
   }
 
   async getLevels(): Promise<Array<GameLevel>> {
     return firstValueFrom(
       this.http
-        .get<any>('http://localhost:8080/api/levels', { withCredentials: true })
+        .get<any>(`${API_URL}/api/levels`, { withCredentials: true })
         .pipe(
           map((result) =>
             result.map((level: any) => ({
@@ -102,7 +99,7 @@ export class DatabaseService {
 
   getLevel(id: number): Observable<GameLevel> {
     return this.http
-      .get<any>(`http://localhost:8080/api/levels/${id}`, {
+      .get<any>(`${API_URL}/api/levels/${id}`, {
         withCredentials: true,
       })
       .pipe(
@@ -122,7 +119,7 @@ export class DatabaseService {
   async getAuthenticatedPlayer(): Promise<Player> {
     try {
       const playerData: any = await this.http
-        .get<any>(`http://localhost:8080/api/player`, {
+        .get<any>(`${API_URL}/api/player`, {
           withCredentials: true,
         })
         .pipe(map((result) => result))
@@ -149,7 +146,7 @@ export class DatabaseService {
   async getPlayer(id: number): Promise<Player> {
     try {
       const playerData: any = await this.http
-        .get<any>(`http://localhost:8080/api/player/${id}`, {
+        .get<any>(`${API_URL}/api/player/${id}`, {
           withCredentials: true,
         })
         .pipe(map((result) => result))
@@ -175,7 +172,7 @@ export class DatabaseService {
 
   savePlayer(player: Player) {
     return this.http
-      .put(`http://localhost:8080/api/player/${player.id}`, player, {
+      .put(`${API_URL}/api/player/${player.id}`, player, {
         withCredentials: true,
       })
       .subscribe();
@@ -197,14 +194,14 @@ export class DatabaseService {
     if (level.id === -1) {
       const newLevel = { ...convertToDatabaseLevel(level), ID: 0 };
       await this.http
-        .post(`http://localhost:8080/api/levels`, newLevel, {
+        .post(`${API_URL}/api/levels`, newLevel, {
           withCredentials: true,
         })
         .toPromise();
     } else {
       await this.http
         .put(
-          `http://localhost:8080/api/levels/${level.id}`,
+          `${API_URL}/api/levels/${level.id}`,
           convertToDatabaseLevel(level),
           {
             withCredentials: true,
