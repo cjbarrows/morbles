@@ -4,7 +4,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-- trying to get it FE to connect to BE Port on Heroku
 [ ] GAMEPLAY: should a ball landing on top of a ball in a gate act differently?
     - right now it's the same effect as a ball flipping the gate
         - I think that may be "right" from a physics point of view...
