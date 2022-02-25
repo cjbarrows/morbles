@@ -5,6 +5,6 @@
   </div>
   <div class="navbar-nav ml-auto">
     <a *ngIf="!cachedLoginStatus() && !onLoginScreen()" class="nav-link" href="/login">Login</a>
-    <a *ngIf="cachedLoginStatus()" class="nav-link" href="/login" (click)="logout($event)">Logout</a>
+    <a *ngIf="cachedLoginStatus()" class="nav-link" href="/login" (click)="logout()">Logout</a>
   </div>
 </nav>

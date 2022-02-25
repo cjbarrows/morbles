@@ -21,9 +21,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  async logout(event: any) {
-    event.preventDefault();
+  async logout() {
     await this.db.logout();
-    console.log('SHOULD BE logged out');
   }
 }
