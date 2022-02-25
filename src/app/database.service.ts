@@ -44,14 +44,16 @@ export class DatabaseService {
       );
   }
 
-  logout() {
-    this.http.get(`${API_URL}/api/logout`, { withCredentials: true }).subscribe(
-      (response) => {
-        this.cachedIsLoggedIn = false;
-        console.log(response);
-      },
-      (error) => console.error(error)
-    );
+  async logout() {
+    try {
+      const response = await this.http
+        .get(`${API_URL}/api/logout`, { withCredentials: true })
+        .toPromise();
+      this.cachedIsLoggedIn = false;
+      console.log(response);
+    } catch (error) {
+      console.log(`error logging out: ${JSON.stringify(error)}`);
+    }
   }
 
   showMe() {
