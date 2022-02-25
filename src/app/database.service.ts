@@ -63,6 +63,13 @@ export class DatabaseService {
     );
   }
 
+  setMe() {
+    this.http.get(`${API_URL}/api/setme`, { withCredentials: true }).subscribe(
+      (response) => console.log(response),
+      (error) => console.error(error)
+    );
+  }
+
   isLoggedIn(): Promise<boolean | undefined> {
     return firstValueFrom(
       this.http.get(`${API_URL}/api/me`, { withCredentials: true }).pipe(

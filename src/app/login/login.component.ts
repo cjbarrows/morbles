@@ -36,6 +36,10 @@ export class LoginComponent implements OnInit {
     this.db.showMe();
   }
 
+  setMe() {
+    this.db.setMe();
+  }
+
   async onSubmit() {
     this.submitted = true;
 
