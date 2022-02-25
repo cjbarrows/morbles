@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       username: ['charlie.barrows@gmail.com', Validators.required],
-      password: ['2020', Validators.required],
+      password: ['2022', Validators.required],
     });
   }
 
@@ -51,7 +51,11 @@ export class LoginComponent implements OnInit {
     this.loading = true;
 
     try {
-      await this.db.login(this.f['username'].value, this.f['password'].value);
+      const response = await this.db.login(
+        this.f['username'].value,
+        this.f['password'].value
+      );
+      console.log(response);
       this.router.navigateByUrl(this.db.getPostLoginRedirect() || '/levels');
     } catch (error) {
       console.error(error);

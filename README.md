@@ -4,6 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] display toast for login failure
 [ ] GAMEPLAY: should a ball landing on top of a ball in a gate act differently?
     - right now it's the same effect as a ball flipping the gate
         - I think that may be "right" from a physics point of view...
@@ -18,8 +19,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
-[ ] auto-load levels from /index
-[ ] auto-load levels from db
 [ ] also add 'gate handoff' when 'gate' is added to map
 [ ] REFACTOR: move colorName to constants
 [ ] REFACTOR: reconcile app / gameboard responsibility (start/stop, time, ball order, etc)
@@ -128,6 +127,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] UI for starting a new level
 [x] refresh player(s) after adding & saving a new level
     - refreshed player on server -- that seemed to work for now
+[-] auto-load levels from /index
+[x] auto-load levels from db
 
 ## Notes
 

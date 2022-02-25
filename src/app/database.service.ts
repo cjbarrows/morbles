@@ -36,12 +36,9 @@ export class DatabaseService {
     formData.append('username', username);
     formData.append('password', password);
 
-    this.http
+    return await this.http
       .post(`${API_URL}/login`, formData, { withCredentials: true })
-      .subscribe(
-        (response) => console.log(response),
-        (error) => console.error(error)
-      );
+      .toPromise();
   }
 
   async logout() {
