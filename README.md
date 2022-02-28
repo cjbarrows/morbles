@@ -4,6 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
 [ ] display toast for login failure
 [ ] GAMEPLAY: should a ball landing on top of a ball in a gate act differently?
     - right now it's the same effect as a ball flipping the gate
