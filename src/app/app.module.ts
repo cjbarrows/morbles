@@ -18,6 +18,7 @@ import { LoginComponent } from './login/login.component';
 import { LevelsComponent } from './levels/levels.component';
 import { PlayerComponent } from './player/player.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ToastsComponent } from './toasts/toasts.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     LevelsComponent,
     PlayerComponent,
     NavbarComponent,
+    ToastsComponent,
   ],
   imports: [
     BrowserModule,

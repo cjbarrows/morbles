@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatabaseService } from '../database.service';
+import { ToastService } from '../toast.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
     private db: DatabaseService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toasts: ToastService
   ) {
     this.form = this.formBuilder.group({
       username: ['charlie.barrows@gmail.com', Validators.required],
@@ -57,9 +59,12 @@ export class LoginComponent implements OnInit {
       );
       console.log(response);
       this.router.navigateByUrl(this.db.getPostLoginRedirect() || '/levels');
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
       this.loading = false;
+      this.toasts.show(
+        'Login Error',
+        (error && error.error && error.error.error) || 'Sorry!'
+      );
     }
   }
 
