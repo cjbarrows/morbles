@@ -10,6 +10,7 @@ import { ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 import { PhysicsService } from '../physics.service';
 import { DrawObject } from '../drawobject';
@@ -27,6 +28,7 @@ import { DatabaseService } from '../database.service';
 import { RendererService } from '../renderer.service';
 import { Player } from '../player';
 import { LevelsComponent } from '../levels/levels.component';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-game-board',
@@ -37,8 +39,6 @@ export class GameBoardComponent implements OnInit {
   numColumns: number = 3;
   startingBalls: string = '';
   endingBalls: string = '';
-
-  @Output() notifyGameState = new EventEmitter();
 
   @ViewChild(BallEntryComponent)
   private ballEntryComponent!: BallEntryComponent;
@@ -71,7 +71,8 @@ export class GameBoardComponent implements OnInit {
     private db: DatabaseService,
     private renderer: RendererService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
     this.physics.ballExitObservable.subscribe(this.onBallExit);
 
@@ -110,7 +111,8 @@ export class GameBoardComponent implements OnInit {
   }
 
   setupFromLevelData(level: GameLevel) {
-    const { columns, rows, map, startingBalls, endingBalls } = level;
+    const { name, hint, columns, rows, map, startingBalls, endingBalls } =
+      level;
 
     this.physics.clearAll();
 
@@ -124,16 +126,43 @@ export class GameBoardComponent implements OnInit {
     this.startingBalls = startingBalls;
     this.endingBalls = endingBalls;
 
-    this.doResetLevel();
+    this.doResetLevel(name, hint);
   }
 
-  doResetLevel() {
+  doResetLevel(name: string, hint: string) {
     this.ballNumber = 0;
     this.outOfBalls = false;
     this.gameState = 'unstarted';
     this.ballsAtFinish = '';
     this.entryBallInfo = this.getEntryBallsFromStartingBalls();
     this.exitBallInfo = [];
+
+    this.showPlayModal(name, hint);
+  }
+
+  showPlayModal(name: string, hint: string) {
+    const options: NgbModalOptions = {
+      backdropClass: 'app-session-modal-backdrop',
+      windowClass: 'app-session-modal-window',
+      centered: true,
+    };
+
+    const modalRef = this.modalService.open(ModalComponent, options);
+    modalRef.componentInstance.my_modal_title = `${this.currentLevelId}: ${name}`;
+    modalRef.componentInstance.my_modal_content = hint;
+    modalRef.result.then(
+      () => {},
+      (reason) => {
+        switch (reason) {
+          case 'play':
+            this.gameState = 'open';
+            break;
+          case 'cancel':
+          default:
+            this.router.navigate(['/levels']);
+        }
+      }
+    );
   }
 
   public set gameState(newGameState: GAME_STATE) {
@@ -142,8 +171,6 @@ export class GameBoardComponent implements OnInit {
     this.updatePlayerStatus(this.currentLevelId, newGameState).then(() => {
       this.levelsComponent.refreshPlayer();
     });
-
-    this.notifyGameState.emit(newGameState);
   }
 
   public get gameState(): GAME_STATE {

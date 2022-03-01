@@ -18,7 +18,7 @@
   100% { transform: translate(-25px, -25px) scale(1.2); opacity: 0.5; }
 }
 
-.target-area .ball {
+.target-area.started .ball {
   animation: pulse 3s infinite ease-in-out;
 }
 

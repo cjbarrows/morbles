@@ -117,95 +117,9 @@ export class AppComponent {
     }
   }
 
-  onNotifyLoad(level: GameLevel) {
-    const { id, name, columns, rows, map, startingBalls, endingBalls } = level;
-
-    this.gameBoardComponent.doResetLevel();
-
-    this.physics.clearAll();
-
-    this.mapName = name;
-
-    this.physics.setNumColumns(columns);
-    this.physics.rows = rows;
-
-    this.startMap = convertShorthandMap(map);
-
-    this.startingBalls = startingBalls;
-    this.endingBalls = endingBalls;
-
-    this.currentLevelId = id;
-  }
-
   onNotifySize(size: Size) {
     this.physics.setNumColumns(size.columns);
     this.physics.rows = size.rows;
-  }
-
-  onNotifyLoadMap(mapCells: Array<string>) {
-    this.physics.clearAll();
-
-    mapCells.forEach((name, index) => {
-      const cell = getCellFromName(name);
-
-      const x = index % this.physics.getNumColumns();
-      const y = (index - x) / this.physics.getNumColumns();
-      this.physics.addCell(x, y, cell);
-    });
-  }
-
-  onNotifyCellChange(cellChange: any) {
-    const x: number = cellChange.cellIndex % this.physics.getNumColumns();
-    const y: number = (cellChange.cellIndex - x) / this.physics.getNumColumns();
-
-    const cell = getCellFromName(cellChange.value);
-
-    this.physics.setCell(x, y, cell);
-  }
-
-  onNotifyBallOrderChange(changeToOrder: BallOrder) {
-    if (changeToOrder.startingBalls) {
-      this.startingBalls = changeToOrder.startingBalls;
-    }
-    if (changeToOrder.endingBalls) {
-      this.endingBalls = changeToOrder.endingBalls;
-    }
-  }
-
-  onNotifyGameState(state: GAME_STATE) {
-    if (this.currentLevelId) {
-      if (state === 'success') {
-        this.updatePlayerStatus(this.currentLevelId, state);
-      } else if (state === 'failed') {
-        this.updatePlayerStatus(this.currentLevelId, state);
-      }
-    }
-  }
-
-  updatePlayerStatus(levelId: number, state: GAME_STATE) {
-    let level = this.player.levelStatuses.find(
-      (status) => status.levelId === levelId
-    );
-
-    if (!level) {
-      level = { levelId, attempts: 0, failures: 0, completed: false };
-      this.player.levelStatuses.push(level);
-    }
-    if (state === 'success') {
-      level.attempts += 1;
-      level.completed = true;
-    } else if (state === 'failed') {
-      level.attempts += 1;
-    }
-
-    this.currentPlayerStatus = [
-      ...this.currentPlayerStatus.filter(
-        (levelStatus) => levelStatus.levelId !== levelId
-      ),
-      ...[level],
-    ].sort((a, b) => a.levelId - b.levelId);
-
-    this.db.savePlayer(this.player);
   }
 
   getRenderer(): RendererService {

@@ -10,6 +10,7 @@ import { flashAnimation } from 'angular-animations';
 
 import { launchTrigger } from './launch.trigger.animation';
 import { PhysicsService } from '../physics.service';
+import { GAME_STATE } from '../constants';
 
 @Component({
   selector: 'app-launch-button',
@@ -21,6 +22,7 @@ export class LaunchButtonsComponent implements AfterContentInit {
   @Input() launchFunction: Function = () => {};
   @Input() index: number = 0;
   @Input() outOfBalls: boolean = false;
+  @Input() gameState: GAME_STATE = 'unstarted';
   @Output() notifyLaunchDone: EventEmitter<string> = new EventEmitter();
 
   animState: boolean = true;
@@ -40,7 +42,10 @@ export class LaunchButtonsComponent implements AfterContentInit {
   }
 
   getAnimState() {
-    if (this.outOfBalls) {
+    if (
+      this.outOfBalls ||
+      (this.gameState !== 'in progress' && this.gameState !== 'open')
+    ) {
       return 'off';
     }
 

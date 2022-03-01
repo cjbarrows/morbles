@@ -4,6 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] fancier "level complete" or "level failed" message
 [ ] BUG: the level completion red/green buttons are not always showing correctly (!)
     - mostly when clicking among levels
 [ ] BUG: you shouldn't be able to "uncomplete" a level
@@ -15,13 +16,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
 [ ] BUG: attempts is still mis-counting
      - for out-of-bounds balls at least
+     - might be 2 updatePlayerStatus function calls, one in app.component and one in game-board :/
 [ ] cache some of the server queries on the client-side
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: slight flicker when ball drops in from top
     - I think this could be a short interim where it's not rendered at all (ie, in between the drop-in and the game board)
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
-[ ] show level hint at start
-    [ ] maybe with "play" button and no launch buttons until play starts
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
 [ ] also add 'gate handoff' when 'gate' is added to map
 [ ] REFACTOR: move colorName to constants
@@ -137,6 +137,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] make better launch buttons
     [x] play flash animation when button is clicked
     [x] turn off launch buttons when all balls are gone
+[x] show level hint at start
+    [x] maybe with "play" button and no launch buttons until play starts
 
 ## Notes
 

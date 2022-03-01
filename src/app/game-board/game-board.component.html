@@ -14,6 +14,7 @@
           [index]="i"
           [launchFunction]="this.launch"
           [outOfBalls]="outOfBalls"
+          [gameState]="gameState"
           (notifyLaunchDone)="onLaunchDone()"
         ></app-launch-button>
         <div
@@ -27,6 +28,7 @@
         [width]="getWidth()"
         [exitBalls]="exitBallInfo"
         [endingBalls]="endingBalls"
+        [gameState]="gameState"
       ></app-ball-exit>
     </div>
   </div>

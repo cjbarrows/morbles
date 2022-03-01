@@ -19,6 +19,7 @@ import { LevelsComponent } from './levels/levels.component';
 import { PlayerComponent } from './player/player.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ToastsComponent } from './toasts/toasts.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import { ToastsComponent } from './toasts/toasts.component';
     PlayerComponent,
     NavbarComponent,
     ToastsComponent,
+    ModalComponent,
   ],
+  entryComponents: [ModalComponent],
   imports: [
     BrowserModule,
     NgbModule,

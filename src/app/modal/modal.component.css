@@ -1,0 +1,15 @@
+ngb-modal-window.app-session-modal-window {
+  /* z-index: 20000; */
+}
+
+.btn.play img {
+  width: 100px;
+}
+
+.btn.play img:hover {
+  filter: brightness(1.25);
+}
+
+.btn.play img:active {
+  filter: brightness(0.9);
+}

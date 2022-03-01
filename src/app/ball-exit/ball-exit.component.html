@@ -8,7 +8,12 @@
     *ngFor="let b of ballInfo; let i = index"
     (@dropOut.done)="onAnimationEvent($event)"
   ></div>
-  <div class="target-area">
+  <div
+    [ngClass]="{
+      'target-area': true,
+      started: gameState === 'in progress' || gameState === 'open'
+    }"
+  >
     <div
       [ngClass]="getTargetBallClass(i)"
       [ngStyle]="getTargetBallStyle(i)"

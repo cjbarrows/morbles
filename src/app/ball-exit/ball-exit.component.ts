@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { AnimationEvent } from '@angular/animations';
 
 import { dropOutTrigger } from './dropOut.trigger.animation';
 import { getColorName } from '../utilities/getColorName';
 import { ExitBallInfo } from '../exitBallInfo';
+import { GAME_STATE } from '../constants';
 
 interface BallInfo {
   chuteX: number;
@@ -21,6 +21,7 @@ export class BallExitComponent implements OnInit {
   @Input() width: number = 1600;
   @Input() exitBalls: Array<ExitBallInfo> = [];
   @Input() endingBalls: string = '';
+  @Input() gameState: GAME_STATE = 'unstarted';
 
   ballInfo: Array<BallInfo> = [];
 
