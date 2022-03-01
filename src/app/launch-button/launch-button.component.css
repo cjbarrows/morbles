@@ -2,3 +2,8 @@
   position: absolute;
   z-index: 10000;
 }
+
+img {
+  width: 50px;
+  transform: translate(25px, 0) rotate(90deg);
+}

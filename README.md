@@ -4,18 +4,24 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: the level completion red/green buttons are not always showing correctly (!)
+    - mostly when clicking among levels
+[ ] BUG: you shouldn't be able to "uncomplete" a level
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
 [ ] GAMEPLAY: should a ball landing on top of a ball in a gate act differently?
     - right now it's the same effect as a ball flipping the gate
         - I think that may be "right" from a physics point of view...
 [ ] create method in editor to place balls
 [ ] make better launch buttons
+    [ ] play flash animation when button is clicked
+    [ ] turn off launch buttons when all balls are gone & before play has started
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
 [ ] BUG: attempts is still mis-counting
      - for out-of-bounds balls at least
 [ ] cache some of the server queries on the client-side
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: slight flicker when ball drops in from top
+    - I think this could be a short interim where it's not rendered at all (ie, in between the drop-in and the game board)
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
