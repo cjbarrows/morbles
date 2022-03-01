@@ -13,6 +13,8 @@
           *ngFor="let button of this.launchButtons; let i = index"
           [index]="i"
           [launchFunction]="this.launch"
+          [outOfBalls]="outOfBalls"
+          (notifyLaunchDone)="onLaunchDone()"
         ></app-launch-button>
         <div
           [class]="drawObject.className"

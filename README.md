@@ -12,9 +12,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - right now it's the same effect as a ball flipping the gate
         - I think that may be "right" from a physics point of view...
 [ ] create method in editor to place balls
-[ ] make better launch buttons
-    [ ] play flash animation when button is clicked
-    [ ] turn off launch buttons when all balls are gone & before play has started
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
 [ ] BUG: attempts is still mis-counting
      - for out-of-bounds balls at least
@@ -24,6 +21,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - I think this could be a short interim where it's not rendered at all (ie, in between the drop-in and the game board)
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] show level hint at start
+    [ ] maybe with "play" button and no launch buttons until play starts
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
 [ ] also add 'gate handoff' when 'gate' is added to map
 [ ] REFACTOR: move colorName to constants
@@ -136,6 +134,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [-] auto-load levels from /index
 [x] auto-load levels from db
 [x] display toast for login failure
+[x] make better launch buttons
+    [x] play flash animation when button is clicked
+    [x] turn off launch buttons when all balls are gone
 
 ## Notes
 

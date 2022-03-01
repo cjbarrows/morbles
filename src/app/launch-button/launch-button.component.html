@@ -1,11 +1,6 @@
 <img
   src="/assets/launchArrow.png"
   (click)="doLaunchFunction()"
-  [@flareTrigger]="flaring ? 'flare' : ''"
-  (@flareTrigger.done)="flareDone($event)"
-  [@flash]="{
-    value: animState && !flaring,
-    params: { delay: getDelayValue(), duration: 2000 }
-  }"
-  (@flash.done)="animDone($event)"
+  [@launch]="getAnimState()"
+  (@launch.done)="animDone($event)"
 />

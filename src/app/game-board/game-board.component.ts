@@ -57,6 +57,8 @@ export class GameBoardComponent implements OnInit {
   exitBallInfo: Array<ExitBallInfo> = [];
   ballsAtFinish: string = '';
 
+  outOfBalls: boolean = false;
+
   level$!: Observable<GameLevel>;
   drawList: Array<DrawObject> = [];
 
@@ -127,6 +129,7 @@ export class GameBoardComponent implements OnInit {
 
   doResetLevel() {
     this.ballNumber = 0;
+    this.outOfBalls = false;
     this.gameState = 'unstarted';
     this.ballsAtFinish = '';
     this.entryBallInfo = this.getEntryBallsFromStartingBalls();
@@ -244,6 +247,12 @@ export class GameBoardComponent implements OnInit {
       }
     }
   };
+
+  onLaunchDone() {
+    if (this.ballNumber >= this.startingBalls.length) {
+      this.outOfBalls = true;
+    }
+  }
 
   async updatePlayerStatus(levelId: number, state: GAME_STATE) {
     let level = this.player.levelStatuses.find(
