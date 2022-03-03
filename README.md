@@ -17,8 +17,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
      - might be 2 updatePlayerStatus function calls, one in app.component and one in game-board :/
 [ ] cache some of the server queries on the client-side
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
-[ ] BUG: slight flicker when ball drops in from top
-    - I think this could be a short interim where it's not rendered at all (ie, in between the drop-in and the game board)
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
 [ ] also add 'gate handoff' when 'gate' is added to map
@@ -143,6 +141,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] handle "next level not found" error when you've reached the end
     - new "success" dialog message?
 [x] fancier "level complete" or "level failed" message
+[x] BUG: slight flicker when ball drops in from top
+    - I think this could be a short interim where it's not rendered at all (ie, in between the drop-in and the game board)
+      - yeah, seems like it; need a good way to fix that
 
 ## Notes
 

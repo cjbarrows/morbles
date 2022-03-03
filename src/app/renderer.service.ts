@@ -14,6 +14,10 @@ export class RendererService {
     this.drawList$ = new Subject<Array<DrawObject>>();
   }
 
+  forceRedraw(physics: PhysicsService) {
+    this.createDrawlistFromPhysics(physics);
+  }
+
   createDrawlistFromPhysics(physics: PhysicsService) {
     const newDrawlist = [
       ...physics.getBoundaries().map((boundary) => {

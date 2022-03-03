@@ -1,17 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { GameBoardComponent } from './game-board/game-board.component';
 import { RendererService } from './renderer.service';
 import { PhysicsService } from './physics.service';
 import { DatabaseService } from './database.service';
-import { getCellFromName } from './cellFactory';
 import { Size } from './size';
-import { convertShorthandMap } from './utilities/convertShorthand';
-import { BallOrder } from './ballOrder';
 import { GameLevel } from './gameLevel';
 import { Player } from './player';
-import { GAME_STATE } from './constants';
 import { LevelStatus } from './levelStatus';
 
 @Component({

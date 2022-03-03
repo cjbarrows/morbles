@@ -52,10 +52,6 @@ export class BallEntryComponent implements OnInit {
   }
 
   launchNextBall(ballIndex: number, chuteNumber: number) {
-    console.log(`setting ball ${ballIndex} to chute ${chuteNumber}`);
-
-    console.log(`pushing ${chuteNumber}`);
-
     this.chuteNumberQueue.push({ chuteNumber, ballIndex });
     this.entryBalls[ballIndex].moving = true;
     this.entryBalls[ballIndex].chuteX = chuteNumber * 100 + 50;
@@ -63,12 +59,13 @@ export class BallEntryComponent implements OnInit {
 
   onAnimationEvent(event: AnimationEvent) {
     if (event.toState === 'drop') {
-      console.log(this.chuteNumberQueue);
       const { chuteNumber, ballIndex } = this.chuteNumberQueue.shift() || {};
-      this.notifyDoLaunch.emit({
-        chuteNumber: chuteNumber || 0,
-        ballIndex: ballIndex || 0,
-      });
+      if (ballIndex !== undefined && chuteNumber !== undefined) {
+        this.notifyDoLaunch.emit({
+          chuteNumber: chuteNumber,
+          ballIndex: ballIndex,
+        });
+      }
     }
   }
 }

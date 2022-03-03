@@ -12,7 +12,7 @@ export const dropInTrigger = trigger('dropIn', [
   state(
     'drop',
     style({
-      top: '25px',
+      top: '50px',
       left: '{{ leftStop }}',
       display: 'none',
     }),

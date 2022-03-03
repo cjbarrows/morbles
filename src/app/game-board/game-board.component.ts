@@ -309,13 +309,8 @@ export class GameBoardComponent implements OnInit {
     const { chuteNumber, ballIndex } = chuteInfo;
     const colorCode = this.startingBalls[ballIndex];
 
-    console.log(
-      `chute ${chuteNumber} launches ball ${ballIndex} with ${getColorName(
-        colorCode
-      )}`
-    );
-
     this.physics.launchBall(chuteNumber, getColorName(colorCode));
+    this.renderer.forceRedraw(this.physics);
   };
 
   onClick(drawObject: DrawObject) {
