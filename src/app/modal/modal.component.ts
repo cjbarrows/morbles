@@ -10,6 +10,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ModalComponent implements OnInit {
   @Input() my_modal_title: string = '';
   @Input() my_modal_content: string = '';
+  @Input() playNext: false | number = false;
+  @Input() showPlayButton: boolean = true;
 
   constructor(public activeModal: NgbActiveModal) {}
 

@@ -61,8 +61,10 @@ export class GameBoardComponent implements OnInit {
 
   level$!: Observable<GameLevel>;
   drawList: Array<DrawObject> = [];
+  level!: GameLevel;
 
   currentLevelId: number = 0;
+  showPremodal: boolean = true;
 
   player!: Player;
 
@@ -89,11 +91,18 @@ export class GameBoardComponent implements OnInit {
     this.level$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         this.currentLevelId = Number(params.get('id'));
+        this.showPremodal =
+          this.route.snapshot.queryParamMap.get('premodal') === 'false'
+            ? false
+            : true;
         return this.db.getLevel(this.currentLevelId);
       })
     );
 
-    this.level$.subscribe((level) => this.setupFromLevelData(level));
+    this.level$.subscribe((level) => {
+      this.level = level;
+      this.setupFromLevelData(this.showPremodal);
+    });
   }
 
   getWidth(): number {
@@ -110,9 +119,9 @@ export class GameBoardComponent implements OnInit {
     };
   }
 
-  setupFromLevelData(level: GameLevel) {
+  setupFromLevelData(showModal: boolean = true) {
     const { name, hint, columns, rows, map, startingBalls, endingBalls } =
-      level;
+      this.level;
 
     this.physics.clearAll();
 
@@ -126,10 +135,10 @@ export class GameBoardComponent implements OnInit {
     this.startingBalls = startingBalls;
     this.endingBalls = endingBalls;
 
-    this.doResetLevel(name, hint);
+    this.doResetLevel(name, hint, showModal);
   }
 
-  doResetLevel(name: string, hint: string) {
+  doResetLevel(name: string, hint: string, showModal: boolean = true) {
     this.ballNumber = 0;
     this.outOfBalls = false;
     this.gameState = 'unstarted';
@@ -137,7 +146,11 @@ export class GameBoardComponent implements OnInit {
     this.entryBallInfo = this.getEntryBallsFromStartingBalls();
     this.exitBallInfo = [];
 
-    this.showPlayModal(name, hint);
+    if (showModal) {
+      this.showPlayModal(name, hint);
+    } else {
+      this.gameState = 'in progress';
+    }
   }
 
   showPlayModal(name: string, hint: string) {
@@ -165,12 +178,79 @@ export class GameBoardComponent implements OnInit {
     );
   }
 
+  async showEndModal(gameState: GAME_STATE) {
+    const options: NgbModalOptions = {
+      backdropClass: 'app-session-modal-backdrop',
+      windowClass: 'app-session-modal-window',
+      centered: true,
+    };
+
+    const modalRef = this.modalService.open(ModalComponent, options);
+
+    switch (gameState) {
+      case 'success':
+        const nextLevelId = await this.db.getNextLevelId(this.currentLevelId);
+
+        if (nextLevelId !== -1) {
+          modalRef.componentInstance.my_modal_title = 'Level Complete';
+          modalRef.componentInstance.my_modal_content =
+            'Congratulations! Click Play to go on to the next level!';
+          modalRef.componentInstance.playNext = nextLevelId;
+          modalRef.componentInstance.showPlayButton = true;
+        } else {
+          modalRef.componentInstance.my_modal_title = 'Level Complete';
+          modalRef.componentInstance.my_modal_content =
+            "Congratulations! You've won it all!";
+          modalRef.componentInstance.playNext = false;
+          modalRef.componentInstance.showPlayButton = false;
+        }
+        break;
+      case 'failed':
+        modalRef.componentInstance.my_modal_title = 'Level Failed';
+        modalRef.componentInstance.my_modal_content = 'Better luck next time!';
+        modalRef.componentInstance.playNext = false;
+        modalRef.componentInstance.showPlayButton = true;
+        break;
+    }
+
+    modalRef.result.then(
+      () => {},
+      async (reason) => {
+        switch (reason) {
+          case 'play':
+            this.setupFromLevelData(false);
+            break;
+          case 'next':
+            this.router.navigate(
+              ['/game/', modalRef.componentInstance.playNext],
+              {
+                queryParams: { premodal: false },
+              }
+            );
+            break;
+          case 'cancel':
+          default:
+            break;
+        }
+      }
+    );
+  }
+
   public set gameState(newGameState: GAME_STATE) {
     this._gameState = newGameState;
 
     this.updatePlayerStatus(this.currentLevelId, newGameState).then(() => {
       this.levelsComponent.refreshPlayer();
     });
+
+    switch (newGameState) {
+      case 'success':
+      case 'failed':
+        this.showEndModal(newGameState);
+        break;
+      default:
+        break;
+    }
   }
 
   public get gameState(): GAME_STATE {

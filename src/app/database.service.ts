@@ -217,4 +217,19 @@ export class DatabaseService {
     }
     return;
   }
+
+  async getNextLevelId(levelId: number) {
+    try {
+      const nextLevelId = await firstValueFrom(
+        this.http
+          .get<any>(`${API_URL}/api/levels/next/${levelId}`, {
+            withCredentials: true,
+          })
+          .pipe(map((result) => result))
+      );
+      return nextLevelId;
+    } catch (error) {
+      return -1;
+    }
+  }
 }

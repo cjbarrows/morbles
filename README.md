@@ -4,9 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] fancier "level complete" or "level failed" message
-[ ] BUG: the level completion red/green buttons are not always showing correctly (!)
-    - mostly when clicking among levels
+[ ] BUG: don't show the "level complete" dialog until the last ball is finished animating
 [ ] BUG: you shouldn't be able to "uncomplete" a level
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
 [ ] GAMEPLAY: should a ball landing on top of a ball in a gate act differently?
@@ -139,6 +137,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     [x] turn off launch buttons when all balls are gone
 [x] show level hint at start
     [x] maybe with "play" button and no launch buttons until play starts
+[x] BUG: the level completion red/green buttons are not always showing correctly (!)
+    - mostly when clicking among levels
+    - I think it was because the LevelStatuses were coming back un-sorted
+[x] handle "next level not found" error when you've reached the end
+    - new "success" dialog message?
+[x] fancier "level complete" or "level failed" message
 
 ## Notes
 
