@@ -189,20 +189,30 @@ export class GameBoardComponent implements OnInit {
 
     switch (gameState) {
       case 'success':
-        const nextLevelId = await this.db.getNextLevelId(this.currentLevelId);
+        const allDone = this.hasCurrentPlayerCompletedAllLevels();
 
-        if (nextLevelId !== -1) {
-          modalRef.componentInstance.my_modal_title = 'Level Complete';
-          modalRef.componentInstance.my_modal_content =
-            'Congratulations! Click Play to go on to the next level!';
-          modalRef.componentInstance.playNext = nextLevelId;
-          modalRef.componentInstance.showPlayButton = true;
-        } else {
+        if (allDone) {
           modalRef.componentInstance.my_modal_title = 'Level Complete';
           modalRef.componentInstance.my_modal_content =
             "Congratulations! You've won it all!";
           modalRef.componentInstance.playNext = false;
           modalRef.componentInstance.showPlayButton = false;
+        } else {
+          const nextLevelId = await this.db.getNextLevelId(this.currentLevelId);
+
+          if (nextLevelId !== -1) {
+            modalRef.componentInstance.my_modal_title = 'Level Complete';
+            modalRef.componentInstance.my_modal_content =
+              'Congratulations! Click Play to go on to the next level!';
+            modalRef.componentInstance.playNext = nextLevelId;
+            modalRef.componentInstance.showPlayButton = true;
+          } else {
+            modalRef.componentInstance.my_modal_title = 'Level Complete';
+            modalRef.componentInstance.my_modal_content =
+              "That's the last level. No go back and finish the ones you missed.";
+            modalRef.componentInstance.playNext = false;
+            modalRef.componentInstance.showPlayButton = false;
+          }
         }
         break;
       case 'failed':
@@ -354,6 +364,17 @@ export class GameBoardComponent implements OnInit {
     if (this.ballNumber >= this.startingBalls.length) {
       this.outOfBalls = true;
     }
+  }
+
+  hasCurrentPlayerCompletedAllLevels() {
+    const unfinished = this.player.levelStatuses.filter(
+      (levelStatus) => !levelStatus.completed
+    );
+    console.log(unfinished);
+    return (
+      this.player.levelStatuses.filter((levelStatus) => !levelStatus.completed)
+        .length === 0
+    );
   }
 
   async updatePlayerStatus(levelId: number, state: GAME_STATE) {

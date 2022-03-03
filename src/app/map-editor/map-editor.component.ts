@@ -17,6 +17,7 @@ import {
   convertShorthandMap,
   convertMapToShorthand,
 } from '../utilities/convertShorthand';
+import { CellContents } from '../types/cellContents';
 
 function colorCodeValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -35,7 +36,7 @@ function colorCodeValidator(): ValidatorFn {
 })
 export class MapEditorComponent implements OnInit {
   mapName: String = '';
-  startingMap: Array<string> = [];
+  startingMap: Array<CellContents> = [];
   startingBalls: string = '';
   endingBalls: string = '';
 

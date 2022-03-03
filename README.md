@@ -7,10 +7,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [ ] BUG: don't show the "level complete" dialog until the last ball is finished animating
 [ ] BUG: you shouldn't be able to "uncomplete" a level
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
-[ ] GAMEPLAY: should a ball landing on top of a ball in a gate act differently?
-    - right now it's the same effect as a ball flipping the gate
-        - I think that may be "right" from a physics point of view...
-[ ] create method in editor to place balls
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
 [ ] BUG: attempts is still mis-counting
      - for out-of-bounds balls at least
@@ -144,6 +140,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] BUG: slight flicker when ball drops in from top
     - I think this could be a short interim where it's not rendered at all (ie, in between the drop-in and the game board)
       - yeah, seems like it; need a good way to fix that
+[-] GAMEPLAY: should a ball landing on top of a ball in a gate act differently?
+    - right now it's the same effect as a ball flipping the gate
+        - I think that may be "right" from a physics point of view...
+[x] create method in editor to place balls
+    - I used a lowercase color letter after the space in the map
+[x] don't show "you've won it all" if there are some incomplete levels
 
 ## Notes
 

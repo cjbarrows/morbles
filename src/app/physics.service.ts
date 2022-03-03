@@ -9,6 +9,7 @@ import Point from './point';
 import { mapCells } from './physicsMapping';
 import { CELL_WIDTH } from './constants';
 import { getCellFromName } from './cellFactory';
+import { CellContents } from './types/cellContents';
 
 interface GameCellEntry {
   id: number;
@@ -90,27 +91,37 @@ export class PhysicsService {
     return undefined;
   }
 
-  populateCellsFromMap(mapCells: Array<string>) {
+  populateCellsFromMap(mapCells: Array<CellContents>) {
     this.clearAll();
 
-    mapCells.forEach((name, index) => {
+    mapCells.forEach((contents, index) => {
+      const { cell: name, ball } = contents;
+
       const cell = getCellFromName(name);
 
       const x = index % this.getNumColumns();
       const y = (index - x) / this.getNumColumns();
       this.addCell(x, y, cell);
+
+      if (ball) {
+        this.addBallToCell(cell, ball);
+      }
     });
   }
 
-  launchBall(xCell: number, colorName: ColorName) {
+  addBallToCell(cell: GameCell, colorName: ColorName) {
     const ball = new Ball();
     ball.color = colorName;
     ball.id = this.index;
     this.index += 1;
 
+    cell.addBall(this, ball);
+  }
+
+  launchBall(xCell: number, colorName: ColorName) {
     const entry = this.getGameCell(xCell, 0);
     if (entry && entry.cell) {
-      entry.cell.addBall(this, ball);
+      this.addBallToCell(entry?.cell, colorName);
     }
   }
 
