@@ -179,6 +179,10 @@ export class GameBoardComponent implements OnInit {
   }
 
   async showEndModal(gameState: GAME_STATE) {
+    if (this.modalService.hasOpenModals()) {
+      return;
+    }
+
     const options: NgbModalOptions = {
       backdropClass: 'app-session-modal-backdrop',
       windowClass: 'app-session-modal-window',
@@ -340,16 +344,20 @@ export class GameBoardComponent implements OnInit {
       this.exitBallInfo = this.exitBallInfo.concat({ colorCode, x, inBounds });
       this.ballsAtFinish = this.ballsAtFinish.concat(colorCode);
     }
+  };
 
-    if (this.ballsAtFinish === this.endingBalls) {
+  setGameStateAccordingToCompletedBalls(ballCount: number) {
+    const ballsToCheck = this.ballsAtFinish.substr(0, ballCount);
+
+    if (ballsToCheck === this.endingBalls) {
       this.gameState = 'success';
     } else if (
-      this.ballsAtFinish.length === this.endingBalls.length &&
-      this.ballsAtFinish !== this.endingBalls
+      ballsToCheck.length === this.endingBalls.length &&
+      ballsToCheck !== this.endingBalls
     ) {
       this.gameState = 'failed';
     } else {
-      const anyOutOfOrder = this.ballsAtFinish
+      const anyOutOfOrder = ballsToCheck
         .split('')
         .some((colorCode: string, index) => {
           return colorCode !== this.endingBalls[index];
@@ -358,7 +366,7 @@ export class GameBoardComponent implements OnInit {
         this.gameState = 'failed';
       }
     }
-  };
+  }
 
   onLaunchDone() {
     if (this.ballNumber >= this.startingBalls.length) {
@@ -367,10 +375,6 @@ export class GameBoardComponent implements OnInit {
   }
 
   hasCurrentPlayerCompletedAllLevels() {
-    const unfinished = this.player.levelStatuses.filter(
-      (levelStatus) => !levelStatus.completed
-    );
-    console.log(unfinished);
     return (
       this.player.levelStatuses.filter((levelStatus) => !levelStatus.completed)
         .length === 0
@@ -396,5 +400,9 @@ export class GameBoardComponent implements OnInit {
     }
 
     return this.db.savePlayer(this.player);
+  }
+
+  onAnimationExitDone(ballNumber: number) {
+    this.setGameStateAccordingToCompletedBalls(ballNumber);
   }
 }

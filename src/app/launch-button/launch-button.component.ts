@@ -28,7 +28,7 @@ export class LaunchButtonsComponent implements AfterContentInit {
   animState: boolean = true;
   flaring: boolean = false;
 
-  constructor(private elRef: ElementRef, private physics: PhysicsService) {}
+  constructor(private elRef: ElementRef) {}
 
   ngAfterContentInit(): void {
     this.elRef.nativeElement.style.setProperty('left', `${this.index * 100}px`);

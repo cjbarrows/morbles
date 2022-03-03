@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] BUG: don't show the "level complete" dialog until the last ball is finished animating
+[ ] should "go on to the next level" go on to the next *uncompleted* level?
 [ ] BUG: you shouldn't be able to "uncomplete" a level
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
@@ -146,6 +146,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] create method in editor to place balls
     - I used a lowercase color letter after the space in the map
 [x] don't show "you've won it all" if there are some incomplete levels
+[x] BUG: don't show the "level complete" dialog until the last ball is finished animating
+[x] BUG: don't show the end modals if one is already showing
 
 ## Notes
 

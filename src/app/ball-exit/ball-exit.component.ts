@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 
 import { dropOutTrigger } from './dropOut.trigger.animation';
 import { getColorName } from '../utilities/getColorName';
@@ -22,6 +29,7 @@ export class BallExitComponent implements OnInit {
   @Input() exitBalls: Array<ExitBallInfo> = [];
   @Input() endingBalls: string = '';
   @Input() gameState: GAME_STATE = 'unstarted';
+  @Output() notifyBallExit: EventEmitter<number> = new EventEmitter();
 
   ballInfo: Array<BallInfo> = [];
 
@@ -74,6 +82,9 @@ export class BallExitComponent implements OnInit {
   onAnimationEvent(event: any) {
     if (event.toState === 'new' && event.phaseName === 'done') {
       this.completeBallCount += 1;
+      console.log(this.completeBallCount);
+      console.log(event);
+      this.notifyBallExit.emit(this.completeBallCount);
     }
   }
 }
