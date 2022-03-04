@@ -4,8 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] BUG: click level 4, click X, click level 5, fail, click play = messed up level 4 (?!)
+[ ] unsubscribe to map editor subscriptions
 [ ] BUG: you shouldn't be able to "uncomplete" a level
+    - is this still a bug?
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
     - is this a Heroku-only bug, I forget?
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
@@ -154,6 +155,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] fail game as soon as any wrongly-colored ball arrives
 [x] BUG: the out-of-bounds checking is missing again
     - UNIT TESTS(!)
+[x] BUG: click level 4, click X, click level 5, fail, click play = messed up level 4 (?!)
+    - seems like some of the subscriptions are hanging around
+        - yeah, seemed like it; I wonder how hard those would be to unit test (!) (ie, would require multiple attempts in a row)
 
 ## Notes
 

@@ -2,13 +2,14 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
@@ -35,7 +36,7 @@ import { ModalComponent } from '../modal/modal.component';
   templateUrl: './game-board.component.html',
   styleUrls: ['./game-board.component.css'],
 })
-export class GameBoardComponent implements OnInit {
+export class GameBoardComponent implements OnInit, OnDestroy {
   numColumns: number = 3;
   startingBalls: string = '';
   endingBalls: string = '';
@@ -68,6 +69,11 @@ export class GameBoardComponent implements OnInit {
 
   player!: Player;
 
+  levelSubscription!: Subscription;
+  ballExitSubscription: Subscription;
+  ballDoneSubscription: Subscription;
+  drawlistSubscription: Subscription;
+
   constructor(
     private physics: PhysicsService,
     private db: DatabaseService,
@@ -76,14 +82,20 @@ export class GameBoardComponent implements OnInit {
     private router: Router,
     private modalService: NgbModal
   ) {
-    this.physics.ballExitObservable.subscribe(this.onBallExit);
-    this.physics.ballDoneObservable.subscribe(this.onBallDone);
+    this.ballExitSubscription = this.physics.ballExitObservable.subscribe(
+      this.onBallExit
+    );
+    this.ballDoneSubscription = this.physics.ballDoneObservable.subscribe(
+      this.onBallDone
+    );
 
-    this.renderer.getDrawlistObservable().subscribe({
-      next: (newDrawList: Array<DrawObject>) => {
-        this.drawList = newDrawList;
-      },
-    });
+    this.drawlistSubscription = this.renderer
+      .getDrawlistObservable()
+      .subscribe({
+        next: (newDrawList: Array<DrawObject>) => {
+          this.drawList = newDrawList;
+        },
+      });
   }
 
   async ngOnInit() {
@@ -100,10 +112,17 @@ export class GameBoardComponent implements OnInit {
       })
     );
 
-    this.level$.subscribe((level) => {
+    this.levelSubscription = this.level$.subscribe((level) => {
       this.level = level;
       this.setupFromLevelData(this.showPremodal);
     });
+  }
+
+  ngOnDestroy() {
+    this.ballExitSubscription.unsubscribe();
+    this.ballDoneSubscription.unsubscribe();
+    this.levelSubscription.unsubscribe();
+    this.drawlistSubscription.unsubscribe();
   }
 
   getWidth(): number {
@@ -312,6 +331,8 @@ export class GameBoardComponent implements OnInit {
   }
 
   launch = (chuteNumber: number) => {
+    console.log(this.level.name);
+
     if (
       !((this.gameState as string) in ['failed', 'success']) &&
       this.ballNumber < this.startingBalls.length
@@ -350,6 +371,8 @@ export class GameBoardComponent implements OnInit {
 
   onBallDone = ([colorName, x, inBounds]: [ColorName, number, boolean]) => {
     if (inBounds) {
+      console.log('concatenating');
+      console.log(this.ballsAtFinish);
       this.ballsAtFinish = this.ballsAtFinish.concat(getColorCode(colorName));
     }
 
