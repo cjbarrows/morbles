@@ -202,7 +202,9 @@ export class GameBoardComponent implements OnInit {
           modalRef.componentInstance.playNext = false;
           modalRef.componentInstance.showPlayButton = false;
         } else {
-          const nextLevelId = await this.db.getNextLevelId(this.currentLevelId);
+          const nextLevelId = this.getNextIncompleteLevelForPlayer(
+            this.currentLevelId
+          );
 
           if (nextLevelId !== -1) {
             modalRef.componentInstance.my_modal_title = 'Level Complete';
@@ -364,7 +366,7 @@ export class GameBoardComponent implements OnInit {
         .some((colorCode: string, index) => {
           return colorCode !== this.endingBalls[index];
         });
-      if (anyOutOfOrder || this.ballNumber === this.endingBalls.length) {
+      if (anyOutOfOrder || ballsToCheck.length === this.endingBalls.length) {
         this.gameState = 'failed';
       }
     }
@@ -381,6 +383,22 @@ export class GameBoardComponent implements OnInit {
       this.player.levelStatuses.filter((levelStatus) => !levelStatus.completed)
         .length === 0
     );
+  }
+
+  getNextIncompleteLevelForPlayer(currentLevelId: number): number {
+    for (let i = 0; i < this.player.levelStatuses.length; i++) {
+      const levelStatus = this.player.levelStatuses[i];
+      if (levelStatus.levelId === currentLevelId) {
+        for (let j = 1; j <= this.player.levelStatuses.length; j++) {
+          const index = (i + j) % this.player.levelStatuses.length;
+          const nextLevelStatus = this.player.levelStatuses[index];
+          if (!nextLevelStatus.completed) {
+            return nextLevelStatus.levelId;
+          }
+        }
+      }
+    }
+    return -1;
   }
 
   async updatePlayerStatus(levelId: number, state: GAME_STATE) {

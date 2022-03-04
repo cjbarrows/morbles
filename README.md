@@ -4,7 +4,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] should "go on to the next level" go on to the next *uncompleted* level?
 [ ] BUG: you shouldn't be able to "uncomplete" a level
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
@@ -149,6 +148,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] BUG: don't show the "level complete" dialog until the last ball is finished animating
 [x] BUG: don't show the end modals if one is already showing
 [x] BUG: need to check for Game Over if ball goes out of bounds (ie, doesn't animate off)
+[x] should "go on to the next level" go on to the next *uncompleted* level?
 
 ## Notes
 
