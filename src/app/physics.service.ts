@@ -38,6 +38,10 @@ export class PhysicsService {
     [ColorName, number, boolean]
   >();
 
+  ballDoneObservable: Subject<[ColorName, number, boolean]> = new Subject<
+    [ColorName, number, boolean]
+  >();
+
   getNumColumns() {
     return this.numColumns;
   }
@@ -222,11 +226,19 @@ export class PhysicsService {
       nextCell.cell.addBall(this, ball);
     } else {
       const pos = this.getCellPosition(cell);
-      this.ballExitObservable.next([
-        ball.color || 'blue',
-        pos ? (pos.x + 0.5) * CELL_WIDTH : 0,
-        exitPoint.x >= 0 && exitPoint.x < this.numColumns,
-      ]);
+      if (exitPoint.x >= 0 && exitPoint.x < this.numColumns) {
+        this.ballExitObservable.next([
+          ball.color || 'blue',
+          pos ? (pos.x + 0.5) * CELL_WIDTH : 0,
+          true,
+        ]);
+      } else {
+        this.ballDoneObservable.next([
+          ball.color || 'blue',
+          pos ? (pos.x + 0.5) * CELL_WIDTH : 0,
+          false,
+        ]);
+      }
     }
   }
 

@@ -11,11 +11,13 @@ import { dropOutTrigger } from './dropOut.trigger.animation';
 import { getColorName } from '../utilities/getColorName';
 import { ExitBallInfo } from '../exitBallInfo';
 import { GAME_STATE } from '../constants';
+import { PhysicsService } from '../physics.service';
+import { ColorName } from '../ball';
 
 interface BallInfo {
   chuteX: number;
   endX: number;
-  color: string;
+  color: ColorName;
 }
 
 @Component({
@@ -29,7 +31,6 @@ export class BallExitComponent implements OnInit {
   @Input() exitBalls: Array<ExitBallInfo> = [];
   @Input() endingBalls: string = '';
   @Input() gameState: GAME_STATE = 'unstarted';
-  @Output() notifyBallExit: EventEmitter<number> = new EventEmitter();
 
   ballInfo: Array<BallInfo> = [];
 
@@ -38,7 +39,7 @@ export class BallExitComponent implements OnInit {
 
   completeBallCount: number = 0;
 
-  constructor() {}
+  constructor(private physics: PhysicsService) {}
 
   ngOnInit(): void {}
 
@@ -79,10 +80,14 @@ export class BallExitComponent implements OnInit {
     };
   }
 
-  onAnimationEvent(event: any) {
+  onAnimationEvent(index: number, event: any) {
     if (event.toState === 'new' && event.phaseName === 'done') {
       this.completeBallCount += 1;
-      this.notifyBallExit.emit(this.completeBallCount);
+      this.physics.ballDoneObservable.next([
+        this.ballInfo[index].color,
+        this.ballInfo[index].endX,
+        true,
+      ]);
     }
   }
 }

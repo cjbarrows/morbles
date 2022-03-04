@@ -6,7 +6,7 @@
       params: { leftStart: b.chuteX + 'px', leftStop: b.endX + 'px' }
     }"
     *ngFor="let b of ballInfo; let i = index"
-    (@dropOut.done)="onAnimationEvent($event)"
+    (@dropOut.done)="onAnimationEvent(i, $event)"
   ></div>
   <div
     [ngClass]="{

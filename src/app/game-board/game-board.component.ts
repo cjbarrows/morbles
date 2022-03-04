@@ -77,6 +77,7 @@ export class GameBoardComponent implements OnInit {
     private modalService: NgbModal
   ) {
     this.physics.ballExitObservable.subscribe(this.onBallExit);
+    this.physics.ballDoneObservable.subscribe(this.onBallDone);
 
     this.renderer.getDrawlistObservable().subscribe({
       next: (newDrawList: Array<DrawObject>) => {
@@ -344,10 +345,15 @@ export class GameBoardComponent implements OnInit {
 
     if (inBounds) {
       this.exitBallInfo = this.exitBallInfo.concat({ colorCode, x, inBounds });
-      this.ballsAtFinish = this.ballsAtFinish.concat(colorCode);
-    } else {
-      this.setGameStateAccordingToCompletedBalls(this.ballsAtFinish.length);
     }
+  };
+
+  onBallDone = ([colorName, x, inBounds]: [ColorName, number, boolean]) => {
+    if (inBounds) {
+      this.ballsAtFinish = this.ballsAtFinish.concat(getColorCode(colorName));
+    }
+
+    this.setGameStateAccordingToCompletedBalls(this.ballsAtFinish.length);
   };
 
   setGameStateAccordingToCompletedBalls(ballCount: number) {
@@ -358,6 +364,11 @@ export class GameBoardComponent implements OnInit {
     } else if (
       ballsToCheck.length === this.endingBalls.length &&
       ballsToCheck !== this.endingBalls
+    ) {
+      this.gameState = 'failed';
+    } else if (
+      this.ballNumber === this.startingBalls.length &&
+      this.ballsAtFinish.length < this.endingBalls.length
     ) {
       this.gameState = 'failed';
     } else {

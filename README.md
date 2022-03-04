@@ -4,8 +4,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: click level 4, click X, click level 5, fail, click play = messed up level 4 (?!)
 [ ] BUG: you shouldn't be able to "uncomplete" a level
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
+    - is this a Heroku-only bug, I forget?
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
 [ ] BUG: attempts is still mis-counting
      - for out-of-bounds balls at least
@@ -149,6 +151,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] BUG: don't show the end modals if one is already showing
 [x] BUG: need to check for Game Over if ball goes out of bounds (ie, doesn't animate off)
 [x] should "go on to the next level" go on to the next *uncompleted* level?
+[x] fail game as soon as any wrongly-colored ball arrives
+[x] BUG: the out-of-bounds checking is missing again
+    - UNIT TESTS(!)
 
 ## Notes
 
