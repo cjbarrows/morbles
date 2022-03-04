@@ -169,7 +169,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     if (showModal) {
       this.showPlayModal(name, hint);
     } else {
-      this.gameState = 'in progress';
+      this.gameState = 'open';
     }
   }
 
@@ -273,19 +273,21 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   public set gameState(newGameState: GAME_STATE) {
-    this._gameState = newGameState;
+    if (this._gameState !== newGameState) {
+      this._gameState = newGameState;
 
-    this.updatePlayerStatus(this.currentLevelId, newGameState).then(() => {
-      this.levelsComponent.refreshPlayer();
-    });
+      this.updatePlayerStatus(this.currentLevelId, newGameState).then(() => {
+        this.levelsComponent.refreshPlayer();
+      });
 
-    switch (newGameState) {
-      case 'success':
-      case 'failed':
-        this.showEndModal(newGameState);
-        break;
-      default:
-        break;
+      switch (newGameState) {
+        case 'success':
+        case 'failed':
+          this.showEndModal(newGameState);
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -331,8 +333,6 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   launch = (chuteNumber: number) => {
-    console.log(this.level.name);
-
     if (
       !((this.gameState as string) in ['failed', 'success']) &&
       this.ballNumber < this.startingBalls.length
@@ -371,8 +371,6 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   onBallDone = ([colorName, x, inBounds]: [ColorName, number, boolean]) => {
     if (inBounds) {
-      console.log('concatenating');
-      console.log(this.ballsAtFinish);
       this.ballsAtFinish = this.ballsAtFinish.concat(getColorCode(colorName));
     }
 

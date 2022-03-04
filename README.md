@@ -10,9 +10,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
     - is this a Heroku-only bug, I forget?
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
-[ ] BUG: attempts is still mis-counting
-     - for out-of-bounds balls at least
-     - might be 2 updatePlayerStatus function calls, one in app.component and one in game-board :/
 [ ] cache some of the server queries on the client-side
 [ ] BUG: gate on right-hand "lane" exits ball improperly (!)
 [ ] BUG: bumper to gate (on same Y-axis): what should happen?
@@ -158,6 +155,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] BUG: click level 4, click X, click level 5, fail, click play = messed up level 4 (?!)
     - seems like some of the subscriptions are hanging around
         - yeah, seemed like it; I wonder how hard those would be to unit test (!) (ie, would require multiple attempts in a row)
+[x] BUG: attempts is still mis-counting
+     - for out-of-bounds balls at least
+     - might be 2 updatePlayerStatus function calls, one in app.component and one in game-board :/
+     - or could be a subscription problem:
+        - it seemed to be happening for levels that weren't even the current level (ie, one that had been "canceled")
+        - I think it was the "count an attempt once it's 'in progress'" logic
+            - I changed it to start a level in "open" (ie, not "in progress")
+                - that might affect some animations but seems better for scoring
 
 ## Notes
 
