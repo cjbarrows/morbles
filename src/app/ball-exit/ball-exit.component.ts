@@ -82,8 +82,6 @@ export class BallExitComponent implements OnInit {
   onAnimationEvent(event: any) {
     if (event.toState === 'new' && event.phaseName === 'done') {
       this.completeBallCount += 1;
-      console.log(this.completeBallCount);
-      console.log(event);
       this.notifyBallExit.emit(this.completeBallCount);
     }
   }

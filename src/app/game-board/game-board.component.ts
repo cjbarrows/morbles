@@ -343,6 +343,8 @@ export class GameBoardComponent implements OnInit {
     if (inBounds) {
       this.exitBallInfo = this.exitBallInfo.concat({ colorCode, x, inBounds });
       this.ballsAtFinish = this.ballsAtFinish.concat(colorCode);
+    } else {
+      this.setGameStateAccordingToCompletedBalls(this.ballsAtFinish.length);
     }
   };
 
