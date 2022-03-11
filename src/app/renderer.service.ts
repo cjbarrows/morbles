@@ -44,6 +44,20 @@ export class RendererService {
           },
         });
       }),
+      ...physics.getToggles().map((toggle) => {
+        return new DrawObject({
+          id: toggle.id,
+          type: 'toggle',
+          x: toggle.x,
+          y: toggle.y,
+          flipped: toggle.flipped,
+          onClickHandler: () => {
+            if (toggle.onClickHandler) {
+              toggle.onClickHandler();
+            }
+          },
+        });
+      }),
       ...physics.getGates().map((gate) => {
         return new DrawObject({
           id: gate.id,

@@ -5,6 +5,7 @@ import Ball, { ColorName } from './ball';
 import { GameCell } from './cells/gamecell';
 import { Bumper } from './cells/bumper';
 import { Gate } from './cells/gate';
+import { Toggle } from './cells/toggle';
 import Point from './point';
 import { mapCells } from './physicsMapping';
 import { CELL_WIDTH } from './constants';
@@ -191,6 +192,27 @@ export class PhysicsService {
     }
 
     return bumpers;
+  }
+
+  getToggles(): Array<CellInfo> {
+    let toggles = [];
+    for (let entry of this.cells) {
+      if (entry.cell instanceof Toggle) {
+        const toggle: Toggle = <Toggle>entry.cell;
+        const pos = toggle.getTogglePosition();
+        if (pos) {
+          toggles.push({
+            id: entry.id,
+            x: entry.x * CELL_WIDTH + pos.x,
+            y: entry.y * CELL_WIDTH + pos.y,
+            flipped: toggle.flipped,
+            onClickHandler: () => toggle.onClick(),
+          });
+        }
+      }
+    }
+
+    return toggles;
   }
 
   // TODO: rework this into something more TypeScript-y

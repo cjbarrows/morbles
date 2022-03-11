@@ -1,6 +1,7 @@
 import { GameCell } from './cells/gamecell';
 import { Air } from './cells/air';
 import { Bumper } from './cells/bumper';
+import { Toggle } from './cells/toggle';
 import { Gate } from './cells/gate';
 import { GateHandoff } from './cells/gateHandoff';
 
@@ -16,6 +17,12 @@ export const getCellFromName = (name: string): GameCell => {
       break;
     case 'bumper-right':
       cell = new Bumper();
+      break;
+    case 'toggle-left':
+      cell = new Toggle({ flipped: true });
+      break;
+    case 'toggle-right':
+      cell = new Toggle();
       break;
     case 'gate-left':
       cell = new Gate({ flipped: true });

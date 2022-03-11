@@ -37,6 +37,12 @@ export const convertShorthandMap = (shorthand: string): CellContents[] => {
       case 'R':
         returnValue = { ...returnValue, cell: 'bumper-right' };
         break;
+      case 'T':
+        returnValue = { ...returnValue, cell: 'toggle-left' };
+        break;
+      case 'U':
+        returnValue = { ...returnValue, cell: 'toggle-right' };
+        break;
       case 'G':
         returnValue = { ...returnValue, cell: 'gate-left' };
         break;

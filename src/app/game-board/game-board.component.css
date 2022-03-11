@@ -63,6 +63,22 @@
   transform: scaleX(-1) translate(50px, 0px);
 }
 
+.toggle {
+  position: absolute;
+  background-image: url("/assets/toggle.png");
+  background-size: cover;
+  transform: translate(-30px, -30px) rotate(330deg);
+  transform-origin: 50% 50%;
+  width: 180px;
+  height: 100px;
+  background-repeat: no-repeat;
+  transition: transform 1.0s;
+}
+
+.toggle.flipped {
+  transform: translate(-30px, -30px) rotate(210deg);
+}
+
 .gate {
   position: absolute;
   background-image: url("/assets/gate.png");

@@ -1,4 +1,4 @@
-type objectType = 'boundary' | 'ball' | 'bumper' | 'gate';
+type objectType = 'boundary' | 'ball' | 'bumper' | 'gate' | 'toggle';
 
 interface DrawObjectOptions {
   id: number;
