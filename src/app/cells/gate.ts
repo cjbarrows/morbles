@@ -1,9 +1,9 @@
 import { BallTracker } from './gamecell';
 import { Air } from './air';
-import Ball from './ball';
-import { PhysicsService } from './physics.service';
-import Point from './point';
-import { BALL_SPEED } from './constants';
+import Ball from '../ball';
+import { PhysicsService } from '../physics.service';
+import Point from '../point';
+import { BALL_SPEED } from '../constants';
 
 const catchAnim = [
   [5, 23],

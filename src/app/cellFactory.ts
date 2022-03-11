@@ -1,8 +1,8 @@
-import { GameCell } from './gamecell';
-import { Air } from './air';
-import { Bumper } from './bumper';
-import { Gate } from './gate';
-import { GateHandoff } from './gateHandoff';
+import { GameCell } from './cells/gamecell';
+import { Air } from './cells/air';
+import { Bumper } from './cells/bumper';
+import { Gate } from './cells/gate';
+import { GateHandoff } from './cells/gateHandoff';
 
 export const getCellFromName = (name: string): GameCell => {
   let cell: GameCell;

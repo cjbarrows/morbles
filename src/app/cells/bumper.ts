@@ -1,8 +1,8 @@
 import { BallTracker } from './gamecell';
 import { Air } from './air';
-import { PhysicsService } from './physics.service';
-import Point from './point';
-import { BALL_SPEED } from './constants';
+import { PhysicsService } from '../physics.service';
+import Point from '../point';
+import { BALL_SPEED } from '../constants';
 
 const curvePoints = [
   [0, 45],

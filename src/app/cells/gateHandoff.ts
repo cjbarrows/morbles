@@ -1,6 +1,6 @@
-import Ball from './ball';
+import Ball from '../ball';
 import { BallTracker, GameCell } from './gamecell';
-import { PhysicsService } from './physics.service';
+import { PhysicsService } from '../physics.service';
 import { Gate } from './gate';
 
 export class GateHandoff extends GameCell {

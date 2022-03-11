@@ -1,8 +1,8 @@
-import { GameCell } from './gamecell';
-import { Air } from './air';
-import { Bumper } from './bumper';
-import { GateHandoff } from './gateHandoff';
-import { Gate } from './gate';
+import { GameCell } from './cells/gamecell';
+import { Air } from './cells/air';
+import { Bumper } from './cells/bumper';
+import { GateHandoff } from './cells/gateHandoff';
+import { Gate } from './cells/gate';
 import { PhysicsService } from './physics.service';
 
 // NOTE: The order of these mappings is important

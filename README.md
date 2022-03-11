@@ -4,8 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] additional game components? steal from that programming game?
+[ ] additional game components? steal from that programming game (Turing Tumble)?
     [ ] toggle bit?
+        - I used vectr.com to do some vector drawing last time
 [ ] should it count as success if you still have balls left / balls in play?
 [ ] unsubscribe to map editor subscriptions
 [ ] BUG: you shouldn't be able to "uncomplete" a level

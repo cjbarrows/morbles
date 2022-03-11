@@ -1,7 +1,7 @@
-import Ball from './ball';
+import Ball from '../ball';
 import { BallTracker, GameCell } from './gamecell';
-import { PhysicsService } from './physics.service';
-import { BALL_SPEED, CELL_WIDTH } from './constants';
+import { PhysicsService } from '../physics.service';
+import { BALL_SPEED, CELL_WIDTH } from '../constants';
 
 export class Air extends GameCell {
   override addBall(

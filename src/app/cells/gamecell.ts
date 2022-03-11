@@ -1,5 +1,5 @@
-import Ball from './ball';
-import { PhysicsService } from './physics.service';
+import Ball from '../ball';
+import { PhysicsService } from '../physics.service';
 
 export interface BallTracker {
   ball: Ball;

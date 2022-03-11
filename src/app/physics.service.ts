@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import Ball, { ColorName } from './ball';
-import { GameCell } from './gamecell';
-import { Bumper } from './bumper';
-import { Gate } from './gate';
+import { GameCell } from './cells/gamecell';
+import { Bumper } from './cells/bumper';
+import { Gate } from './cells/gate';
 import Point from './point';
 import { mapCells } from './physicsMapping';
 import { CELL_WIDTH } from './constants';
