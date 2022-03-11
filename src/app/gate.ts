@@ -49,7 +49,7 @@ export class Gate extends Air {
   ): BallTracker {
     const ballTracker = super.addBall(physics, ball, entryParams);
     if (entryParams && entryParams.proxy) {
-      ball.x = 100;
+      ball.x = entryParams && entryParams.x ? entryParams.x : 100;
       ball.y = entryParams && entryParams.y ? entryParams.y : 0;
       ballTracker.proxy = true;
     }
@@ -151,5 +151,9 @@ export class Gate extends Air {
 
   onClick() {
     this.flipped = !this.flipped;
+  }
+
+  isFlipped() {
+    return this.flipped;
   }
 }

@@ -4,6 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] additional game components? steal from that programming game?
+    [ ] toggle bit?
+[ ] should it count as success if you still have balls left / balls in play?
 [ ] unsubscribe to map editor subscriptions
 [ ] BUG: you shouldn't be able to "uncomplete" a level
     - is this still a bug?
@@ -11,8 +14,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - is this a Heroku-only bug, I forget?
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
 [ ] cache some of the server queries on the client-side
-[ ] BUG: gate on right-hand "lane" exits ball improperly (!)
-[ ] BUG: bumper to gate (on same Y-axis): what should happen?
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
 [ ] also add 'gate handoff' when 'gate' is added to map
 [ ] REFACTOR: move colorName to constants
@@ -163,6 +164,15 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
         - I think it was the "count an attempt once it's 'in progress'" logic
             - I changed it to start a level in "open" (ie, not "in progress")
                 - that might affect some animations but seems better for scoring
+[ ] BUG: gate on right-hand "lane" exits ball improperly (!)
+    - couldn't reproduce this
+[x] BUG: bumper to gate (on same Y-axis): what should happen?
+    - should act the same as a ball coming in
+        [x] coming in from "handoff side" needs to not start the ball "animation" from the top
+    - and if there's a ball in the cradle already, bump it out
+    [x] need conditionalBallExit to happen at different frames depending on the cell-to-cell combinations
+        - I didn't end up doing that but I did check for flipped
+          - kinda hacky; certainly inelegant, but ok
 
 ## Notes
 

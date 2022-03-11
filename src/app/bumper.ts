@@ -37,27 +37,25 @@ export class Bumper extends Air {
 
       const { ball, ticks } = entry;
 
-      if (ticks >= 7 && ticks <= 22) {
-        // TODO: use tuple syntax?
-        ball.x = curvePoints[ticks - 7][0] * (this.flipped ? -1 : 1);
-        ball.y = curvePoints[ticks - 7][1];
-      } else if (ticks < 7) {
-        ball.y += BALL_SPEED;
-      } else if (ticks === 23) {
-        if (
-          !physics.conditionalBallExit(this, ball, {
-            x: this.flipped ? -1 : 1,
-            y: 0,
-          })
-        ) {
+      if (
+        !physics.conditionalBallExit(this, ticks, ball, {
+          x: this.flipped ? -1 : 1,
+          y: 0,
+        })
+      ) {
+        if (ticks >= 7 && ticks <= 20) {
+          // TODO: use tuple syntax?
+          ball.x = curvePoints[ticks - 7][0] * (this.flipped ? -1 : 1);
+          ball.y = curvePoints[ticks - 7][1];
+        } else if (ticks < 7) {
+          ball.y += BALL_SPEED;
+        } else {
           ball.y += BALL_SPEED;
         }
-      } else {
-        ball.y += BALL_SPEED;
-      }
 
-      if (ball.y > 100) {
-        physics.onBallExit(this, ball, { x: this.flipped ? -1 : 1, y: 1 });
+        if (ball.y > 100) {
+          physics.onBallExit(this, ball, { x: this.flipped ? -1 : 1, y: 1 });
+        }
       }
     });
   }

@@ -242,16 +242,23 @@ export class PhysicsService {
     }
   }
 
-  conditionalBallExit(cell: GameCell, ball: Ball, exitPoint: Point) {
+  conditionalBallExit(
+    cell: GameCell,
+    ticks: number,
+    ball: Ball,
+    exitPoint: Point
+  ) {
     const nextCell: GameCellEntry | undefined = this.findNextCell(
       cell,
       exitPoint
     );
     if (nextCell) {
-      const adjustment = mapCells(cell, nextCell.cell);
-      cell.removeBall(ball);
-      nextCell.cell.addBall(this, ball, adjustment);
-      return true;
+      const adjustment = mapCells(this, ticks, cell, nextCell.cell);
+      if (adjustment) {
+        cell.removeBall(ball);
+        nextCell.cell.addBall(this, ball, adjustment);
+        return true;
+      }
     }
     return false;
   }

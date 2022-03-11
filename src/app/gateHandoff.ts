@@ -1,6 +1,7 @@
 import Ball from './ball';
 import { BallTracker, GameCell } from './gamecell';
 import { PhysicsService } from './physics.service';
+import { Gate } from './gate';
 
 export class GateHandoff extends GameCell {
   override addBall(
@@ -20,5 +21,13 @@ export class GateHandoff extends GameCell {
     }
 
     return super.addBall(physics, ball, entryParams);
+  }
+
+  isFlipped(physics: PhysicsService) {
+    const host = physics.findNextCell(this, { x: -1, y: 0 });
+    if (host && host.cell instanceof Gate) {
+      return host.cell.flipped;
+    }
+    return false;
   }
 }

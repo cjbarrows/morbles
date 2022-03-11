@@ -1,6 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { GameBoardComponent } from './game-board/game-board.component';
 import { RendererService } from './renderer.service';
 import { PhysicsService } from './physics.service';
 import { DatabaseService } from './database.service';
@@ -20,7 +19,7 @@ export class AppComponent {
   timer: any;
   running = false;
 
-  TIME_PER_FRAME = 33;
+  TIME_PER_FRAME = 100;
 
   mapName: string = '';
   startMap: Array<string> = [];
@@ -29,9 +28,6 @@ export class AppComponent {
   currentLevelId?: number = undefined;
 
   levels: Array<GameLevel> = [];
-
-  @ViewChild(GameBoardComponent)
-  private gameBoardComponent!: GameBoardComponent;
 
   player: Player = new Player();
 
