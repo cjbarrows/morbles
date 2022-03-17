@@ -16,12 +16,16 @@ export class Air extends GameCell {
   }
 
   override tick(physics: PhysicsService) {
-    this.balls.forEach(({ ball, ticks }: BallTracker) => {
-      ball.y += BALL_SPEED;
-      ticks += 1;
+    this.balls.forEach((bt: BallTracker) => {
+      bt.ticks += 1;
+      if (
+        !physics.conditionalBallExit(this, bt.ticks, bt.ball, { x: -1, y: 0 })
+      ) {
+        bt.ball.y += BALL_SPEED;
 
-      if (ball.y > 100) {
-        physics.onBallExit(this, ball, { x: 0, y: 1 });
+        if (bt.ball.y > 100) {
+          physics.onBallExit(this, bt.ball, { x: 0, y: 1 });
+        }
       }
     });
   }

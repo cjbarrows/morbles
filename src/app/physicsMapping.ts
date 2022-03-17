@@ -4,6 +4,7 @@ import { Bumper } from './cells/bumper';
 import { GateHandoff } from './cells/gateHandoff';
 import { Gate } from './cells/gate';
 import { PhysicsService } from './physics.service';
+import { Toggle } from './cells/toggle';
 
 // NOTE: The order of these mappings is important
 const mappings = [
@@ -33,6 +34,12 @@ const mappings = [
       ticks: 7,
       y: 40,
     }),
+  },
+  {
+    from: Air,
+    to: Toggle,
+    ticks: 1,
+    adjustment: () => ({ proxy: true }),
   },
 ];
 
