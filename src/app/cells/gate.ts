@@ -33,6 +33,12 @@ const secondBallAnim = [
   [100, 28],
 ];
 
+// entry => falls toward gate
+// sit in gate
+// pass through and flip gate
+// bounce off top of other ball and flip gate
+// knock other ball out and sit in gate
+
 export class Gate extends Air {
   flipped: boolean = false;
   previousFlipped: boolean = false;
@@ -51,6 +57,8 @@ export class Gate extends Air {
     if (entryParams && entryParams.proxy) {
       ball.x = entryParams && entryParams.x ? entryParams.x : 100;
       ball.y = entryParams && entryParams.y ? entryParams.y : 0;
+      ballTracker.ticks =
+        entryParams && entryParams.ticks ? entryParams.ticks : 0;
       ballTracker.proxy = true;
     }
     return ballTracker;

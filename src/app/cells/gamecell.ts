@@ -8,6 +8,8 @@ export interface BallTracker {
   proxy?: boolean;
   toCatcher?: boolean;
   secondBall?: boolean;
+  animation?: string;
+  direction?: string;
 }
 
 export class GameCell {

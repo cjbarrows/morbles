@@ -4,7 +4,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] TECH DEBT: replace GateHandoff and PhysicsMapping for Air => Gate
+[x] TECH DEBT: replace GateHandoff and PhysicsMapping for Air => Gate
+    - um, that was easy
+        [ ] oops, except the Bumper => Gate interaction needs to be fixed (again)
+          [ ] and now the 2nd ball into a gate (from a mapping) needs to be fixed
+              - I think a ball coming from a bumper should knock the first ball out...
+                  [ ] try making a new animation system for the balls
+[ ] BUG: level editor seems broken
 [ ] additional game components? steal from that programming game (Turing Tumble)?
     [ ] stopper/catcher
 [ ] should it count as success if you still have balls left / balls in play?
@@ -177,6 +183,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     [x] toggle bit?
         - I used vectr.com to do some vector drawing last time
         [x] need to handle balls coming down the "right lane" of the toggle
+[x] BUG: Toggle on a new map didn't save
 
 ## Notes
 

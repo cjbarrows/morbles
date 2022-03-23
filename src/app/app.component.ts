@@ -19,7 +19,7 @@ export class AppComponent {
   timer: any;
   running = false;
 
-  TIME_PER_FRAME = 33;
+  TIME_PER_FRAME = 100;
 
   mapName: string = '';
   startMap: Array<string> = [];

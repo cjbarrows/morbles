@@ -49,9 +49,6 @@ export const convertShorthandMap = (shorthand: string): CellContents[] => {
       case 'H':
         returnValue = { ...returnValue, cell: 'gate-right' };
         break;
-      case 'O':
-        returnValue = { ...returnValue, cell: 'gate-handoff' };
-        break;
       default:
         returnValue = { ...returnValue, cell: 'air' };
         break;
@@ -78,8 +75,10 @@ export const convertMapToShorthand = (cellNames: string[]): string => {
           return 'G';
         case 'gate-right':
           return 'H';
-        case 'gate-handoff':
-          return 'O';
+        case 'toggle-left':
+          return 'T';
+        case 'toggle-right':
+          return 'U';
         default:
           return ' ';
       }
