@@ -66,6 +66,8 @@ export class PhysicsService {
   addCell(x: number, y: number, cell: GameCell) {
     cell.id = this.index;
     this.index += 1;
+    cell.cellX = x;
+    cell.cellY = y;
     this.cells.push({ x, y, cell, id: cell.id });
   }
 
@@ -76,7 +78,11 @@ export class PhysicsService {
   }
 
   getGameCell(x: number, y: number): GameCellEntry | undefined {
-    return this.cells.find((cell) => cell.x === x && cell.y === y);
+    return this.cells.find(
+      (cell) =>
+        (cell.x === x && cell.y === y) ||
+        (cell.x + (cell.cell.getWidth() - 1) === x && cell.y === y)
+    );
   }
 
   getCellPosition(cell: GameCell): { x: number; y: number } | undefined {
@@ -104,12 +110,14 @@ export class PhysicsService {
 
       const cell = getCellFromName(name);
 
-      const x = index % this.getNumColumns();
-      const y = (index - x) / this.getNumColumns();
-      this.addCell(x, y, cell);
+      if (cell) {
+        const x = index % this.getNumColumns();
+        const y = (index - x) / this.getNumColumns();
+        this.addCell(x, y, cell);
 
-      if (ball) {
-        this.addBallToCell(cell, ball);
+        if (ball) {
+          this.addBallToCell(cell, ball);
+        }
       }
     });
   }
@@ -150,8 +158,8 @@ export class PhysicsService {
         type: 'boundary',
         x: entry.x * CELL_WIDTH,
         y: entry.y * CELL_WIDTH,
-        width: entry.cell.getWidth(),
-        height: entry.cell.getHeight(),
+        width: entry.cell.getWidth() * CELL_WIDTH,
+        height: entry.cell.getHeight() * CELL_WIDTH,
       };
     });
   }
@@ -246,6 +254,8 @@ export class PhysicsService {
     );
     if (nextCell) {
       nextCell.cell.addBall(this, ball);
+      ball.cellX = cell.cellX + exitPoint.x;
+      ball.cellY = cell.cellY + exitPoint.y;
     } else {
       const pos = this.getCellPosition(cell);
       if (exitPoint.x >= 0 && exitPoint.x < this.numColumns) {
@@ -279,6 +289,8 @@ export class PhysicsService {
       if (adjustment) {
         cell.removeBall(ball);
         nextCell.cell.addBall(this, ball, adjustment);
+        ball.cellX = cell.cellX + exitPoint.x;
+        ball.cellY = cell.cellY + exitPoint.y;
         nextCell.cell.tick(this);
         return true;
       }

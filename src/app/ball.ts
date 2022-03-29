@@ -5,6 +5,8 @@ export default class Ball {
   x: number = 0;
   y: number = 0;
   color?: ColorName = 'blue';
+  cellX: number = 0;
+  cellY: number = 0;
 
   constructor(x: number = 0, y: number = 0, id?: number, color?: ColorName) {
     this.x = x;

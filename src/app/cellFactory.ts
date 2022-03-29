@@ -4,8 +4,8 @@ import { Bumper } from './cells/bumper';
 import { Toggle } from './cells/toggle';
 import { Gate } from './cells/gate';
 
-export const getCellFromName = (name: string): GameCell => {
-  let cell: GameCell;
+export const getCellFromName = (name: string): GameCell | null => {
+  let cell: GameCell | null;
 
   switch (name) {
     case 'air':
@@ -30,7 +30,7 @@ export const getCellFromName = (name: string): GameCell => {
       cell = new Gate();
       break;
     default:
-      cell = new Air();
+      cell = null;
       break;
   }
 

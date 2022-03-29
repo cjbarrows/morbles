@@ -28,6 +28,9 @@ export const convertShorthandMap = (shorthand: string): CellContents[] => {
     let returnValue = { ball: getBallIfAny(shorthand, index), cell: 'air' };
 
     switch (letter) {
+      case 'x':
+        returnValue = { ball: null, cell: '' };
+        break;
       case ' ':
         returnValue = { ...returnValue, cell: 'air' };
         break;

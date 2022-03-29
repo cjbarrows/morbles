@@ -5,7 +5,6 @@ export interface BallTracker {
   ball: Ball;
   ticks: number;
   atRest?: boolean;
-  proxy?: boolean;
   toCatcher?: boolean;
   secondBall?: boolean;
   path?: string;
@@ -15,6 +14,9 @@ export interface BallTracker {
 export class GameCell {
   id: number = 0;
 
+  cellX: number = 0;
+  cellY: number = 0;
+
   balls: Array<BallTracker> = [];
 
   addBall(physics: PhysicsService, ball: Ball, entryParams?: any): BallTracker {
@@ -22,7 +24,6 @@ export class GameCell {
       ball,
       ticks: entryParams && entryParams.ticks ? entryParams.ticks : 0,
       atRest: false,
-      proxy: false,
       path: entryParams && entryParams.path ? entryParams.path : '',
     };
     this.balls.push(ballTracker);
@@ -40,10 +41,10 @@ export class GameCell {
   tick(physics: PhysicsService) {}
 
   getWidth() {
-    return 100;
+    return 1;
   }
 
   getHeight() {
-    return 100;
+    return 1;
   }
 }

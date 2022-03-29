@@ -10,6 +10,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
           [ ] and now the 2nd ball into a gate (from a mapping) needs to be fixed
               - I think a ball coming from a bumper should knock the first ball out...
                   [ ] try making a new animation system for the balls
+                  [x] and get rid of .proxy and Bumper => Air => Gate handoffs
+                  [ ] and fix toggle in the same way
 [ ] BUG: level editor seems broken
 [ ] additional game components? steal from that programming game (Turing Tumble)?
     [ ] stopper/catcher

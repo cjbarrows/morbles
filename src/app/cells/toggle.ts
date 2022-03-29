@@ -19,11 +19,13 @@ export class Toggle extends Air {
     entryParams?: any
   ): BallTracker {
     const ballTracker = super.addBall(physics, ball, entryParams);
+    /*
     if (entryParams && entryParams.proxy) {
       ball.x = entryParams && entryParams.x ? entryParams.x : 100;
       ball.y = entryParams && entryParams.y ? entryParams.y : 0;
       ballTracker.proxy = true;
     }
+    */
     return ballTracker;
   }
 
@@ -31,16 +33,18 @@ export class Toggle extends Air {
     this.balls.forEach((entry: BallTracker) => {
       entry.ticks += 1;
 
-      const { ball, ticks, toCatcher, proxy } = entry;
+      const { ball, ticks, toCatcher } = entry;
 
       if (ticks === 1) {
-        entry.toCatcher = proxy ? !this.flipped : this.flipped;
+        entry.toCatcher = this.inRightLane(ball) ? !this.flipped : this.flipped;
       }
 
       if (toCatcher) {
         if (ticks < 18) {
           ball.y = ticks * BALL_SPEED * 0.3;
-          ball.x = proxy ? 100 - ticks * BALL_SPEED : ticks * BALL_SPEED;
+          ball.x = this.inRightLane(ball)
+            ? 100 - ticks * BALL_SPEED
+            : ticks * BALL_SPEED;
         } else {
           ball.y += BALL_SPEED;
         }
@@ -71,5 +75,13 @@ export class Toggle extends Air {
 
   onClick() {
     this.flipped = !this.flipped;
+  }
+
+  override getWidth() {
+    return 2;
+  }
+
+  inRightLane(ball: Ball) {
+    return false;
   }
 }

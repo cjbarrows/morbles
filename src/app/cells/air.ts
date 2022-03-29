@@ -19,7 +19,7 @@ export class Air extends GameCell {
     this.balls.forEach((bt: BallTracker) => {
       bt.ticks += 1;
       if (
-        !physics.conditionalBallExit(this, bt.ticks, bt.ball, { x: -1, y: 0 })
+        true // !physics.conditionalBallExit(this, bt.ticks, bt.ball, { x: -1, y: 0 })
       ) {
         bt.ball.y += BALL_SPEED;
 
@@ -36,6 +36,8 @@ export class Air extends GameCell {
       y: ball.y,
       id: ball.id,
       color: ball.color,
+      cellX: 0,
+      cellY: 0,
     }));
   }
 }

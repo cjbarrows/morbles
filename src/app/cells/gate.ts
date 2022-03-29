@@ -17,7 +17,10 @@ const atRest = (gate: Gate, bt: BallTracker) => {
 };
 
 const couldCatch = (gate: Gate, bt: BallTracker) => {
-  if ((!bt.proxy && gate.isFlipped()) || (bt.proxy && !gate.isFlipped())) {
+  if (
+    (!gate.inRightLane(bt.ball) && gate.isFlipped()) ||
+    (gate.inRightLane(bt.ball) && !gate.isFlipped())
+  ) {
     if (gate.otherBallInCatcher(bt.ball)) {
       return { path: 'bounceOver' };
     } else {
@@ -28,7 +31,10 @@ const couldCatch = (gate: Gate, bt: BallTracker) => {
 };
 
 const couldBounceOver = (gate: Gate, bt: BallTracker) => {
-  if ((!bt.proxy && gate.isFlipped()) || (bt.proxy && !gate.isFlipped())) {
+  if (
+    (!gate.inRightLane(bt.ball) && gate.isFlipped()) ||
+    (gate.inRightLane(bt.ball) && !gate.isFlipped())
+  ) {
     if (gate.otherBallInCatcher(bt.ball)) {
       return { path: 'bounceOver' };
     }
@@ -37,7 +43,10 @@ const couldBounceOver = (gate: Gate, bt: BallTracker) => {
 };
 
 const couldFlipGate = (gate: Gate, bt: BallTracker) => {
-  if ((!bt.proxy && !gate.isFlipped()) || (bt.proxy && gate.isFlipped())) {
+  if (
+    (!gate.inRightLane(bt.ball) && !gate.isFlipped()) ||
+    (gate.inRightLane(bt.ball) && gate.isFlipped())
+  ) {
     return { flip: true };
   }
   return null;
@@ -51,18 +60,18 @@ const nextAnim =
   ({
     path,
     ticks,
-    proxyFlip,
+    flipLanes,
   }: {
     path: string;
     ticks: number;
-    proxyFlip?: boolean;
+    flipLanes?: boolean;
   }) =>
-  (gate: Gate, bt: BallTracker, physics: PhysicsService) => {
+  (gate: Gate, bt: BallTracker, _physics: PhysicsService) => {
     // const = params;
     bt.path = path;
     bt.ticks = ticks;
-    if (proxyFlip !== undefined) {
-      bt.proxy = !bt.proxy;
+    if (flipLanes) {
+      bt.ball.cellX = gate.inRightLane(bt.ball) ? gate.cellX : gate.cellX + 1;
     }
   };
 
@@ -107,7 +116,7 @@ const animations: Array<AnimationFrame> = [
     8,
     100,
     28,
-    nextAnim({ path: 'fall', ticks: 6, proxyFlip: true }),
+    nextAnim({ path: 'fall', ticks: 6, flipLanes: true }),
   ],
 ];
 
@@ -140,11 +149,13 @@ export class Gate extends Air {
       path: 'fall',
       ...entryParams,
     });
+    /*
     if (entryParams && entryParams.proxy) {
       ballTracker.ticks =
         entryParams && entryParams.ticks ? entryParams.ticks : 0;
       ballTracker.proxy = true;
     }
+    */
     return ballTracker;
   }
 
@@ -165,12 +176,13 @@ export class Gate extends Air {
     let newFlip = this.flipped;
 
     this.balls.forEach((entry: BallTracker) => {
-      const { ball, ticks, path, atRest, proxy } = entry;
+      const { ball, ticks, path, atRest } = entry;
 
       if (!atRest) {
         const animation = findAnimation(path || '', ticks);
         if (animation) {
-          ball.x = proxy
+          const inRightLane = this.inRightLane(ball);
+          ball.x = this.inRightLane(ball)
             ? ((100 - animation[2]) as number)
             : (animation[2] as number);
           ball.y = animation[3] as number;
@@ -203,7 +215,7 @@ export class Gate extends Air {
 
   doExit(bt: BallTracker, physics: PhysicsService) {
     physics.onBallExit(this, bt.ball, {
-      x: bt.proxy ? 1 : 0,
+      x: this.inRightLane(bt.ball) ? 1 : 0,
       y: 1,
     });
   }
@@ -218,5 +230,13 @@ export class Gate extends Air {
 
   isFlipped() {
     return this.flipped;
+  }
+
+  override getWidth() {
+    return 2;
+  }
+
+  inRightLane(ball: Ball) {
+    return ball.cellX === this.cellX + 1;
   }
 }
