@@ -8,7 +8,7 @@ export interface BallTracker {
   proxy?: boolean;
   toCatcher?: boolean;
   secondBall?: boolean;
-  animation?: string;
+  path?: string;
   direction?: string;
 }
 
@@ -23,6 +23,7 @@ export class GameCell {
       ticks: entryParams && entryParams.ticks ? entryParams.ticks : 0,
       atRest: false,
       proxy: false,
+      path: entryParams && entryParams.path ? entryParams.path : '',
     };
     this.balls.push(ballTracker);
     return ballTracker;

@@ -279,6 +279,7 @@ export class PhysicsService {
       if (adjustment) {
         cell.removeBall(ball);
         nextCell.cell.addBall(this, ball, adjustment);
+        nextCell.cell.tick(this);
         return true;
       }
     }

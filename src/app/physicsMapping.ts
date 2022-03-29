@@ -28,7 +28,7 @@ const mappings = [
     ticks: 1,
     adjustment: (_physics: PhysicsService, _nextCell: GameCell) => ({
       proxy: true,
-      animation: 'entry',
+      path: 'fall',
       direction: 'top',
     }),
   },
@@ -38,6 +38,7 @@ const mappings = [
     ticks: 8,
     adjustment: (_physics: PhysicsService, _nextCell: GameCell) => ({
       proxy: true,
+      path: 'catch',
       ticks: 0,
       y: 40,
     }),
