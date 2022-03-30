@@ -8,14 +8,14 @@ const mappings = [
   {
     from: 'Bumper',
     to: 'Gate',
-    ticks: 21,
+    ticks: 18,
     adjustment: (
       _physics: PhysicsService,
       _fromCell: GameCell,
       nextCell: GameCell
     ) => {
       const isFlipped = (nextCell as Gate).isFlipped();
-      return isFlipped ? { ticks: 4 } : { ticks: 5 };
+      return isFlipped ? { ticks: 4 } : { ticks: 4 };
     },
   },
   {
