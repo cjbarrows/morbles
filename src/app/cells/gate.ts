@@ -3,16 +3,9 @@ import { Air } from './air';
 import Ball from '../ball';
 import { PhysicsService } from '../physics.service';
 import Point from '../point';
+import { findAnimation, AnimationFrame } from '../types/animations';
 
-type AnimationFrame = [
-  path: string,
-  ticks: number,
-  x: number,
-  y: number,
-  condition?: Function
-];
-
-const atRest = (gate: Gate, bt: BallTracker) => {
+const atRest = (_gate: Gate, bt: BallTracker) => {
   bt.atRest = true;
 };
 
@@ -147,11 +140,6 @@ const animations: Array<AnimationFrame> = [
   ],
 ];
 
-const findAnimation = (path: string, ticks: number) => {
-  return animations.find(
-    (animation) => animation[0] === path && animation[1] === ticks
-  );
-};
 export class Gate extends Air {
   flipped: boolean = false;
   previousFlipped: boolean = false;
@@ -189,7 +177,7 @@ export class Gate extends Air {
       const { ball, ticks, path, atRest } = entry;
 
       if (!atRest) {
-        const animation = findAnimation(path || '', ticks);
+        const animation = findAnimation(animations, path || '', ticks);
         if (animation) {
           ball.x = this.inRightLane(ball)
             ? ((100 - animation[2]) as number)

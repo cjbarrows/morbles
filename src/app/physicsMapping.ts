@@ -1,7 +1,7 @@
 import { GameCell } from './cells/gamecell';
 import { PhysicsService } from './physics.service';
 import { Gate } from './cells/gate';
-import { from } from 'rxjs';
+import { Toggle } from './cells/toggle';
 
 // NOTE: The order of these mappings is important
 const mappings = [
@@ -12,11 +12,8 @@ const mappings = [
     adjustment: (
       _physics: PhysicsService,
       _fromCell: GameCell,
-      nextCell: GameCell
-    ) => {
-      const isFlipped = (nextCell as Gate).isFlipped();
-      return isFlipped ? { ticks: 4 } : { ticks: 4 };
-    },
+      _nextCell: GameCell
+    ) => ({ ticks: 4 }),
   },
   {
     from: 'Bumper',
@@ -45,18 +42,14 @@ const mappings = [
     }),
   },
   {
-    from: 'Air',
-    to: 'Gate',
-    ticks: 8,
+    from: 'Bumper',
+    to: 'Toggle',
+    ticks: 18,
     adjustment: (
       _physics: PhysicsService,
       _fromCell: GameCell,
       _nextCell: GameCell
-    ) => ({
-      path: 'catch',
-      ticks: 0,
-      y: 40,
-    }),
+    ) => ({ ticks: 0, path: 'bumper-to-toggle' }),
   },
   {
     from: 'Air',
