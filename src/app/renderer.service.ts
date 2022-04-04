@@ -30,6 +30,14 @@ export class RendererService {
           height: boundary.height * 0.8,
         });
       }),
+      ...physics.getStoppers().map((stopper) => {
+        return new DrawObject({
+          id: stopper.id,
+          type: 'stopper',
+          x: stopper.x,
+          y: stopper.y,
+        });
+      }),
       ...physics.getBumpers().map((bumper) => {
         return new DrawObject({
           id: bumper.id,
@@ -79,6 +87,14 @@ export class RendererService {
           color: ball.color,
           x: ball.x,
           y: ball.y,
+        });
+      }),
+      ...physics.getStoppers().map((stopper) => {
+        return new DrawObject({
+          id: stopper.id,
+          type: 'stopper-foreground',
+          x: stopper.x,
+          y: stopper.y,
         });
       }),
     ];

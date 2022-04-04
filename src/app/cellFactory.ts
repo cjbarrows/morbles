@@ -3,6 +3,7 @@ import { Air } from './cells/air';
 import { Bumper } from './cells/bumper';
 import { Toggle } from './cells/toggle';
 import { Gate } from './cells/gate';
+import { Stopper } from './cells/stopper';
 
 export const getCellFromName = (name: string): GameCell | null => {
   let cell: GameCell | null;
@@ -28,6 +29,9 @@ export const getCellFromName = (name: string): GameCell | null => {
       break;
     case 'gate-right':
       cell = new Gate();
+      break;
+    case 'stopper':
+      cell = new Stopper();
       break;
     default:
       cell = null;

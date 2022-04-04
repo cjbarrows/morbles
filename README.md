@@ -4,9 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: ball shouldn't show up beyond right-most column
 [ ] BUG: level editor seems broken
-[ ] additional game components? steal from that programming game (Turing Tumble)?
-    [ ] stopper/catcher
 [ ] should it count as success if you still have balls left / balls in play?
 [ ] unsubscribe to map editor subscriptions
 [ ] BUG: you shouldn't be able to "uncomplete" a level
@@ -187,6 +186,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
                   [x] and get rid of .proxy and Bumper => Air => Gate handoffs
                   [x] and fix toggle in the same way
                       - transition from Bumper to Toggle isn't smooth atm
+[x] additional game components? steal from that programming game (Turing Tumble)?
+    [x] stopper/catcher
 
 ## Notes
 

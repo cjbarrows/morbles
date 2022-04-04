@@ -6,6 +6,7 @@ import { GameCell } from './cells/gamecell';
 import { Bumper } from './cells/bumper';
 import { Gate } from './cells/gate';
 import { Toggle } from './cells/toggle';
+import { Stopper } from './cells/stopper';
 import Point from './point';
 import { mapCells } from './physicsMapping';
 import { CELL_WIDTH } from './constants';
@@ -93,9 +94,9 @@ export class PhysicsService {
     return undefined;
   }
 
-  findNextCell(cell: GameCell, offset: Point): GameCellEntry | undefined {
+  findNextCell(cell: GameCell, offset?: Point): GameCellEntry | undefined {
     const entry = this.cells.find((aCell) => aCell.cell === cell);
-    if (entry) {
+    if (entry && offset) {
       const nextCell = this.getGameCell(entry.x + offset.x, entry.y + offset.y);
       return nextCell;
     }
@@ -223,6 +224,25 @@ export class PhysicsService {
     return toggles;
   }
 
+  getStoppers(): Array<CellInfo> {
+    let stoppers = [];
+    for (let entry of this.cells) {
+      if (entry.cell instanceof Stopper) {
+        const stopper: Stopper = <Stopper>entry.cell;
+        const pos = stopper.getImagePosition();
+        if (pos) {
+          stoppers.push({
+            id: entry.id,
+            x: entry.x * CELL_WIDTH + pos.x,
+            y: entry.y * CELL_WIDTH + pos.y,
+          });
+        }
+      }
+    }
+
+    return stoppers;
+  }
+
   // TODO: rework this into something more TypeScript-y
   getGates(): Array<CellInfo> {
     let gates = [];
@@ -245,20 +265,25 @@ export class PhysicsService {
     return gates;
   }
 
-  onBallExit(cell: GameCell, ball: Ball, exitPoint: Point) {
+  onBallExit(cell: GameCell, ball: Ball, exitPoint?: Point) {
     cell.removeBall(ball);
 
     const nextCell: GameCellEntry | undefined = this.findNextCell(
       cell,
       exitPoint
     );
-    if (nextCell) {
+    if (exitPoint && nextCell) {
       nextCell.cell.addBall(this, ball);
       ball.cellX = cell.cellX + exitPoint.x;
       ball.cellY = cell.cellY + exitPoint.y;
     } else {
       const pos = this.getCellPosition(cell);
-      if (exitPoint.x >= 0 && exitPoint.x < this.numColumns) {
+      if (
+        exitPoint &&
+        pos !== undefined &&
+        pos.x + exitPoint.x >= 0 &&
+        pos.x + exitPoint.x < this.numColumns
+      ) {
         this.ballExitObservable.next([
           ball.color || 'blue',
           pos ? (pos.x + 0.5) * CELL_WIDTH : 0,
