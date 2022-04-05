@@ -23,6 +23,7 @@
           (click)="onClick(drawObject)"
           *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
         ></div>
+        <div class="right-side-cover" [ngStyle]="getRightSideStyle()"></div>
       </div>
       <app-ball-exit
         [width]="getWidth()"

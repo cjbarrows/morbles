@@ -4,12 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] BUG: ball shouldn't show up beyond right-most column
 [ ] BUG: level editor seems broken
 [ ] should it count as success if you still have balls left / balls in play?
 [ ] unsubscribe to map editor subscriptions
-[ ] BUG: you shouldn't be able to "uncomplete" a level
-    - is this still a bug?
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
     - is this a Heroku-only bug, I forget?
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
@@ -188,6 +185,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
                       - transition from Bumper to Toggle isn't smooth atm
 [x] additional game components? steal from that programming game (Turing Tumble)?
     [x] stopper/catcher
+[x] BUG: ball shouldn't show up beyond right-most column
+[ ] BUG: you shouldn't be able to "uncomplete" a level
+    - is this still a bug? I don't think so
 
 ## Notes
 

@@ -139,6 +139,14 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     };
   }
 
+  getRightSideStyle(): any {
+    return {
+      height: this.physics.rows * 100 + 36 + 'px',
+      width: this.getWidth() - this.physics.numColumns * 100 + 'px',
+      left: this.physics.numColumns * 100 + 'px',
+    };
+  }
+
   setupFromLevelData(showModal: boolean = true) {
     const { name, hint, columns, rows, map, startingBalls, endingBalls } =
       this.level;

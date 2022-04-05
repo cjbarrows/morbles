@@ -17,7 +17,13 @@
 }
 
 .game-board-proper {
-  position: relative;
+  position: absolute;
+  top: 55px;
+}
+
+.right-side-cover {
+  position: absolute;
+  background-color: black;
 }
 
 .boundary {
