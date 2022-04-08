@@ -1,4 +1,4 @@
-import { BallTracker } from './gamecell';
+import { BallTracker, GameCell } from './gamecell';
 import { Air } from './air';
 import { PhysicsService } from '../physics.service';
 import Point from '../point';
@@ -65,6 +65,13 @@ export class Bumper extends Air {
   }
 
   onClick() {
-    this.flipped = !this.flipped;
+    if (GameCell.inEditingMode) {
+      this.flipped = !this.flipped;
+      GameCell.onCellChange(this);
+    }
+  }
+
+  override serialize(): string {
+    return `bumper-${this.flipped ? 'left' : 'right'}`;
   }
 }

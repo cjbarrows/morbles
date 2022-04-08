@@ -12,6 +12,9 @@ export interface BallTracker {
 }
 
 export class GameCell {
+  static inEditingMode: boolean = false;
+  static onCellChange: Function;
+
   id: number = 0;
 
   cellX: number = 0;
@@ -46,5 +49,9 @@ export class GameCell {
 
   getHeight() {
     return 1;
+  }
+
+  serialize(): string {
+    return '';
   }
 }

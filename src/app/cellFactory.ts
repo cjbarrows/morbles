@@ -40,3 +40,46 @@ export const getCellFromName = (name: string): GameCell | null => {
 
   return cell;
 };
+
+export function getAllCellTypes(): Array<any> {
+  return [
+    { shorthand: ' ', code: 'air', label: 'Air', constructor: Air },
+    {
+      shorthand: 'L',
+      code: 'bumper-left',
+      label: 'Bumper Left',
+      constructor: Bumper,
+    },
+    {
+      shorthand: 'R',
+      code: 'bumper-right',
+      label: 'Bumper Right',
+      constructor: Bumper,
+    },
+    {
+      shorthand: 'T',
+      code: 'toggle-left',
+      label: 'Toggle Left',
+      constructor: Toggle,
+    },
+    {
+      shorthand: 'U',
+      code: 'toggle-right',
+      label: 'Toggle Right',
+      constructor: Toggle,
+    },
+    {
+      shorthand: 'G',
+      code: 'gate-left',
+      label: 'Gate Left',
+      constructor: Gate,
+    },
+    {
+      shorthand: 'H',
+      code: 'gate-right',
+      label: 'Gate Right',
+      constructor: Gate,
+    },
+    { shorthand: 'S', code: 'stopper', label: 'Stopper', constructor: Stopper },
+  ];
+}

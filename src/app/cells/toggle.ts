@@ -1,4 +1,4 @@
-import { BallTracker } from './gamecell';
+import { BallTracker, GameCell } from './gamecell';
 import { Air } from './air';
 import { PhysicsService } from '../physics.service';
 import Ball from '../ball';
@@ -126,7 +126,9 @@ export class Toggle extends Air {
   }
 
   onClick() {
-    this.flipped = !this.flipped;
+    if (GameCell.inEditingMode) {
+      this.flipped = !this.flipped;
+    }
   }
 
   override getWidth() {

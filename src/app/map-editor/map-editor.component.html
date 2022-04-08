@@ -1,49 +1,60 @@
-<form [formGroup]="mapForm">
-  <div class="input-group">
-    <label for="mapName">Map Name: </label>
-    <input id="mapName" type="text" formControlName="mapName" />
-  </div>
-  <div class="input-group">
-    <label for="mapName">Hint: </label>
-    <input id="hint" type="text" formControlName="hint" />
-  </div>
-  <div class="input-group">
-    <label for="rows">Rows: </label>
-    <input id="rows" type="number" formControlName="numRows" />
-    <label for="columns">Columns: </label>
-    <input id="columns" type="number" formControlName="numColumns" />
-  </div>
-  <div class="input-group">
-    <label for="startingBalls">Starting Balls: </label>
-    <input id="startingBalls" type="text" formControlName="startingBalls" />
-  </div>
-  <div class="input-group">
-    <label for="endingBalls">Ending Balls: </label>
-    <input id="endingBalls" type="text" formControlName="endingBalls" />
-  </div>
-  <div formArrayName="rows">
-    <h2>Map</h2>
-    <div *ngFor="let row of rows.controls; let i = index">
-      <div
-        [formGroupName]="i"
-        class="map-column-selects"
-        *ngFor="let col of getRow(i).controls; let j = index"
-      >
-        <select [formControlName]="j">
-          <option value="air">Air</option>
-          <option value="bumper-left">Bumper Left</option>
-          <option value="bumper-right">Bumper Right</option>
-          <option value="gate-left">Gate Left</option>
-          <option value="gate-right">Gate Right</option>
-          <option value="toggle-left">Toggle Left</option>
-          <option value="toggle-right">Toggle Right</option>
-        </select>
+<div class="split-pane">
+  <div class="editor">
+    <form [formGroup]="mapForm">
+      <div class="input-group">
+        <label for="mapName">Map Name: </label>
+        <input id="mapName" type="text" formControlName="mapName" />
       </div>
-    </div>
+      <div class="input-group">
+        <label for="mapName">Hint: </label>
+        <input id="hint" type="text" formControlName="hint" />
+      </div>
+      <div class="input-group">
+        <label for="rows">Rows: </label>
+        <input id="rows" type="number" formControlName="numRows" />
+        <label for="columns">Columns: </label>
+        <input id="columns" type="number" formControlName="numColumns" />
+      </div>
+      <div class="input-group">
+        <label for="startingBalls">Starting Balls: </label>
+        <input id="startingBalls" type="text" formControlName="startingBalls" />
+      </div>
+      <div class="input-group">
+        <label for="endingBalls">Ending Balls: </label>
+        <input id="endingBalls" type="text" formControlName="endingBalls" />
+      </div>
+      <div formArrayName="rows">
+        <h2>Map</h2>
+        <div *ngFor="let row of rows.controls; let i = index">
+          <div
+            [formGroupName]="i"
+            class="map-column-selects"
+            *ngFor="let col of getRow(i).controls; let j = index"
+          >
+            <select [formControlName]="j" [ngClass]="getCellType(i, j)">
+              <option
+                *ngFor="
+                  let opt of getCellOptions(i, j);
+                  trackBy: getCellOptionValue
+                "
+                [value]="opt.value"
+              >
+                {{ opt.label }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button
+        (click)="saveMap()"
+        [disabled]="mapForm.status !== 'VALID' || isSaving"
+        class="btn btn-primary"
+      >
+        {{ isSaving ? "Saving..." : "Save" }}
+      </button>
+    </form>
+    <p>Form Status: {{ mapForm.status }}</p>
+    {{ mapForm.value | json }}
   </div>
-  <button (click)="saveMap()" [disabled]="mapForm.status !== 'VALID' || isSaving" class="btn btn-primary">
-    {{isSaving ? 'Saving...' : 'Save'}}
-  </button>
-</form>
-<p>Form Status: {{ mapForm.status }}</p>
-{{ mapForm.value | json }}
+  <div class="play"><app-game-board></app-game-board></div>
+</div>

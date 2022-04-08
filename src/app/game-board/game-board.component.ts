@@ -113,9 +113,17 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     );
 
     this.levelSubscription = this.level$.subscribe((level) => {
-      this.level = level;
-      this.setupFromLevelData(this.showPremodal);
+      this.setLevel(level, this.showPremodal);
     });
+  }
+
+  isEditorRoute() {
+    return this.router.url.includes('/editor');
+  }
+
+  setLevel(level: GameLevel, showPremodal: boolean) {
+    this.level = level;
+    this.setupFromLevelData(showPremodal);
   }
 
   ngOnDestroy() {
@@ -174,7 +182,10 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     this.entryBallInfo = this.getEntryBallsFromStartingBalls();
     this.exitBallInfo = [];
 
-    if (showModal) {
+    const { map } = this.level;
+    this.physics.populateCellsFromMap(convertShorthandMap(map));
+
+    if (showModal && !this.isEditorRoute()) {
       this.showPlayModal(name, hint);
     } else {
       this.gameState = 'open';
@@ -284,17 +295,19 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     if (this._gameState !== newGameState) {
       this._gameState = newGameState;
 
-      this.updatePlayerStatus(this.currentLevelId, newGameState).then(() => {
-        this.levelsComponent.refreshPlayer();
-      });
+      if (!this.isEditorRoute()) {
+        this.updatePlayerStatus(this.currentLevelId, newGameState).then(() => {
+          this.levelsComponent.refreshPlayer();
+        });
 
-      switch (newGameState) {
-        case 'success':
-        case 'failed':
-          this.showEndModal(newGameState);
-          break;
-        default:
-          break;
+        switch (newGameState) {
+          case 'success':
+          case 'failed':
+            this.showEndModal(newGameState);
+            break;
+          default:
+            break;
+        }
       }
     }
   }
@@ -365,7 +378,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDrawObjectId(index: number, drawObject: DrawObject): number {
+  getDrawObjectId(_index: number, drawObject: DrawObject): number {
     return drawObject.id;
   }
 

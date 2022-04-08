@@ -1,4 +1,7 @@
-<app-levels [currentLevelId]="currentLevelId"></app-levels>
+<app-levels
+  *ngIf="!isEditorRoute()"
+  [currentLevelId]="currentLevelId"
+></app-levels>
 <div *ngIf="level$ | async as level" class="game-board-container">
   <div class="game-interface text-center">
     <h3>{{ level.name }}</h3>
@@ -31,6 +34,14 @@
         [endingBalls]="endingBalls"
         [gameState]="gameState"
       ></app-ball-exit>
+    </div>
+    <div class="editor-controls" *ngIf="isEditorRoute()">
+      <p>
+        Game State: <strong>{{ gameState }}</strong>
+      </p>
+      <button class="btn btn-warning" (click)="doResetLevel('', '', false)">
+        Restart
+      </button>
     </div>
   </div>
 </div>

@@ -1,3 +1,26 @@
+.split-pane {
+  display:flex;
+}
+
+.split-pane .editor {
+  width: 50%;
+}
+
+.split-pane .play {
+  width: 50%;
+}
+
 .map-column-selects {
   display: inline-block;
+}
+
+.map-column-selects select {
+  width: 125px;
+}
+
+.map-column-selects select.gate-left,
+.map-column-selects select.gate-right,
+.map-column-selects select.toggle-left,
+.map-column-selects select.toggle-right {
+  width: 250px;
 }

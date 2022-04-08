@@ -1,4 +1,4 @@
-import { BallTracker } from './gamecell';
+import { BallTracker, GameCell } from './gamecell';
 import { Air } from './air';
 import Ball from '../ball';
 import { PhysicsService } from '../physics.service';
@@ -222,7 +222,9 @@ export class Gate extends Air {
   }
 
   onClick() {
-    this.flipped = !this.flipped;
+    if (GameCell.inEditingMode) {
+      this.flipped = !this.flipped;
+    }
   }
 
   isFlipped() {

@@ -94,6 +94,18 @@ export class PhysicsService {
     return undefined;
   }
 
+  getColumnIndexForCell(cell: GameCell) {
+    const colIndex = this.cells.reduce(
+      (accum: number, gameCell: GameCellEntry) => {
+        return gameCell.y === cell.cellY && gameCell.x < cell.cellX
+          ? accum + 1
+          : accum;
+      },
+      0
+    );
+    return colIndex;
+  }
+
   findNextCell(cell: GameCell, offset?: Point): GameCellEntry | undefined {
     const entry = this.cells.find((aCell) => aCell.cell === cell);
     if (entry && offset) {
@@ -106,15 +118,21 @@ export class PhysicsService {
   populateCellsFromMap(mapCells: Array<CellContents>) {
     this.clearAll();
 
-    mapCells.forEach((contents, index) => {
+    let rowIndex: number = 0;
+    let columnIndex: number = 0;
+
+    mapCells.forEach((contents) => {
       const { cell: name, ball } = contents;
 
       const cell = getCellFromName(name);
 
       if (cell) {
-        const x = index % this.getNumColumns();
-        const y = (index - x) / this.getNumColumns();
-        this.addCell(x, y, cell);
+        this.addCell(columnIndex, rowIndex, cell);
+        columnIndex += cell.getWidth();
+        if (columnIndex >= this.getNumColumns()) {
+          columnIndex = 0;
+          rowIndex += 1;
+        }
 
         if (ball) {
           this.addBallToCell(cell, ball);
@@ -286,7 +304,7 @@ export class PhysicsService {
       ) {
         this.ballExitObservable.next([
           ball.color || 'blue',
-          pos ? (pos.x + 0.5) * CELL_WIDTH : 0,
+          pos ? (pos.x + exitPoint.x + 0.5) * CELL_WIDTH : 0,
           true,
         ]);
       } else {

@@ -4,7 +4,26 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] clean up the level editor so it looks nice
+[ ] REFACTOR: all shorthand / cell types from one source
 [ ] BUG: level editor seems broken
+    [x] needs to account for cell width
+    [ ] needs to account for a ball in a cell
+    [x] expanding the # of columns should pad with air, not shift cells
+    [-] ability to swap cells right/left
+        - nah
+    [x] don't let cells be added where they don't fit
+        [x] a gate on the right-most edge
+            - don't forget to use trackBy to stop *ngFor from perpetually reloading
+        [-] or add a gate next to something non-air
+            - seems fine to let toggles & gates "eat" a bumper, etc.
+    [x] show playable map as it's being edited
+    [x] don't show game modals during editing
+    [ ] restart command for editor
+    [x] game state indicator for editor
+    [x] toggling gates, bumpers, and toggles with mouse click is allowed in editor mode
+        - used a static boolean on the GameCell class, but not sure why/when it gets "reset" to its initial value -- but it seems to on page refresh, which is fine
+        [ ] and it counts as a map change
 [ ] should it count as success if you still have balls left / balls in play?
 [ ] unsubscribe to map editor subscriptions
 [ ] BUG: the PUT player for completing a level is not updating in time for the GET (which still shows the level incomplete)
@@ -12,15 +31,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [ ] TECH DEBT: is my "cached login status" a problem if you get logged out via timeout?
 [ ] cache some of the server queries on the client-side
 [ ] BUG: if map doesn't have enough cells, mapForm still shows "air" in missing cells but they aren't loaded into physics
-[ ] also add 'gate handoff' when 'gate' is added to map
 [ ] REFACTOR: move colorName to constants
 [ ] REFACTOR: reconcile app / gameboard responsibility (start/stop, time, ball order, etc)
 [ ] REFACTOR: put # rows/cols on mapeditor?
     - or move controls component to map editor?
-[ ] REFACTOR: gate "curves" into keyframe animations
-    - maybe use Angular animations?
 [ ] BUG: expanding the # of rows did not add to the physics cells
-[ ] BUG: check proxy above-and-to-the-right of gate
 [ ] REFACTOR: codify entryParams
 [ ] easy adjustment of graphics scaling?
 [ ] add Angular UI controls/interactions (for learning)
@@ -188,6 +203,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 [x] BUG: ball shouldn't show up beyond right-most column
 [ ] BUG: you shouldn't be able to "uncomplete" a level
     - is this still a bug? I don't think so
+[ ] REFACTOR: gate "curves" into keyframe animations
+    - maybe use Angular animations?
+[ ] also add 'gate handoff' when 'gate' is added to map
+[ ] BUG: check proxy above-and-to-the-right of gate
 
 ## Notes
 
