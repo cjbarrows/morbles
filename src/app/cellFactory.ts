@@ -5,7 +5,7 @@ import { Toggle } from './cells/toggle';
 import { Gate } from './cells/gate';
 import { Stopper } from './cells/stopper';
 
-export const getCellFromName = (name: string): GameCell | null => {
+export const makeCellFromName = (name: string): GameCell | null => {
   let cell: GameCell | null;
 
   switch (name) {

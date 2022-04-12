@@ -10,7 +10,7 @@ import { Stopper } from './cells/stopper';
 import Point from './point';
 import { mapCells } from './physicsMapping';
 import { CELL_WIDTH } from './constants';
-import { getCellFromName } from './cellFactory';
+import { makeCellFromName } from './cellFactory';
 import { CellContents } from './types/cellContents';
 
 interface GameCellEntry {
@@ -124,7 +124,7 @@ export class PhysicsService {
     mapCells.forEach((contents) => {
       const { cell: name, ball } = contents;
 
-      const cell = getCellFromName(name);
+      const cell = makeCellFromName(name);
 
       if (cell) {
         this.addCell(columnIndex, rowIndex, cell);
@@ -135,19 +135,27 @@ export class PhysicsService {
         }
 
         if (ball) {
-          this.addBallToCell(cell, ball);
+          this.addBallToCell(cell, ball, true);
         }
       }
     });
   }
 
-  addBallToCell(cell: GameCell, colorName: ColorName) {
+  addBallToCell(
+    cell: GameCell,
+    colorName: ColorName,
+    duringSetup: boolean = false
+  ) {
     const ball = new Ball();
     ball.color = colorName;
     ball.id = this.index;
     this.index += 1;
 
-    cell.addBall(this, ball);
+    if (!duringSetup) {
+      cell.addBall(this, ball);
+    } else {
+      cell.addBall(this, ball, { duringSetup: true });
+    }
   }
 
   launchBall(xCell: number, colorName: ColorName) {

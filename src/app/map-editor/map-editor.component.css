@@ -10,17 +10,23 @@
   width: 50%;
 }
 
-.map-column-selects {
-  display: inline-block;
+.map-rows {
+  display: flex;
 }
 
-.map-column-selects select {
+.map-rows .cell-selector {
   width: 125px;
+  display: flex;
 }
 
-.map-column-selects select.gate-left,
-.map-column-selects select.gate-right,
-.map-column-selects select.toggle-left,
-.map-column-selects select.toggle-right {
+.map-rows .cell-selector.gate-left,
+.map-rows .cell-selector.gate-right,
+.map-rows .cell-selector.toggle-left,
+.map-rows .cell-selector.toggle-right {
   width: 250px;
+}
+
+.cell-selector select.cell-type {
+  display: inline-block;
+  width: 100%;
 }

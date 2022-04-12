@@ -1,5 +1,6 @@
 import { ColorName } from '../ball';
 import { CellContents } from '../types/cellContents';
+import { getColorCode } from './getColorCode';
 
 const getBallIfAny = (shorthand: string, index: number): ColorName | null => {
   if (index < shorthand.length - 1) {
@@ -64,29 +65,40 @@ export const convertShorthandMap = (shorthand: string): CellContents[] => {
   return cellContents;
 };
 
-export const convertMapToShorthand = (cellNames: string[]): string => {
-  return cellNames
-    .map((cellName) => {
-      switch (cellName) {
-        case 'air':
-          return ' ';
-        case 'bumper-left':
-          return 'L';
-        case 'bumper-right':
-          return 'R';
-        case 'gate-left':
-          return 'G';
-        case 'gate-right':
-          return 'H';
-        case 'toggle-left':
-          return 'T';
-        case 'toggle-right':
-          return 'U';
-        case 'stopper':
-          return 'S';
-        default:
-          return ' ';
-      }
-    })
-    .join('');
+const getCodeForCellType = (cellName: string) => {
+  switch (cellName) {
+    case 'air':
+      return ' ';
+    case 'bumper-left':
+      return 'L';
+    case 'bumper-right':
+      return 'R';
+    case 'gate-left':
+      return 'G';
+    case 'gate-right':
+      return 'H';
+    case 'toggle-left':
+      return 'T';
+    case 'toggle-right':
+      return 'U';
+    case 'stopper':
+      return 'S';
+    default:
+      return ' ';
+  }
+};
+
+export const convertMapToShorthand = (
+  cellNamesAndOptions: string[]
+): string => {
+  let shorthand = '';
+  for (let i = 0; i < cellNamesAndOptions.length; i += 2) {
+    const cellName = cellNamesAndOptions[i];
+    const options = cellNamesAndOptions[i + 1];
+    shorthand += getCodeForCellType(cellName);
+    if (options) {
+      shorthand += (getColorCode(options as ColorName) as string).toLowerCase();
+    }
+  }
+  return shorthand;
 };

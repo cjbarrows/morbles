@@ -22,7 +22,11 @@ export class GameCell {
 
   balls: Array<BallTracker> = [];
 
-  addBall(physics: PhysicsService, ball: Ball, entryParams?: any): BallTracker {
+  addBall(
+    _physics: PhysicsService,
+    ball: Ball,
+    entryParams?: any
+  ): BallTracker {
     const ballTracker: BallTracker = {
       ball,
       ticks: entryParams && entryParams.ticks ? entryParams.ticks : 0,
@@ -53,5 +57,9 @@ export class GameCell {
 
   serialize(): string {
     return '';
+  }
+
+  canPreloadBall(): boolean {
+    return false;
   }
 }

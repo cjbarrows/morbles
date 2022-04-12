@@ -27,8 +27,9 @@ import {
 } from '../utilities/convertShorthand';
 import { CellContents } from '../types/cellContents';
 import { GameCell } from '../cells/gamecell';
-import { getAllCellTypes, getCellFromName } from '../cellFactory';
+import { getAllCellTypes, makeCellFromName } from '../cellFactory';
 import { GameBoardComponent } from '../game-board/game-board.component';
+import { getColorNames } from '../ball';
 
 function colorCodeValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -79,7 +80,7 @@ export class MapEditorComponent implements OnInit {
     const columnCount = row.controls.reduce(
       (accum, control: AbstractControl) => {
         const cellType = control.value;
-        const cell: GameCell | null = getCellFromName(cellType);
+        const cell: GameCell | null = makeCellFromName(cellType);
 
         return accum + (cell ? cell?.getWidth() : 0);
       },
@@ -157,13 +158,18 @@ export class MapEditorComponent implements OnInit {
         cellIndex >= this.startingMap.length ||
         (oldColumns && colIndex >= oldColumns);
       const cellType = isNewCell ? 'air' : this.startingMap[cellIndex].cell;
-      const cell: GameCell | null = getCellFromName(cellType);
+      const cell: GameCell | null = makeCellFromName(cellType);
       const cellWidth = cell ? cell.getWidth() : 1;
       const control = this.fb.control(cellType);
 
       const row = controls.at(rowIndex) as FormArray;
       if (row) {
         row.push(control);
+
+        const optionControl = this.fb.control(
+          isNewCell ? '' : this.startingMap[cellIndex].ball || ''
+        );
+        row.push(optionControl);
       }
 
       cellIndex += 1;
@@ -280,18 +286,38 @@ export class MapEditorComponent implements OnInit {
     }
   }
 
-  getRow(n: number): FormArray {
-    return this.rows.at(n) as FormArray;
+  getRow(row: number): FormArray {
+    return this.rows.at(row) as FormArray;
   }
 
-  getCellType(r: number, c: number) {
+  getCellIndices(row: number): Array<any> {
+    const controls = this.getRow(row);
+
+    return Array(controls.length)
+      .fill(0)
+      .map((_, index) => index)
+      .filter((index) => index % 2 === 0);
+  }
+
+  getCellType(row: number, col: number) {
     try {
-      const cell = this.getRow(r).at(c);
+      const cell = this.getRow(row).at(col * 2);
       if (cell) {
         return cell.value;
       }
     } catch (error) {}
     return undefined;
+  }
+
+  allowsBall(row: number, col: number): boolean {
+    try {
+      const cell = this.getRow(row).at(col * 2);
+      if (cell) {
+        const newCell = makeCellFromName(cell.value);
+        return newCell ? newCell.canPreloadBall() : false;
+      }
+    } catch (error) {}
+    return false;
   }
 
   async saveMap() {
@@ -311,7 +337,7 @@ export class MapEditorComponent implements OnInit {
     this.isSaving = false;
   }
 
-  getCellOptions(_row: number, column: number) {
+  getCellsAllowed(_row: number, column: number) {
     const allCellTypes = getAllCellTypes();
 
     const filtered = allCellTypes
@@ -327,16 +353,24 @@ export class MapEditorComponent implements OnInit {
 
     return filtered;
   }
-  getCellOptionValue(_index: number, item: any) {
+
+  getCellValue(_index: number, item: any) {
     return item.value;
   }
 
   onGameCellChange(cell: GameCell) {
-    console.log('here');
-    console.log(cell.serialize());
-    console.log(cell);
     const colIndex = this.physics.getColumnIndexForCell(cell);
-    console.log(colIndex);
-    // TODO: change this in the form control array, using the new .serialize
+    const row = this.getRow(cell.cellY);
+    row.removeAt(colIndex * 2);
+    row.insert(colIndex * 2, this.fb.control(cell.serialize()));
+  }
+
+  // TODO: save ball settings and add them to physics
+  // if (ball) {
+  //   this.addBallToCell(cell, ball);
+  // }
+
+  getBallOptions() {
+    return ['', ...getColorNames()];
   }
 }

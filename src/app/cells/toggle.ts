@@ -128,6 +128,7 @@ export class Toggle extends Air {
   onClick() {
     if (GameCell.inEditingMode) {
       this.flipped = !this.flipped;
+      GameCell.onCellChange(this);
     }
   }
 
@@ -137,5 +138,9 @@ export class Toggle extends Air {
 
   inRightLane(ball: Ball) {
     return ball.cellX === this.cellX + 1;
+  }
+
+  override serialize(): string {
+    return `toggle-${this.flipped ? 'left' : 'right'}`;
   }
 }

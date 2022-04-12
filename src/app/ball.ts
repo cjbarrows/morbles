@@ -15,3 +15,7 @@ export default class Ball {
     this.color = color;
   }
 }
+
+export function getColorNames(): Array<ColorName> {
+  return ['blue', 'green', 'red', 'purple'];
+}

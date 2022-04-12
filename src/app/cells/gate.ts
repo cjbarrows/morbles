@@ -154,6 +154,16 @@ export class Gate extends Air {
     ball: Ball,
     entryParams?: any
   ): BallTracker {
+    if (entryParams && entryParams.duringSetup) {
+      entryParams = {
+        ...entryParams,
+        path: 'catch',
+        ticks: 5,
+        atRest: true,
+      };
+      ball.cellX = this.cellX + (this.flipped ? 0 : 1);
+    }
+
     const ballTracker = super.addBall(physics, ball, {
       path: 'fall',
       ...entryParams,
@@ -224,6 +234,7 @@ export class Gate extends Air {
   onClick() {
     if (GameCell.inEditingMode) {
       this.flipped = !this.flipped;
+      GameCell.onCellChange(this);
     }
   }
 
@@ -237,5 +248,13 @@ export class Gate extends Air {
 
   inRightLane(ball: Ball) {
     return ball.cellX === this.cellX + 1;
+  }
+
+  override serialize(): string {
+    return `gate-${this.flipped ? 'left' : 'right'}`;
+  }
+
+  override canPreloadBall(): boolean {
+    return true;
   }
 }
