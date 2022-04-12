@@ -17,6 +17,7 @@ interface DrawObjectOptions {
   onClickHandler?: Function;
   flipped?: boolean;
   color?: string;
+  cellY?: number;
 }
 
 interface DrawObjectStyles {
@@ -31,9 +32,11 @@ export class DrawObject {
   className: string;
   styleObject: DrawObjectStyles;
   onClickHandler: Function | undefined;
+  cellY: number;
 
   constructor(properties: DrawObjectOptions) {
     this.id = properties.id;
+    this.cellY = properties.cellY || 0;
 
     this.styleObject = {
       left: properties.x + 'px',

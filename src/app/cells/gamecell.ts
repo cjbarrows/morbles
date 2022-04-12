@@ -33,6 +33,8 @@ export class GameCell {
       atRest: false,
       path: entryParams && entryParams.path ? entryParams.path : '',
     };
+    ball.cellX = this.cellX;
+    ball.cellY = this.cellY;
     this.balls.push(ballTracker);
     return ballTracker;
   }

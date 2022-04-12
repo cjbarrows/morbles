@@ -161,13 +161,12 @@ export class Gate extends Air {
         ticks: 5,
         atRest: true,
       };
-      ball.cellX = this.cellX + (this.flipped ? 0 : 1);
     }
-
     const ballTracker = super.addBall(physics, ball, {
       path: 'fall',
       ...entryParams,
     });
+    ball.cellX = this.cellX + (this.flipped ? 0 : 1);
     return ballTracker;
   }
 

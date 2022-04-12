@@ -24,6 +24,7 @@ interface CellInfo extends Point {
   id: number;
   onClickHandler?: Function;
   flipped?: boolean;
+  cellY?: number;
 }
 
 @Injectable({
@@ -195,12 +196,15 @@ export class PhysicsService {
     const arrayOfBalls = this.cells.map(({ x, y, cell }) => {
       const cellBalls = cell.getBalls();
       return cellBalls.map((ball) => {
-        return new Ball(
+        const ballCopy = new Ball(
           x * CELL_WIDTH + ball.x,
           y * CELL_WIDTH + ball.y,
           ball.id,
           ball.color
         );
+        ballCopy.cellX = ball.cellX;
+        ballCopy.cellY = ball.cellY;
+        return ballCopy;
       });
     });
 
@@ -219,6 +223,7 @@ export class PhysicsService {
             id: entry.id,
             x: entry.x * CELL_WIDTH + pos.x,
             y: entry.y * CELL_WIDTH + pos.y,
+            cellY: entry.cell.cellY,
             flipped: bumper.flipped,
             onClickHandler: () => bumper.onClick(),
           });
@@ -240,6 +245,7 @@ export class PhysicsService {
             id: entry.id,
             x: entry.x * CELL_WIDTH + pos.x,
             y: entry.y * CELL_WIDTH + pos.y,
+            cellY: entry.cell.cellY,
             flipped: toggle.flipped,
             onClickHandler: () => toggle.onClick(),
           });
@@ -261,6 +267,7 @@ export class PhysicsService {
             id: entry.id,
             x: entry.x * CELL_WIDTH + pos.x,
             y: entry.y * CELL_WIDTH + pos.y,
+            cellY: entry.cell.cellY,
           });
         }
       }
@@ -281,6 +288,7 @@ export class PhysicsService {
             id: entry.id,
             x: entry.x * CELL_WIDTH + pos.x,
             y: entry.y * CELL_WIDTH + pos.y,
+            cellY: entry.cell.cellY,
             flipped: gate.flipped,
             onClickHandler: () => gate.onClick(),
           });

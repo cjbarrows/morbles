@@ -36,8 +36,8 @@ export class Air extends GameCell {
       y: ball.y,
       id: ball.id,
       color: ball.color,
-      cellX: 0,
-      cellY: 0,
+      cellX: ball.cellX,
+      cellY: ball.cellY,
     }));
   }
 }

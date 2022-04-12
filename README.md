@@ -4,8 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
-[ ] BUG: stopper hides rows below it
-    - render bottom to top?
+[ ] make it look nice on a phone
 [ ] clean up the level editor so it looks nice
 [ ] REFACTOR: all shorthand / cell types from one source
 [ ] should it count as success if you still have balls left / balls in play?
@@ -209,6 +208,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     [x] toggling gates, bumpers, and toggles with mouse click is allowed in editor mode
         - used a static boolean on the GameCell class, but not sure why/when it gets "reset" to its initial value -- but it seems to on page refresh, which is fine
         [x] and it counts as a map change
+[x] BUG: stopper hides rows below it
+    - render bottom to top?
+        - by game cell y
+    [x] gate is being drawn behind stopper too
 
 ## Notes
 
