@@ -18,6 +18,7 @@ const convertToDatabaseLevel = (level: GameLevel) => ({
   StartingBalls: level.startingBalls,
   EndingBalls: level.endingBalls,
   MapData: level.map,
+  IsOfficial: level.isOfficial,
 });
 
 @Injectable({
@@ -97,6 +98,7 @@ export class DatabaseService {
               startingBalls: level.StartingBalls,
               endingBalls: level.EndingBalls,
               map: level.MapData,
+              isOfficial: level.IsOfficial,
             }))
           )
         )
@@ -118,6 +120,7 @@ export class DatabaseService {
           startingBalls: level.StartingBalls,
           endingBalls: level.EndingBalls,
           map: level.MapData,
+          isOfficial: level.isOfficial,
         }))
       );
   }
@@ -140,6 +143,7 @@ export class DatabaseService {
           attempts: levelStatus.Attempts,
           failures: levelStatus.Failures,
           completed: levelStatus.Completed,
+          isOfficial: levelStatus.IsOfficial,
         })),
       };
     } catch (error) {
@@ -167,6 +171,7 @@ export class DatabaseService {
           attempts: levelStatus.Attempts,
           failures: levelStatus.Failures,
           completed: levelStatus.Completed,
+          isOfficial: levelStatus.IsOfficial,
         })),
       };
     } catch (error) {

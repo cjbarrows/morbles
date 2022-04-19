@@ -212,6 +212,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     - render bottom to top?
         - by game cell y
     [x] gate is being drawn behind stopper too
+[x] create "official" levels
+[x] allow "un-official" levels (that aren't part of the automatic progression)
 
 ## Notes
 

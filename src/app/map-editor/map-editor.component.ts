@@ -332,6 +332,7 @@ export class MapEditorComponent implements OnInit {
       startingBalls: this.mapForm.get('startingBalls').value,
       endingBalls: this.mapForm.get('endingBalls').value,
       map: convertMapToShorthand(this.mapForm.get('rows').value.flat()),
+      isOfficial: this.mapForm.get('isOfficial').value,
     });
 
     this.isSaving = false;

@@ -65,12 +65,18 @@ export class AppComponent {
 
   getPlayerStatus(levels: Array<GameLevel>): Array<LevelStatus> {
     const playerLevelsCompleted = levels.map((level) => {
-      const lookupLevel = this.player.levelStatuses.find(
+      const lookupLevel: any = this.player.levelStatuses.find(
         (playerLevel) => playerLevel.levelId === level.id
       );
       return lookupLevel
         ? { ...lookupLevel }
-        : { levelId: level.id, attempts: 0, failures: 0, completed: false };
+        : {
+            levelId: level.id,
+            attempts: 0,
+            failures: 0,
+            completed: false,
+            isOfficial: false,
+          };
     });
 
     return playerLevelsCompleted;

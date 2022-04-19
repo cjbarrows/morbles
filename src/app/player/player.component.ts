@@ -27,6 +27,23 @@ export class PlayerComponent implements OnInit {
     return level ? level.name : '';
   }
 
+  getLevelLabel(id: number): string {
+    const level = this.levels.find((aLevel) => aLevel.id === id);
+    if (!level?.isOfficial) {
+      return '';
+    }
+    let sequence = 1;
+    for (let i = 0; i < this.levels.length; i++) {
+      if (this.levels[i].id === id) {
+        break;
+      }
+      if (this.levels[i].isOfficial) {
+        sequence += 1;
+      }
+    }
+    return `${sequence}: `;
+  }
+
   editLevel(event: any, levelId: number) {
     event.preventDefault();
     this.router.navigate(['/editor', levelId]);

@@ -3,4 +3,5 @@ export interface LevelStatus {
   attempts: number;
   failures: number;
   completed: boolean;
+  isOfficial: boolean;
 }

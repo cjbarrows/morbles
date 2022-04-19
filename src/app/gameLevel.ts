@@ -7,6 +7,7 @@ export interface GameLevel {
   startingBalls: string;
   endingBalls: string;
   map: string;
+  isOfficial: boolean;
 }
 
 export const BlankGameLevel = {
@@ -18,4 +19,5 @@ export const BlankGameLevel = {
   rows: 3,
   columns: 3,
   map: '',
+  isOfficial: false,
 };

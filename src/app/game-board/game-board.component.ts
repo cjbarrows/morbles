@@ -30,6 +30,7 @@ import { RendererService } from '../renderer.service';
 import { Player } from '../player';
 import { LevelsComponent } from '../levels/levels.component';
 import { ModalComponent } from '../modal/modal.component';
+import { LevelStatus } from '../levelStatus';
 
 @Component({
   selector: 'app-game-board',
@@ -254,7 +255,7 @@ export class GameBoardComponent implements OnInit, OnDestroy {
           } else {
             modalRef.componentInstance.my_modal_title = 'Level Complete';
             modalRef.componentInstance.my_modal_content =
-              "That's the last level. No go back and finish the ones you missed.";
+              "That's the last level. Now go back and finish the ones you missed.";
             modalRef.componentInstance.playNext = false;
             modalRef.componentInstance.showPlayButton = false;
           }
@@ -433,19 +434,20 @@ export class GameBoardComponent implements OnInit, OnDestroy {
 
   hasCurrentPlayerCompletedAllLevels() {
     return (
-      this.player.levelStatuses.filter((levelStatus) => !levelStatus.completed)
-        .length === 0
+      this.player.levelStatuses.filter(
+        (levelStatus) => levelStatus.isOfficial && !levelStatus.completed
+      ).length === 0
     );
   }
 
   getNextIncompleteLevelForPlayer(currentLevelId: number): number {
     for (let i = 0; i < this.player.levelStatuses.length; i++) {
-      const levelStatus = this.player.levelStatuses[i];
+      const levelStatus: LevelStatus = this.player.levelStatuses[i];
       if (levelStatus.levelId === currentLevelId) {
         for (let j = 1; j <= this.player.levelStatuses.length; j++) {
           const index = (i + j) % this.player.levelStatuses.length;
           const nextLevelStatus = this.player.levelStatuses[index];
-          if (!nextLevelStatus.completed) {
+          if (!nextLevelStatus.completed && nextLevelStatus.isOfficial) {
             return nextLevelStatus.levelId;
           }
         }
@@ -455,12 +457,18 @@ export class GameBoardComponent implements OnInit, OnDestroy {
   }
 
   async updatePlayerStatus(levelId: number, state: GAME_STATE) {
-    let level = this.player.levelStatuses.find(
+    let level: any = this.player.levelStatuses.find(
       (status) => status.levelId === levelId
     );
 
     if (!level) {
-      level = { levelId, attempts: 0, failures: 0, completed: false };
+      level = {
+        levelId,
+        attempts: 0,
+        failures: 0,
+        completed: false,
+        isOfficial: false,
+      };
       this.player.levelStatuses.push(level);
     }
 

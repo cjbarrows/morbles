@@ -13,7 +13,7 @@
       <tr *ngFor="let level of player.levelStatuses; let i = index">
         <td>
           <a class="nav-link" href="/game/{{ level.levelId }}"
-            >{{ i + 1 }}: {{ getLevelName(level.levelId) }}
+            >{{ getLevelLabel(level.levelId) }}{{ getLevelName(level.levelId) }}
             <button
               *ngIf="player.admin"
               (click)="editLevel($event, level.levelId)"
