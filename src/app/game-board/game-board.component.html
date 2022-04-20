@@ -1,47 +1,29 @@
-<app-levels
-  *ngIf="!isEditorRoute()"
-  [currentLevelId]="currentLevelId"
-></app-levels>
+<app-levels *ngIf="!isEditorRoute()" [currentLevelId]="currentLevelId"></app-levels>
 <div *ngIf="level$ | async as level" class="game-board-container">
   <div class="game-interface text-center">
     <h3>{{ level.name }}</h3>
     <div class="game-board" [ngStyle]="getGameBoardStyle()">
-      <app-ball-entry
-        [startingBalls]="startingBalls"
-        [entryBalls]="entryBallInfo"
-        (notifyDoLaunch)="doLaunch($event)"
-      ></app-ball-entry>
+      <app-ball-entry [startingBalls]="startingBalls" [entryBalls]="entryBallInfo"
+        (notifyDoLaunch)="doLaunch($event)"></app-ball-entry>
       <div class="game-board-proper">
-        <app-launch-button
-          *ngFor="let button of this.launchButtons; let i = index"
-          [index]="i"
-          [launchFunction]="this.launch"
-          [outOfBalls]="outOfBalls"
-          [gameState]="gameState"
-          (notifyLaunchDone)="onLaunchDone()"
-        ></app-launch-button>
-        <div
-          [class]="drawObject.className"
-          [style]="drawObject.styleObject"
+        <app-launch-button *ngFor="let button of this.launchButtons; let i = index" [index]="i"
+          [launchFunction]="this.launch" [outOfBalls]="outOfBalls" [gameState]="gameState"
+          (notifyLaunchDone)="onLaunchDone()"></app-launch-button>
+        <div [class]="drawObject.className" [style]="drawObject.styleObject"
           (click)="onClick(drawObject)"
-          *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"
-        ></div>
+          *ngFor="let drawObject of this.drawList; trackBy: getDrawObjectId"></div>
         <div class="right-side-cover" [ngStyle]="getRightSideStyle()"></div>
       </div>
-      <app-ball-exit
-        [width]="getWidth()"
-        [exitBalls]="exitBallInfo"
-        [endingBalls]="endingBalls"
-        [gameState]="gameState"
-      ></app-ball-exit>
-    </div>
-    <div class="editor-controls" *ngIf="isEditorRoute()">
-      <p>
-        Game State: <strong>{{ gameState }}</strong>
-      </p>
-      <button class="btn btn-warning" (click)="doResetLevel('', '', false)">
-        Restart
-      </button>
+      <app-ball-exit [width]="getWidth()" [exitBalls]="exitBallInfo" [endingBalls]="endingBalls"
+        [gameState]="gameState"></app-ball-exit>
     </div>
   </div>
+</div>
+<div class="editor-controls" *ngIf="isEditorRoute()">
+  <p>
+    Game State: <strong>{{ gameState }}</strong>
+  </p>
+  <button class="btn btn-warning" (click)="doResetLevel('', '', false)">
+    Restart
+  </button>
 </div>

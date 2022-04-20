@@ -4,8 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Todo
 
+[ ] BUG: changing # of columns in editor doesn't adjust map columns properly
 [ ] make it look nice on a phone
-[ ] clean up the level editor so it looks nice
 [ ] REFACTOR: all shorthand / cell types from one source
 [ ] should it count as success if you still have balls left / balls in play?
 [ ] unsubscribe to map editor subscriptions
@@ -214,6 +214,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
     [x] gate is being drawn behind stopper too
 [x] create "official" levels
 [x] allow "un-official" levels (that aren't part of the automatic progression)
+[x] clean up the level editor so it looks nice
 
 ## Notes
 

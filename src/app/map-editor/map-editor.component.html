@@ -1,64 +1,91 @@
 <div class="split-pane">
   <div class="editor">
-    <form [formGroup]="mapForm">
-      <div class="input-group">
-        <label for="mapName">Map Name: </label>
-        <input id="mapName" type="text" formControlName="mapName" />
-      </div>
-      <div class="input-group">
-        <label for="mapName">Hint: </label>
-        <input id="hint" type="text" formControlName="hint" />
-      </div>
-      <div class="input-group">
-        <label for="rows">Rows: </label>
-        <input id="rows" type="number" formControlName="numRows" />
-        <label for="columns">Columns: </label>
-        <input id="columns" type="number" formControlName="numColumns" />
-      </div>
-      <div class="input-group">
-        <label for="startingBalls">Starting Balls: </label>
-        <input id="startingBalls" type="text" formControlName="startingBalls" />
-      </div>
-      <div class="input-group">
-        <label for="endingBalls">Ending Balls: </label>
-        <input id="endingBalls" type="text" formControlName="endingBalls" />
-      </div>
-      <div formArrayName="rows">
-        <h2>Map</h2>
-        <div *ngFor="let row of rows.controls; let i = index" class="map-rows">
-          <div [formGroupName]="i" id="{{ i }}-{{ j }}" *ngFor="
-              let cellIndex of getCellIndices(i);
-              let j = index;
-            ">
-            <div class="cell-selector" [ngClass]="getCellType(i, j)" id="row-{{ i }}-cell-{{ j }}">
-              <select class="cell-type" [formControlName]="cellIndex">
-                <option *ngFor="
+    <div class="editor-ui">
+      <form [formGroup]="mapForm">
+        <div class="form-floating mb-3">
+          <input class="form-control" id="mapName" type="text" formControlName="mapName"
+            placeholder="Name of new map" />
+          <label for="mapName">Map Name</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input class="form-control" id="hint" type="text" formControlName="hint"
+            placeholder="Hint for new map" />
+          <label for="mapName">Hint</label>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="rows" type="number" formControlName="numRows"
+                placeholder="Rows in new map" />
+              <label for="rows">Rows</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="columns" type="number" formControlName="numColumns"
+                placeholder="Columns in new map" />
+              <label for="columns">Columns</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="startingBalls" type="text"
+                formControlName="startingBalls" placeholder="Starting balls for new map" />
+              <label for="startingBalls">Starting Balls</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="endingBalls" type="text" formControlName="endingBalls"
+                placeholder="Ending balls for new map" />
+              <label for="endingBalls">Ending Balls</label>
+            </div>
+          </div>
+        </div>
+        <div formArrayName="rows">
+          <div class="h4">Map</div>
+          <div *ngFor="let row of rows.controls; let i = index" class="map-rows">
+            <div [formGroupName]="i" id="{{ i }}-{{ j }}"
+              *ngFor="let cellIndex of getCellIndices(i); let j = index">
+              <div class="cell-selector" [ngClass]="getCellType(i, j)"
+                id="row-{{ i }}-cell-{{ j }}">
+                <select class="cell-type" [formControlName]="cellIndex">
+                  <option *ngFor="
                     let opt of getCellsAllowed(i, j);
                     trackBy: getCellValue
                   " [value]="opt.value">
-                  {{ opt.label }}
-                </option>
-              </select>
-              <div class="cell-options" id="options-row-{{ i }}-cell-{{ j }}">
-                <div *ngIf="allowsBall(i, j)">
-                  <select [formControlName]="cellIndex + 1">
-                    <option *ngFor="let color of getBallOptions()" [value]="color">
-                      {{ color }}
-                    </option>
-                  </select>
+                    {{ opt.label }}
+                  </option>
+                </select>
+                <div class="cell-options" id="options-row-{{ i }}-cell-{{ j }}">
+                  <div *ngIf="allowsBall(i, j)">
+                    <select [formControlName]="cellIndex + 1">
+                      <option *ngFor="let color of getBallOptions()" [value]="color">
+                        {{ color }}
+                      </option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <div class="d-grid mb-3 mt-3 gap-2 col-6 mx-auto">
+          <button (click)="saveMap()" [disabled]="mapForm.status !== 'VALID' || isSaving"
+            class="btn btn-primary">
+            {{ isSaving ? "Saving..." : "Save" }}
+          </button>
+        </div>
+      </form>
+      <p *ngIf="mapForm.status !== 'VALID'" class="small text-danger">
+        <i>*Can't save right now; your map is missing something!</i>
+      </p>
+      <div *ngIf="false">
+        {{ mapForm.value | json }}
       </div>
-      <button (click)="saveMap()" [disabled]="mapForm.status !== 'VALID' || isSaving"
-        class="btn btn-primary">
-        {{ isSaving ? "Saving..." : "Save" }}
-      </button>
-    </form>
-    <p>Form Status: {{ mapForm.status }}</p>
-    {{ mapForm.value | json }}
+    </div>
   </div>
   <div class="play">
     <app-game-board></app-game-board>

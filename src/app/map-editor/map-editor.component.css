@@ -1,13 +1,20 @@
 .split-pane {
   display:flex;
+  background-color: lightgray;
 }
 
 .split-pane .editor {
   width: 50%;
+  border-right: 5px solid white;
 }
 
 .split-pane .play {
   width: 50%;
+  background-color: rgb(121, 112, 112);
+}
+
+.split-pane .editor .editor-ui {
+  margin: 15px;
 }
 
 .map-rows {
